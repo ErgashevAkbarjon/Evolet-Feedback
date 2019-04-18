@@ -13,3 +13,6 @@
 
 $router->get('api/feedbacks', 'FeedbackController@index');
 $router->get('api/feedbacks/{id}', 'FeedbackController@show');
+$router->post('api/feedbacks', 'FeedbackController@store');
+$router->put('api/feedbacks/{id}', 'FeedbackController@update');
+
