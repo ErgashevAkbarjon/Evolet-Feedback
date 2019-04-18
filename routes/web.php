@@ -11,6 +11,5 @@
 |
 */
 
-$router->get('/', function () use ($router) {
-    return $router->app->version();
-});
+$router->get('api/feedbacks', 'FeedbackController@index');
+$router->get('api/feedbacks/{id}', 'FeedbackController@show');
