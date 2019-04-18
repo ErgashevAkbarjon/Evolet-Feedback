@@ -28,4 +28,8 @@ class Feedback extends Model
     {
         return $this->hasMany(File::class);
     }
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }

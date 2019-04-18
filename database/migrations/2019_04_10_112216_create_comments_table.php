@@ -18,6 +18,7 @@ class CreateCommentsTable extends Migration
             $table->text('body');
             $table->integer('parent_id')->nullable();
             $table->integer('employee_id');
+            $table->integer('feedback_id');
             $table->timestamps();
         });
     }

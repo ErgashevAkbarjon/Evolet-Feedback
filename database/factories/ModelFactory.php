@@ -36,7 +36,8 @@ $factory->define(App\Feedback::class, function (Faker\Generator $faker) {
 $factory->define(App\Comment::class, function (Faker\Generator $faker) {
     return [
         'body' => $faker->text,
-        'employee_id' => randomIdFrom(App\Employee::class)
+        'employee_id' => randomIdFrom(App\Employee::class),
+        'feedback_id' => randomIdFrom(App\Feedback::class)
     ];
 });
 

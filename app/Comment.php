@@ -11,4 +11,8 @@ class Comment extends Model
         return $this->belongsTo(Customer::class);
     }
 
+    public function feedback()
+    {
+        return $this->belongsTo(Feedback::class);
+    }
 }
