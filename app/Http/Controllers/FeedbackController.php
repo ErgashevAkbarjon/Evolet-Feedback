@@ -7,16 +7,19 @@ use Illuminate\Http\Request;
 
 class FeedbackController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $result = Feedback::with([
                 'status',
                 'customer.user:id,full_name',
                 'customer.pc:id,name'
-            ])->get();
+            ]);
+
+        $result = $this->filterByRequest($request, $result);
+
+        $result = $result->get();
 
         return $this->jsonUtf($result);
-
     }
 
     public function show($id)
@@ -27,7 +30,8 @@ class FeedbackController extends Controller
             'type',
             'customer.user:id,full_name',
             'customer.pc:id,name',
-            'files'
+            'files',
+            'comments'
         ])->find($id);
 
         return $this->jsonUtf($result);
@@ -55,6 +59,5 @@ class FeedbackController extends Controller
 
     public function destroy($id)
     {
-
     }
 }
