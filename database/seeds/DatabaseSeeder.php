@@ -45,6 +45,10 @@ class DatabaseSeeder extends Seeder
                 'class' => App\Comment::class,
                 'count' => 100
             ],
+            [
+                'class' => App\File::class,
+                'count' => 100
+            ],
         ]);
     }
 
