@@ -40,6 +40,14 @@ $factory->define(App\Comment::class, function (Faker\Generator $faker) {
     ];
 });
 
+$factory->define(App\File::class, function (Faker\Generator $faker){
+    return [
+        'name' => $faker->word,
+        'url' => $faker->imageUrl(200,200,'cats'),
+        'feedback_id' => randomIdFrom(App\Feedback::class)
+    ];
+});
+
 /**
  * Helpers
  */
