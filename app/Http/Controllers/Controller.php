@@ -10,8 +10,12 @@ class Controller extends BaseController
 {
     protected function jsonUtf($data, $code = 200)
     {
-        return response()->json($data, $code,
-            ['Content-Type' => 'application/json;charset=UTF-8', 'Charset' => 'utf-8'], JSON_UNESCAPED_UNICODE);
+        return response()->json(
+            $data,
+            $code,
+            ['Content-Type' => 'application/json;charset=UTF-8', 'Charset' => 'utf-8'],
+            JSON_UNESCAPED_UNICODE
+        );
     }
 
     protected function filterByRequest(Request $request, Builder $query)
@@ -24,8 +28,8 @@ class Controller extends BaseController
         $requests = $request->all();
 
         foreach ($requests as $key => $value) {
-            if(in_array($key, $modelAttributes)){
-                $query = $query->orWhere($key, $value);
+            if($value && in_array($key, $modelAttributes)){
+                $query = $query->where($key, $value);
             }
         }
 
