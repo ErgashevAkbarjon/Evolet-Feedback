@@ -11,8 +11,19 @@
 |
 */
 
-$router->get('api/feedbacks', 'FeedbackController@index');
-$router->get('api/feedbacks/{id}', 'FeedbackController@show');
-$router->post('api/feedbacks', 'FeedbackController@store');
-$router->put('api/feedbacks/{id}', 'FeedbackController@update');
+$router->group(['prefix'=>'/'], function () use ($router){
+    $router->get('', function (){
+        return view('app');
+    });
+});
+
+$router->group(['prefix'=>'api'], function () use ($router){
+
+    $router->get('feedbacks', 'FeedbackController@index');
+    $router->get('feedbacks/{id}', 'FeedbackController@show');
+    $router->post('feedbacks', 'FeedbackController@store');
+    $router->put('feedbacks/{id}', 'FeedbackController@update');
+
+});
+
 
