@@ -7,7 +7,8 @@
     <title></title>
 </head>
 <body>
-    <div id="app">dlkfvndklfvdkfvldfn</div>
+    <div id="app"></div>
+    <script src="/js/app.js"></script>
 
 </body>
 </html>
