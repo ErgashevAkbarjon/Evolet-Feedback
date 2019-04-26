@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 /node_modules
 public/js
+=======
+node_modules
+/public/hot
+>>>>>>> 756b35de90760199d5093faac150e023bef50137
 /public/storage
 /storage/*.key
 /vendor
