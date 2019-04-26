@@ -1,5 +1,14 @@
+<<<<<<< HEAD
+/node_modules
+public/js
+=======
 node_modules
+<<<<<<< HEAD
 public
+=======
+/public/hot
+>>>>>>> 756b35de90760199d5093faac150e023bef50137
+>>>>>>> 9c4b40ab03be015f9ac33b1d9869438a57d77f3d
 /public/storage
 /storage/*.key
 /vendor
