@@ -85544,7 +85544,11 @@ function Main(props) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
+<<<<<<< HEAD
 module.exports = __webpack_require__(/*! D:\OSPanel\domains\feedback.test\resources\js\app.jsx */"./resources/js/app.jsx");
+=======
+module.exports = __webpack_require__(/*! D:\Evolet-Feedback\Evolet-Feedback\resources\js\app.jsx */"./resources/js/app.jsx");
+>>>>>>> 7aa928af1ced6a0fcfc65f22c50d29beba61f2f3
 
 
 /***/ })
