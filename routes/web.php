@@ -10,13 +10,6 @@
 | and give it the Closure to call when that URI is requested.
 |
 */
-
-$router->group(['prefix'=>'/'], function () use ($router){
-    $router->get('', function (){
-        return view('app');
-    });
-});
-
 $router->group(['prefix'=>'api'], function () use ($router){
 
     $router->get('feedbacks', 'FeedbackController@index');
@@ -24,6 +17,14 @@ $router->group(['prefix'=>'api'], function () use ($router){
     $router->post('feedbacks', 'FeedbackController@store');
     $router->put('feedbacks/{id}', 'FeedbackController@update');
 
+    $router->get('groups', 'GroupController@index');
 });
+
+$router->group(['prefix'=>'/'], function () use ($router){
+    $router->get('/{route:.*}', function (){
+        return view('app');
+    });
+});
+
 
 
