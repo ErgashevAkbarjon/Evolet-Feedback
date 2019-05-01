@@ -85492,6 +85492,150 @@ if (token) {
 
 /***/ }),
 
+/***/ "./resources/js/components/Sidebar.jsx":
+/*!*********************************************!*\
+  !*** ./resources/js/components/Sidebar.jsx ***!
+  \*********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_jss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-jss */ "./node_modules/react-jss/lib/index.js");
+/* harmony import */ var react_jss__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_jss__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/es/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../routes */ "./resources/js/routes.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance"); }
+
+function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
+
+
+
+var styles = {
+  sidebar: {
+    background: "#253338",
+    minHeight: "100vh",
+    width: '100%',
+    color: 'white',
+    fontSize: '1.3rem'
+  },
+  sidebarLink: {
+    paddingLeft: '24px',
+    color: 'white',
+    width: '100%',
+    margin: '6px 0px',
+    display: 'inherit',
+    '&:hover': {
+      color: 'white',
+      textDecoration: 'none'
+    }
+  },
+  sidebarLinkActive: {
+    background: '#f3f3f340'
+  },
+  header: {
+    fontSize: '2rem',
+    padding: '24px',
+    fontWeight: '400'
+  }
+};
+
+function Sidebar(_ref) {
+  var classes = _ref.classes;
+
+  var _useState = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(),
+      _useState2 = _slicedToArray(_useState, 2),
+      groups = _useState2[0],
+      setGroups = _useState2[1];
+
+  Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
+    axios__WEBPACK_IMPORTED_MODULE_3___default.a.get(_routes__WEBPACK_IMPORTED_MODULE_4__["SidebarGroups"].path).then(function (_ref2) {
+      var data = _ref2.data;
+      return setGroups(data);
+    })["catch"](function (e) {
+      console.log(e);
+    });
+  }, []);
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["Row"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    className: classes.sidebar
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", {
+    className: classes.header
+  }, "Feedback"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("nav", null, groups ? groups.map(function (group, i) {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+      key: i
+    }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_5__["NavLink"], {
+      to: "/feedbacks",
+      className: classes.sidebarLink,
+      activeClassName: classes.sidebarLinkActive
+    }, group.name));
+  }) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "\u0417\u0430\u0433\u0440\u0443\u0437\u043A\u0430..."))));
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (react_jss__WEBPACK_IMPORTED_MODULE_1___default()(styles)(Sidebar));
+
+/***/ }),
+
+/***/ "./resources/js/routes.js":
+/*!********************************!*\
+  !*** ./resources/js/routes.js ***!
+  \********************************/
+/*! exports provided: default, SidebarGroups */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SidebarGroups", function() { return SidebarGroups; });
+/* harmony import */ var _views_Feedbacks__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./views/Feedbacks */ "./resources/js/views/Feedbacks.jsx");
+
+/* harmony default export */ __webpack_exports__["default"] = ([{
+  path: '/feedbacks',
+  component: _views_Feedbacks__WEBPACK_IMPORTED_MODULE_0__["default"]
+}]);
+var SidebarGroups = {
+  path: '/api/groups'
+};
+
+/***/ }),
+
+/***/ "./resources/js/views/Feedbacks.jsx":
+/*!******************************************!*\
+  !*** ./resources/js/views/Feedbacks.jsx ***!
+  \******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_jss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-jss */ "./node_modules/react-jss/lib/index.js");
+/* harmony import */ var react_jss__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_jss__WEBPACK_IMPORTED_MODULE_1__);
+
+
+var styles = {};
+
+function Feedbacks(_ref) {
+  var classes = _ref.classes;
+  return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "SomeS");
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (react_jss__WEBPACK_IMPORTED_MODULE_1___default()(styles)(Feedbacks));
+
+/***/ }),
+
 /***/ "./resources/js/views/Main.jsx":
 /*!*************************************!*\
   !*** ./resources/js/views/Main.jsx ***!
@@ -85506,21 +85650,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/es/index.js");
 /* harmony import */ var react_jss__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-jss */ "./node_modules/react-jss/lib/index.js");
 /* harmony import */ var react_jss__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react_jss__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/esm/react-router-dom.js");
+/* harmony import */ var _components_Sidebar__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/Sidebar */ "./resources/js/components/Sidebar.jsx");
+/* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../routes */ "./resources/js/routes.js");
 
 
 
-var styles = {
-  main: {
-    fontSize: '22px',
-    fontFamily: 'Segoe UI'
-  },
-  sidebar: {
-    background: "#253338",
-    minHeight: "100vh",
-    color: 'white',
-    fontSize: '1.25rem'
-  }
-};
+
+
+
+var styles = {};
 
 function Main(props) {
   var classes = props.classes;
@@ -85528,9 +85667,13 @@ function Main(props) {
     fluid: true,
     className: classes.main
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["Row"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["Col"], {
-    xs: 1,
-    className: classes.sidebar
-  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "Feedback"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("nav", null, "\u0423\u043F\u0430\u043A\u043E\u0432\u043A\u0438"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("nav", null, "\u0423\u043F\u0430\u043A\u043E\u0432\u043A\u0438"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("nav", null, "\u0423\u043F\u0430\u043A\u043E\u0432\u043A\u0438")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["Col"], null)));
+    xs: 2
+  }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_components_Sidebar__WEBPACK_IMPORTED_MODULE_4__["default"], null)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_bootstrap__WEBPACK_IMPORTED_MODULE_1__["Col"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Switch"], null, _routes__WEBPACK_IMPORTED_MODULE_5__["default"].map(function (route, i) {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_3__["Route"], {
+      path: route.path,
+      component: route.component
+    });
+  })))));
 }
 
 /* harmony default export */ __webpack_exports__["default"] = (react_jss__WEBPACK_IMPORTED_MODULE_2___default()(styles)(Main));
@@ -85544,11 +85687,7 @@ function Main(props) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-<<<<<<< HEAD
 module.exports = __webpack_require__(/*! D:\OSPanel\domains\feedback.test\resources\js\app.jsx */"./resources/js/app.jsx");
-=======
-module.exports = __webpack_require__(/*! D:\Evolet-Feedback\Evolet-Feedback\resources\js\app.jsx */"./resources/js/app.jsx");
->>>>>>> 7aa928af1ced6a0fcfc65f22c50d29beba61f2f3
 
 
 /***/ })
