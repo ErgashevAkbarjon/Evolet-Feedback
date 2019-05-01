@@ -1,41 +1,36 @@
 import React from 'react';
-import { 
-    Dropdown,
+import {
     Container,
     Row,
     Col
- } from "react-bootstrap";
+} from "react-bootstrap";
 import withStyles from 'react-jss';
+import { Switch, Route} from 'react-router-dom';
+
+import Sidebar from '../components/Sidebar';
+import routes from '../routes';
 
 const styles = {
-    main:{
-        fontSize: '22px',
-        fontFamily: 'Segoe UI'
-    },
-    sidebar: {
-        background: "#253338",
-        minHeight: "100vh",
-        color: 'white',
-        fontSize: '1.25rem'
-    },
-    
+
 }
 
 function Main(props) {
-    const {classes} = props;
+    const { classes } = props;
     return (
         <Container fluid className={classes.main}>
             <Row>
-                <Col xs={1} className={classes.sidebar}>
-                    <h1>Feedback</h1>
-                    
-                    <nav>Упаковки</nav>
-                    <nav>Упаковки</nav>
-                    <nav>Упаковки</nav>
+                <Col xs={2}>
+                    <Sidebar />
                 </Col>
                 <Col>
-
-                </Col>         
+                    <Switch>
+                        {
+                            routes.map((route, i) => (
+                                <Route path={route.path} component={route.component}/>
+                            ))
+                        }
+                    </Switch>
+                </Col>
             </Row>
         </Container>
     );
