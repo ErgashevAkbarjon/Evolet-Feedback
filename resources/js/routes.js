@@ -3,7 +3,7 @@ import Feedbacks from './views/Feedbacks';
 
 export default [
     {
-        path: '/feedbacks',
+        path: '/feedbacks/:id',
         component: Feedbacks
     },
 ]
