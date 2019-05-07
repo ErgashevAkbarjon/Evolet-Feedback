@@ -22,11 +22,11 @@ function Main(props) {
                 <Col xs={2}>
                     <Sidebar />
                 </Col>
-                <Col>
+                <Col className="mt-5">
                     <Switch>
                         {
                             routes.map((route, i) => (
-                                <Route path={route.path} component={route.component}/>
+                                <Route key={i} path={route.path} component={route.component}/>
                             ))
                         }
                     </Switch>
