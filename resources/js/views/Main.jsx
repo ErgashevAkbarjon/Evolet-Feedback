@@ -25,8 +25,8 @@ function Main(props) {
                 <Col className="mt-5 offset-2 ">
                     <Switch>
                         {
-                            routes.map((route, i) => (
-                                <Route key={i} path={route.path} component={route.component}/>
+                            routes.map((routeProps, i) => (
+                                <Route key={i} {...routeProps}/>
                             ))
                         }
                     </Switch>
