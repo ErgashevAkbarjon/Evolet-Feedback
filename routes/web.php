@@ -18,6 +18,9 @@ $router->group(['prefix'=>'api'], function () use ($router){
     $router->put('feedbacks/{id}', 'FeedbackController@update');
 
     $router->get('groups', 'GroupController@index');
+
+    $router->get('types', 'FeedbackTypeController@index');
+
 });
 
 $router->group(['prefix'=>'/'], function () use ($router){
