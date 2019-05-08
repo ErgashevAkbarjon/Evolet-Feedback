@@ -22,7 +22,7 @@ function Main(props) {
                 <Col xs={2} style={{position: "fixed"}}>
                     <Sidebar />
                 </Col>
-                <Col className="mt-5 offset-2 ">
+                <Col className="mt-5 offset-2 pl-4">
                     <Switch>
                         {
                             routes.map((routeProps, i) => (
