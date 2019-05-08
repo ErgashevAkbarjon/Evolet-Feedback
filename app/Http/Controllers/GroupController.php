@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Group;
+use Illuminate\Http\Request;
 
 class GroupController extends Controller
 {
@@ -15,9 +16,12 @@ class GroupController extends Controller
         //
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $response = Group::all();
+        $response = Group::query();
+
+        $response = $this->filterByRequest($request, $response)->get();
+
         return $this->jsonUtf($response); 
     }
 }
