@@ -18,16 +18,17 @@ const styles = {
         paddingRight: '8rem !important',
     },
     logo: {
-        maxWidth: '8em',
+        width: '5em',
     },
     statusWrapper: {
         textAlign: 'center !important',
         paddingRight: '5rem !important',
+        width: '17em !important'
     },
     status: {
         background: '#4599f3',
         color: 'white',
-        padding: '.6rem',
+        padding: '.5rem',
         borderRadius: '50px'
     },
 }
