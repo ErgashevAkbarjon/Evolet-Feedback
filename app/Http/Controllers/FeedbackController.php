@@ -12,7 +12,7 @@ class FeedbackController extends Controller
         $result = Feedback::with([
                 'status',
                 'customer.user:id,full_name',
-                'customer.pc:id,name'
+                'customer.pc'
             ]);
 
         $result = $this->filterByRequest($request, $result);
@@ -29,7 +29,7 @@ class FeedbackController extends Controller
             'group',
             'type',
             'customer.user:id,full_name',
-            'customer.pc:id,name',
+            'customer.pc',
             'files',
             'comments'
         ])->find($id);
