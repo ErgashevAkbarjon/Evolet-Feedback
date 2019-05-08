@@ -15,10 +15,8 @@ class FeedbackController extends Controller
                 'customer.pc'
             ]);
 
-        $result = $this->filterByRequest($request, $result);
-
-        $result = $result->get();
-
+        $result = $this->filterByRequest($request, $result)->get();
+        
         return $this->jsonUtf($result);
     }
 
