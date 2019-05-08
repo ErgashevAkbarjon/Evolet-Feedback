@@ -3,6 +3,7 @@ import withStyles from 'react-jss';
 import axios from 'axios';
 
 import Table from '../components/table/Table';
+import FeedbackRow from '../components/FeedbackRow';
 
 const styles = {
 };
@@ -10,16 +11,16 @@ const styles = {
 const printable = {
     description: 'Отрывок описания',
     created_at: 'Дата',
-    pc: 'ПК',
-    customer_id: 'Отправитель',
-    status: 'Статус',
+    "customer.pc": 'ПК',
+    "customer.user.full_name": 'Отправитель',
+    "status.name": 'Статус',
 }
 
 function Feedbacks({ classes, match }) {
 
     const [feedbacks, setFeedbacks] = useState();
 
-    const [filteredFeedbacksURL, setFilter] = useState('/api/feedbacks?group_id=' + match.params.id);
+    const filteredFeedbacksURL = '/api/feedbacks?group_id=' + match.params.id;
 
     useEffect(() => {
         axios
@@ -34,44 +35,23 @@ function Feedbacks({ classes, match }) {
                 {
                     feedbacks
                         ? (<Table>
-                                <thead>
-                                    <tr>
-                                        {
-                                            Object.values(printable).map((fieldName, i) => (<th key={i}>{fieldName}</th>))
-                                        }
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>ssdfsdf</td>
-                                        <td>ssdfsdf</td>
-                                        <td>ssdfsdf</td>
-                                        <td>ssdfsdf</td>
-                                        <td>ssdfsdf</td>
-                                    </tr>
-                                    <tr>
-                                        <td>ssdfsdf</td>
-                                        <td>ssdfsdf</td>
-                                        <td>ssdfsdf</td>
-                                        <td>ssdfsdf</td>
-                                        <td>ssdfsdf</td>
-                                    </tr>
-                                    <tr>
-                                        <td>ssdfsdf</td>
-                                        <td>ssdfsdf</td>
-                                        <td>ssdfsdf</td>
-                                        <td>ssdfsdf</td>
-                                        <td>ssdfsdf</td>
-                                    </tr>
-                                    <tr>
-                                        <td>ssdfsdf</td>
-                                        <td>ssdfsdf</td>
-                                        <td>ssdfsdf</td>
-                                        <td>ssdfsdf</td>
-                                        <td>ssdfsdf</td>
-                                    </tr>
-                                </tbody>
-                          </Table>)
+                            <thead>
+                                <tr>
+                                    {
+                                        Object.values(printable).map((fieldName, i) => (
+                                            <th key={i}>{fieldName}</th>
+                                        ))
+                                    }
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {
+                                    feedbacks.map((feedback, i) => (
+                                        <FeedbackRow key={i} feedback={feedback} printableFields={Object.keys(printable)}/>
+                                    ))
+                                }
+                            </tbody>
+                        </Table>)
                         : ("Загрузка...")
                 }
             </div>
