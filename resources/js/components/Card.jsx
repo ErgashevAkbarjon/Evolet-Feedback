@@ -19,14 +19,16 @@ const styles = {
     }
 }
 
-function Card({ classes, title, children }) {
+function Card({ classes, title, children, className }) {
     return (
-        <div className={classes.card}>
-            <div className={classes.title}>
-                {title}
-            </div>
-            <div className={classes.content}>
-                {children}
+        <div className={className}>
+            <div className={classes.card}>
+                <div className={classes.title}>
+                    {title}
+                </div>
+                <div className={classes.content}>
+                    {children}
+                </div>
             </div>
         </div>
     )
