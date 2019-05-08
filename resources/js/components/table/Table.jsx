@@ -6,6 +6,7 @@ const styles = {
         border: "1px solid #9B9B9B",
         borderRadius: "5px",
         overflow: "hidden",
+        marginBottom: '2rem',
         '& table': {
             marginBottom: '0px',
             color: '#707070',
@@ -17,6 +18,7 @@ const styles = {
         },
         '& td': {
             border: 'none',
+            verticalAlign: "middle",
         }
     },
 };
