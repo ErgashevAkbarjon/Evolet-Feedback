@@ -19,10 +19,10 @@ function Main(props) {
     return (
         <Container fluid className={classes.main}>
             <Row>
-                <Col xs={2}>
+                <Col xs={2} style={{position: "fixed"}}>
                     <Sidebar />
                 </Col>
-                <Col className="mt-5">
+                <Col className="mt-5 offset-2 ">
                     <Switch>
                         {
                             routes.map((route, i) => (
