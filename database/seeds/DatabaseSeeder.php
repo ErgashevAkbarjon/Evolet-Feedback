@@ -55,9 +55,9 @@ class DatabaseSeeder extends Seeder
     private function seedStatuses()
     {
         Status::truncate();
-        Status::create(['name'=> 'На рассмотрении']);
-        Status::create(['name'=> 'Принят']);
-        Status::create(['name'=> 'Отклонен']);
+        Status::create(['name'=> 'На рассмотрении', 'color' => '#EBBF2F']);
+        Status::create(['name'=> 'Принят', 'color' => '#30D92A']);
+        Status::create(['name'=> 'Отклонен', 'color' => '#EB552F']);
     }
     private function seedFeedbackTypes()
     {
@@ -76,11 +76,11 @@ class DatabaseSeeder extends Seeder
     private function seedPC()
     {
         PC::truncate();
-        PC::create(['name'=> 'Vegapharm']);
-        PC::create(['name'=> 'Belinda']);
-        PC::create(['name'=> 'Spey']);
-        PC::create(['name'=> 'Neo Universe']);
-        PC::create(['name'=> 'Lady Healthcare']);
+        PC::create(['name'=> 'Vegapharm', 'logo' => '/images/pc/vegapharm.png']);
+        PC::create(['name'=> 'Belinda', 'logo' => '/images/pc/belinda.png']);
+        PC::create(['name'=> 'Spey', 'logo' => '']);
+        PC::create(['name'=> 'Neo Universe', 'logo' => '/images/pc/neo.png']);
+        PC::create(['name'=> 'Lady Healthcare', 'logo' => '']);
     }
 
     private function seedFactories($factories)
