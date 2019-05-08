@@ -58,7 +58,7 @@ function Sidebar({ classes }) {
                             groups.map((group,  i) => (
                                 <div key={i}>
                                     <NavLink
-                                        to={'/feedbacks/' + group.id}
+                                        to={'/feedbacks/group/' + group.id}
                                         className={classes.sidebarLink}
                                         activeClassName={classes.sidebarLinkActive}
                                     >
