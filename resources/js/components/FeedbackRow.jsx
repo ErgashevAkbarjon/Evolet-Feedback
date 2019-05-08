@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types'
 import withStyles from 'react-jss'
+import { withRouter } from "react-router-dom";
 
 const styles = {
     tableRow: {
@@ -33,12 +34,15 @@ const styles = {
     },
 }
 
-
-function FeedbackRow({ classes, feedback, printableFields }) {
+function FeedbackRow({ classes, feedback, printableFields, history }) {
     const shoudPrint = (field) => printableFields.includes(field);
 
+    const onFeedbackClick = () => {
+        history.push('/feedbacks/' + feedback.id);
+    }
+
     return (
-        <tr className={classes.tableRow}>
+        <tr className={classes.tableRow} onClick={onFeedbackClick}>
             {
                 shoudPrint("description")
                     ? (
@@ -75,7 +79,7 @@ function FeedbackRow({ classes, feedback, printableFields }) {
                 shoudPrint("status.name")
                     ? (
                         <td className={classes.statusWrapper}>
-                            <div className={classes.status} style={{background: feedback.status.color}}>
+                            <div className={classes.status} style={{ background: feedback.status.color }}>
                                 {feedback.status.name}
                             </div>
                         </td>
@@ -90,4 +94,4 @@ FeedbackRow.propTypes = {
     feedback: PropTypes.object.isRequired,
 }
 
-export default withStyles(styles)(FeedbackRow);
+export default withStyles(styles)(withRouter(FeedbackRow));
