@@ -12,6 +12,16 @@ const styles = {
         width: '100%',
         borderRadius: '5px'
     },
+    commentInput: {
+        borderColor: '#707070',
+    },
+    commentInputWrapper: {
+        textAlign: 'end',
+    },
+    commentButton: {
+        borderRadius: '50px',
+        padding: '.5em 1.8em',
+    }
 }
 
 function Feedback({ classes, match }) {
@@ -53,6 +63,10 @@ function Feedback({ classes, match }) {
 
                         </div>
                     </Card>
+                    <div className={classes.commentInputWrapper}>
+                        <textarea className={'form-control ' + classes.commentInput} rows="4" placeholder='Напишите коментарий...'/>
+                        <button type="button" className={'btn btn-primary mt-3 '  + classes.commentButton}>Отправить</button>
+                    </div>
                 </div>
                 <div className="col-4 pr-5">
                     <Card title='Информация'>
