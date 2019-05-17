@@ -21,12 +21,28 @@ const styles = {
     commentButton: {
         borderRadius: '50px',
         padding: '.5em 1.8em',
-    }
+    },
+    commentAuthorAvatar: {
+        borderRadius: '50px',
+        width: '60%',
+    },
+    commentsHead: {
+        color: '#707070',
+        fontWeight: '400'
+    },
+    commentReply: {
+        border: 'none',
+        background: 'transparent',
+        padding: 'unset',
+        color: '#707070',
+    },
 }
 
 function Feedback({ classes, match }) {
 
     const [feedback, setFeedback] = useState();
+    const [comments, setComments] = useState();
+    const [newComment, setNewComment] = useState();
 
     const feedbackId = match.params.id;
 
@@ -35,7 +51,41 @@ function Feedback({ classes, match }) {
             .get('/api/feedbacks/' + feedbackId)
             .then(({ data }) => setFeedback(data))
             .catch((e) => console.log(e));
+        
+        getComments();
     }, [])
+
+    const getComments = () => {
+        axios
+        .get('/api/comments?feedback_id=' + feedbackId)
+        .then(({ data }) => setComments(data))
+        .catch((e) => console.log(e));
+    };
+
+    const commentChilds = () => {
+        comments.map((comment) => {
+            comment = {...comment, children: [
+                comments.fiter( c => c.parentId == comment.id)
+            ]}
+        });
+    }
+
+    const addComment = (parentId = null, commentBody = newComment) => {
+
+        const comment = {
+            body: commentBody,
+            employee_id: 1,
+            feedback_id: feedback.id
+        };
+
+        axios
+            .post('/api/comments', comment)
+            .then(() => {
+                setNewComment('');
+                getComments();
+            })
+            .catch((e) => console.log(e));
+    }
 
     return feedback
         ? (
@@ -48,10 +98,10 @@ function Feedback({ classes, match }) {
                         <div className="row">
                             {
                                 feedback.files.map((file, i) => (
-                                    <div className="col-3">
+                                    <div className="col-3" key={i}>
                                         <div className="row align-items-center">
                                             <div className="col-4">
-                                                <img src={file.url} alt={file.name} className={classes.file}/>
+                                                <img src={file.url} alt={file.name} className={classes.file} />
                                             </div>
                                             <div className="col pl-0">
                                                 {file.name}
@@ -64,8 +114,39 @@ function Feedback({ classes, match }) {
                         </div>
                     </Card>
                     <div className={classes.commentInputWrapper}>
-                        <textarea className={'form-control ' + classes.commentInput} rows="4" placeholder='Напишите коментарий...'/>
-                        <button type="button" className={'btn btn-primary mt-3 '  + classes.commentButton}>Отправить</button>
+                        <textarea
+                            className={'form-control ' + classes.commentInput}
+                            rows="4"
+                            placeholder='Напишите коментарий...'
+                            value={newComment}
+                            onChange={(e) => setNewComment(e.target.value)}
+                        />
+                        <button
+                            type="button"
+                            className={'btn btn-primary mt-3 ' + classes.commentButton}
+                            onClick={() => newComment ? addComment(): null}
+                        >
+                            Отправить
+                        </button>
+                    </div>
+                    <div>
+                        <h3 className={'mb-4 ' + classes.commentsHead}>Обсуждение</h3>
+                        {
+                            comments
+                                ? comments.map(comment => (
+                                    <div className="row mb-3" key={comment.id}>
+                                        <div className="col-1 pr-0 text-center">
+                                            <img src="https://lorempixel.com/200/200/cats/?20141" alt="" className={classes.commentAuthorAvatar} />
+                                        </div>
+                                        <div className="col pl-0">
+                                            <p className='mb-1'>{comment.body}</p>
+                                            <button className={classes.commentReply}>Ответить</button>
+                                        </div>
+                                    </div>
+                                ))
+                                : null
+                        }
+
                     </div>
                 </div>
                 <div className="col-4 pr-5">

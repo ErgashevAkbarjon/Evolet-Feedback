@@ -28,8 +28,7 @@ class FeedbackController extends Controller
             'type',
             'customer.user:id,full_name',
             'customer.pc',
-            'files',
-            'comments'
+            'files'
         ])->find($id);
 
         return $this->jsonUtf($result);

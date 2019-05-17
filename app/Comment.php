@@ -6,9 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Comment extends Model
 {
-    public function customer()
+    protected $fillable = [
+        'body',
+        'parent_id',
+        'employee_id',
+        'feedback_id',
+    ];
+
+    public function employee()
     {
-        return $this->belongsTo(Customer::class);
+        return $this->belongsTo(Employee::class);
     }
 
     public function feedback()

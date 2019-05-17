@@ -21,6 +21,9 @@ $router->group(['prefix'=>'api'], function () use ($router){
 
     $router->get('types', 'FeedbackTypeController@index');
 
+    $router->get('comments', 'CommentController@index');
+    $router->post('comments', 'CommentController@store');
+    
 });
 
 $router->group(['prefix'=>'/'], function () use ($router){
