@@ -3,6 +3,7 @@ import withStyles from 'react-jss';
 import axios from 'axios';
 
 import Card from '../components/Card';
+import { isObject, isArray } from 'util';
 
 const styles = {
     info: {
@@ -51,23 +52,36 @@ function Feedback({ classes, match }) {
             .get('/api/feedbacks/' + feedbackId)
             .then(({ data }) => setFeedback(data))
             .catch((e) => console.log(e));
-        
+
         getComments();
     }, [])
 
     const getComments = () => {
         axios
-        .get('/api/comments?feedback_id=' + feedbackId)
-        .then(({ data }) => setComments(data))
-        .catch((e) => console.log(e));
+            .get('/api/comments?feedback_id=' + feedbackId)
+            .then(({ data }) => setComments(data))
+            .catch((e) => console.log(e));
     };
 
-    const commentChilds = () => {
-        comments.map((comment) => {
-            comment = {...comment, children: [
-                comments.fiter( c => c.parentId == comment.id)
-            ]}
-        });
+    const printComment = (comment) => {
+        const { id, body, children, employee } = comment;
+        return (
+            <div className="row mb-3" key={id}>
+                <div className="col-1 pr-0 text-center">
+                    <img src={comment.employee.avatar} alt={employee.user.full_name} title={employee.user.full_name} className={classes.commentAuthorAvatar} />
+                </div>
+                <div className="col pr-0 pl-0">
+                    <p className='mb-1'>{body}</p>
+                    <button className={'mb-3 ' + classes.commentReply}>Ответить</button>
+                    //TODO Refactor children position
+                    {
+                        isArray(children) && children.length > 0
+                            ? children.map(child => printComment(child))
+                            : null
+                    }
+                </div>
+            </div>
+        )
     }
 
     const addComment = (parentId = null, commentBody = newComment) => {
@@ -124,7 +138,7 @@ function Feedback({ classes, match }) {
                         <button
                             type="button"
                             className={'btn btn-primary mt-3 ' + classes.commentButton}
-                            onClick={() => newComment ? addComment(): null}
+                            onClick={() => newComment ? addComment() : null}
                         >
                             Отправить
                         </button>
@@ -132,18 +146,8 @@ function Feedback({ classes, match }) {
                     <div>
                         <h3 className={'mb-4 ' + classes.commentsHead}>Обсуждение</h3>
                         {
-                            comments
-                                ? comments.map(comment => (
-                                    <div className="row mb-3" key={comment.id}>
-                                        <div className="col-1 pr-0 text-center">
-                                            <img src="https://lorempixel.com/200/200/cats/?20141" alt="" className={classes.commentAuthorAvatar} />
-                                        </div>
-                                        <div className="col pl-0">
-                                            <p className='mb-1'>{comment.body}</p>
-                                            <button className={classes.commentReply}>Ответить</button>
-                                        </div>
-                                    </div>
-                                ))
+                            comments && isArray(comments)
+                                ? comments.map(comment => printComment(comment))
                                 : null
                         }
 
