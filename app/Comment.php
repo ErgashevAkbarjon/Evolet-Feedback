@@ -13,6 +13,13 @@ class Comment extends Model
         'feedback_id',
     ];
 
+    public function children()
+    {
+        return $this->hasMany(Comment::class, 'parent_id')
+            ->with('children.employee')
+            ->with('children.employee.user:id,full_name');
+    }
+
     public function employee()
     {
         return $this->belongsTo(Employee::class);

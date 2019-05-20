@@ -20,7 +20,15 @@ class CommentController extends Controller
     {
         $commentQuery = Comment::query();
 
-        $response = $this->filterByRequest($request, $commentQuery)->get();
+        //TODO Refactor this
+        $response = $this->filterByRequest($request, $commentQuery)
+            ->with('children')
+            ->with('children.employee:id,avatar')
+            ->with('children.employee.user:id,full_name')
+            ->with('employee:id,avatar')
+            ->with('employee.user:id,full_name')
+            ->where('parent_id', null)
+            ->get();
 
         return $this->jsonUtf($response);
     }
