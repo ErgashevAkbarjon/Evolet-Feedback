@@ -3,8 +3,7 @@ import withStyles from 'react-jss';
 import axios from 'axios';
 
 import Card from '../components/Card';
-import Comment from '../components/Comment';
-import { isArray } from 'util';
+import Comments from '../components/Comments/Comments';
 
 const styles = {
     info: {
@@ -14,27 +13,12 @@ const styles = {
         width: '100%',
         borderRadius: '5px'
     },
-    commentInput: {
-        borderColor: '#707070',
-    },
-    commentInputWrapper: {
-        textAlign: 'end',
-    },
-    commentButton: {
-        borderRadius: '50px',
-        padding: '.5em 1.8em',
-    },
-    commentsHead: {
-        color: '#707070',
-        fontWeight: '400'
-    },
 }
 
 function Feedback({ classes, match }) {
 
     const [feedback, setFeedback] = useState();
     const [comments, setComments] = useState();
-    const [newComment, setNewComment] = useState();
 
     const feedbackId = match.params.id;
 
@@ -54,18 +38,19 @@ function Feedback({ classes, match }) {
             .catch((e) => console.log(e));
     };
 
-    const addComment = (parentId = null, commentBody = newComment) => {
-
-        const comment = {
+    const addComment = (commentBody, parentId = null) => {
+        const newComment = {
             body: commentBody,
             employee_id: 1,
-            feedback_id: feedback.id
+            feedback_id: feedback.id,
         };
 
+        if(parentId) 
+            newComment.parentId = parentId;
+
         axios
-            .post('/api/comments', comment)
+            .post('/api/comments', newComment)
             .then(() => {
-                setNewComment('');
                 getComments();
             })
             .catch((e) => console.log(e));
@@ -97,35 +82,7 @@ function Feedback({ classes, match }) {
 
                         </div>
                     </Card>
-                    <div className={classes.commentInputWrapper}>
-                        <textarea
-                            className={'form-control ' + classes.commentInput}
-                            rows="4"
-                            placeholder='Напишите коментарий...'
-                            value={newComment}
-                            onChange={(e) => setNewComment(e.target.value)}
-                        />
-                        <button
-                            type="button"
-                            className={'btn btn-primary mt-3 ' + classes.commentButton}
-                            onClick={() => newComment ? addComment() : null}
-                        >
-                            Отправить
-                        </button>
-                    </div>
-                    <div>
-                        <h3 className={'mb-4 ' + classes.commentsHead}>Обсуждение</h3>
-                        <ul className="list-unstyled">
-                            {
-                                isArray(comments)
-                                    ? comments.map(comment => (
-                                        <Comment comment={comment} key={comment.id} />
-                                    ))
-                                    : null
-                            }
-                        </ul>
-
-                    </div>
+                    <Comments comments={comments} addCallback={addComment}/>
                 </div>
                 <div className="col-4 pr-5">
                     <Card title='Информация'>
