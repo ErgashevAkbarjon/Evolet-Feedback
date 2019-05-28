@@ -3,7 +3,8 @@ import withStyles from 'react-jss';
 import axios from 'axios';
 
 import Card from '../components/Card';
-import { isObject, isArray } from 'util';
+import Comment from '../components/Comment';
+import { isArray } from 'util';
 
 const styles = {
     info: {
@@ -23,19 +24,9 @@ const styles = {
         borderRadius: '50px',
         padding: '.5em 1.8em',
     },
-    commentAuthorAvatar: {
-        borderRadius: '50px',
-        width: '60%',
-    },
     commentsHead: {
         color: '#707070',
         fontWeight: '400'
-    },
-    commentReply: {
-        border: 'none',
-        background: 'transparent',
-        padding: 'unset',
-        color: '#707070',
     },
 }
 
@@ -62,27 +53,6 @@ function Feedback({ classes, match }) {
             .then(({ data }) => setComments(data))
             .catch((e) => console.log(e));
     };
-
-    const printComment = (comment) => {
-        const { id, body, children, employee } = comment;
-        return (
-            <div className="row mb-3" key={id}>
-                <div className="col-1 pr-0 text-center">
-                    <img src={comment.employee.avatar} alt={employee.user.full_name} title={employee.user.full_name} className={classes.commentAuthorAvatar} />
-                </div>
-                <div className="col pr-0 pl-0">
-                    <p className='mb-1'>{body}</p>
-                    <button className={'mb-3 ' + classes.commentReply}>Ответить</button>
-                    //TODO Refactor children position
-                    {
-                        isArray(children) && children.length > 0
-                            ? children.map(child => printComment(child))
-                            : null
-                    }
-                </div>
-            </div>
-        )
-    }
 
     const addComment = (parentId = null, commentBody = newComment) => {
 
@@ -145,11 +115,15 @@ function Feedback({ classes, match }) {
                     </div>
                     <div>
                         <h3 className={'mb-4 ' + classes.commentsHead}>Обсуждение</h3>
-                        {
-                            comments && isArray(comments)
-                                ? comments.map(comment => printComment(comment))
-                                : null
-                        }
+                        <ul className="list-unstyled">
+                            {
+                                isArray(comments)
+                                    ? comments.map(comment => (
+                                        <Comment comment={comment} key={comment.id} />
+                                    ))
+                                    : null
+                            }
+                        </ul>
 
                     </div>
                 </div>
