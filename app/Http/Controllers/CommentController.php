@@ -23,10 +23,7 @@ class CommentController extends Controller
     {
         $commentQuery = Comment::query();
 
-        $comments = $this->filterByRequest($request, $commentQuery)
-        // ->with('children')
-        // ->where('parent_id', null)
-            ->get()->toArray();
+        $comments = $this->filterByRequest($request, $commentQuery)->get()->toArray();
 
         $response = $this->toTree($comments);
         return $this->jsonUtf($response);
