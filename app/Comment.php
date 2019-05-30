@@ -13,13 +13,17 @@ class Comment extends Model
         'feedback_id',
     ];
 
+    protected $with = ['employee.user:id,full_name'];
+
+    protected $appends = ['humanCreateTime'];
+
     public function children()
     {
         return $this->hasMany(Comment::class, 'parent_id')
             ->with('children.employee')
             ->with('children.employee.user:id,full_name');
     }
-
+    
     public function employee()
     {
         return $this->belongsTo(Employee::class);
@@ -28,5 +32,10 @@ class Comment extends Model
     public function feedback()
     {
         return $this->belongsTo(Feedback::class);
+    }
+
+    public function getHumanCreateTimeAttribute()
+    {
+        return $this->created_at->locale('ru_RU')->diffForHumans();
     }
 }
