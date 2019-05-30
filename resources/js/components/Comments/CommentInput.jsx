@@ -3,7 +3,7 @@ import withStyles from 'react-jss'
 
 const styles = {
     input: {
-        borderColor: '#707070',
+        borderColor: '#cccccc',
     },
     inputWrapper: {
         textAlign: 'end',

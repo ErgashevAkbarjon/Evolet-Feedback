@@ -3,7 +3,7 @@ import withStyles from 'react-jss';
 
 const styles = {
     card: {
-        border: '1px solid #707070',
+        border: '1px solid #cccccc',
         borderRadius: '5px',
         overflow: 'hidden',
         marginBottom: '2rem'
@@ -12,7 +12,7 @@ const styles = {
         background: '#F5F5F5',
         color: '#707070',
         padding: '.8rem 1rem',
-        borderBottom: '1px solid #707070'
+        borderBottom: '1px solid #cccccc'
     },
     content: {
         padding: '1rem',

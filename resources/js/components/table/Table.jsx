@@ -3,7 +3,7 @@ import withStyles from 'react-jss';
 
 const styles = {
     tableWrapper: {
-        border: "1px solid #9B9B9B",
+        border: "1px solid #cccccc",
         borderRadius: "5px",
         overflow: "hidden",
         marginBottom: '2rem',
@@ -12,7 +12,8 @@ const styles = {
             color: '#707070',
         },
         '& th': {
-            borderBottom: '1px solid #9B9B9B !important',
+            borderBottom: '1px solid #cccccc !important',
+            borderTop: 'unset',
             background: '#F5F5F5',
             fontWeight: '400',
         },
