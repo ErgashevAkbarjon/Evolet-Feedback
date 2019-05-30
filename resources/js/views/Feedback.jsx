@@ -46,8 +46,8 @@ function Feedback({ classes, match }) {
         };
 
         if(parentId) 
-            newComment.parentId = parentId;
-
+            newComment['parent_id'] = parentId;
+        
         axios
             .post('/api/comments', newComment)
             .then(() => {
@@ -87,7 +87,7 @@ function Feedback({ classes, match }) {
                 <div className="col-4 pr-5">
                     <Card title='Информация'>
                         <div className={classes.info}>
-                            <p>{'ФИО: ' + feedback.customer.user.full_name}</p>
+                            <p>{'Отправитель: ' + feedback.customer.user.full_name}</p>
                             <p>{'ПК: ' + feedback.customer.pc.name}</p>
                             <p>{'Дата: ' + feedback.created_at}</p>
                             <p style={{ color: feedback.status.color }}>{'Статус: ' + feedback.status.name}</p>
