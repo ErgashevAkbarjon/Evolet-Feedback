@@ -1,37 +1,78 @@
-import React from 'react';
+import React, { useState } from 'react';
 import withStyles from 'react-jss';
 import { isArray } from 'util';
+import CommentInput from './CommentInput';
 
 const styles = {
-    commentAuthorAvatar: {
-        borderRadius: '50px',
-        width: '60%',
+    authorAvatar: {
+        borderRadius: '100%',
+        width: '100%',
     },
-    commentReply: {
+    reply: {
         border: 'none',
         background: 'transparent',
         padding: 'unset',
         color: '#707070',
+        fontSize: '14px'
     },
+    avatarWrapper: {
+        display: 'inline-flex',
+        flex: '0 0 0',
+    },
+    userName: {
+        fontWeight: '500',
+        fontSize: '14px'
+    },
+    time: {
+        color: '#707070',
+        fontWeight: '400',
+        fontSize: '14px'
+    }
 }
 
-function Comment({ classes, comment }) {
-    const { id, body, children, employee } = comment;
+function Comment({ classes, comment, addCallback }) {
+    const { id, body, children, employee, humanCreateTime } = comment;
+
+    const [replieble, setReplieble] = useState(false);
+
+    const storeComment = (commentBody, parentId = null) => {
+        setReplieble(false);
+        addCallback(commentBody, parentId);
+    }
+
     return (
         <li key={id}>
             <div className="row">
-                <div className="col-1 pr-0 text-center">
-                    <img src={comment.employee.avatar} alt={employee.user.full_name} title={employee.user.full_name} className={classes.commentAuthorAvatar} />
+                <div className={"col " + classes.avatarWrapper}>
+                    <div style={{ width: '50px' }}>
+                        <img src={comment.employee.avatar} alt={employee.user.full_name} className={classes.authorAvatar} />
+                    </div>
                 </div>
                 <div className="col pr-0 pl-0">
+                    <span className={'pr-1 ' + classes.userName}>
+                        {employee.user.full_name}
+                    </span>
+                    <span className={classes.time}>
+                        {humanCreateTime}
+                    </span>
                     <p className='mb-1'>{body}</p>
-                    <button className={'mb-3 ' + classes.commentReply}>Ответить</button>
+                    <button
+                        className={'mb-3 ' + classes.reply}
+                        onClick={() => setReplieble(!replieble)}
+                    >
+                        Ответить
+                    </button>
+                    <CommentInput
+                        addCallback={storeComment}
+                        parentCommentId={id}
+                        hidden={!replieble}
+                    />
                     <ul className="list-unstyled ">
                         {
                             isArray(children) && children.length > 0
                                 ? children.map(child =>
-                                    <Comment comment={child} key={child.id} classes={classes}/>
-                                  )
+                                    <Comment comment={child} key={child.id} classes={classes} addCallback={addCallback} />
+                                )
                                 : null
                         }
                     </ul>
