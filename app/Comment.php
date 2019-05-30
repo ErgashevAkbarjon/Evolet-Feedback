@@ -17,12 +17,6 @@ class Comment extends Model
 
     protected $appends = ['humanCreateTime'];
 
-    public function children()
-    {
-        return $this->hasMany(Comment::class, 'parent_id')
-            ->with('children.employee')
-            ->with('children.employee.user:id,full_name');
-    }
     
     public function employee()
     {

@@ -35,4 +35,22 @@ class Controller extends BaseController
 
         return $query;
     }
+    
+    public function toTree(Array $array, $parentId = null)
+    {
+        $tree = [];
+        foreach ($array as $item) {
+            if($item['parent_id'] === $parentId){
+
+                foreach ($array as $innerItem) {
+                    if($item['id'] === $innerItem['parent_id']){
+                        $item['children'] = $innerItem;
+                    }
+                }
+                $item['children'] = $this->toTree($array, $item['id']);
+                $tree[] = $item;
+            }
+        }
+        return $tree;
+    }
 }

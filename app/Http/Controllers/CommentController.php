@@ -1,8 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Comment;
 use Illuminate\Http\Request;
+
+// use Carbon\Carbon;
 
 class CommentController extends Controller
 {
@@ -20,35 +23,31 @@ class CommentController extends Controller
     {
         $commentQuery = Comment::query();
 
-        //TODO Refactor this
-        $response = $this->filterByRequest($request, $commentQuery)
-            ->with('children')
-            ->with('children.employee:id,avatar')
-            ->with('children.employee.user:id,full_name')
-            ->with('employee:id,avatar')
-            ->with('employee.user:id,full_name')
-            ->where('parent_id', null)
-            ->get();
+        $comments = $this->filterByRequest($request, $commentQuery)
+        // ->with('children')
+        // ->where('parent_id', null)
+            ->get()->toArray();
 
+        $response = $this->toTree($comments);
         return $this->jsonUtf($response);
     }
 
     public function store(Request $request)
     {
 
-        $this->validate( $request , [
+        $this->validate($request, [
             'body' => 'required',
             'employee_id' => 'required',
             'feedback_id' => 'required',
         ]);
-        
+
         $commentFieldsValues = $request->only([
             'body',
             'parent_id',
             'employee_id',
-            'feedback_id'
+            'feedback_id',
         ]);
-        
+
         Comment::create($commentFieldsValues);
     }
 }
