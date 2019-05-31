@@ -6,6 +6,8 @@ const styles = {
         border: '1px solid #cccccc',
         borderRadius: '5px',
         overflow: 'hidden',
+    },
+    withBMargin:{
         marginBottom: '2rem'
     },
     title: {
@@ -19,10 +21,10 @@ const styles = {
     }
 }
 
-function Card({ classes, title, children, className }) {
+function Card({ classes, title, children, className, noMargin }) {
     return (
         <div className={className}>
-            <div className={classes.card}>
+            <div className={classes.card + (noMargin ? '': ` ${classes.withBMargin}`)}>
                 <div className={classes.title}>
                     {title}
                 </div>
