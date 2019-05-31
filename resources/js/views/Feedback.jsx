@@ -4,6 +4,7 @@ import axios from 'axios';
 
 import Card from '../components/Card';
 import Comments from '../components/Comments/Comments';
+import FeedbackActions from '../components/FeedbackActions';
 
 const styles = {
     info: {
@@ -13,32 +14,6 @@ const styles = {
         width: '100%',
         borderRadius: '5px'
     },
-    actionButton: {
-        borderRadius: '50px',
-        padding: '.5em',
-        color: 'white',
-        display: 'block',
-        width: '100%',
-        cursor: 'pointer',
-        // fontSize: '.85vw',
-        '&:hover': {
-            color: 'white',
-        }
-    },
-    acceptActionButton: {
-        background: '#30D92A',
-        borderColor: '#30D92A',
-        '&:focus': {
-            boxShadow: '0 0 0 0.2rem #30da2a4a'
-        }
-    },
-    denyActionButton: {
-        background: '#EB552F',
-        borderColor: '#EB552F',
-        '&:focus': {
-            boxShadow: '0 0 0 0.2rem #eb542f4a'
-        }
-    }
 }
 
 function Feedback({ classes, match }) {
@@ -121,26 +96,7 @@ function Feedback({ classes, match }) {
                             <p style={{ color: feedback.status.color }}>{'Статус: ' + feedback.status.name}</p>
                         </div>
                     </Card>
-                    {
-                        feedback.status.id === 1 
-                        ? (<div className="row justify-content-center">
-                            <div className="col-xs-6 col-xl-5 mb-2 mb-xl-0">
-                                <button
-                                    className={`btn ${classes.actionButton} ${classes.acceptActionButton}`}
-                                >
-                                    Принять
-                                </button>
-                            </div>
-                            <div className="col-xs-6 col-xl-5">
-                                <button
-                                    className={`btn ${classes.actionButton} ${classes.denyActionButton}`}
-                                >
-                                    Отклонить
-                                </button>
-                            </div>
-                        </div>)
-                        : null
-                    }
+                    <FeedbackActions feedback={feedback}/>
                 </div>
             </div>
         )
