@@ -23,12 +23,15 @@ function Feedback({ classes, match }) {
 
     const feedbackId = match.params.id;
 
-    useEffect(() => {
+    const getFeedback = () => {
         axios
             .get('/api/feedbacks/' + feedbackId)
             .then(({ data }) => setFeedback(data))
             .catch((e) => console.log(e));
+    }
 
+    useEffect(() => {
+        getFeedback();
         getComments();
     }, [])
 
@@ -69,7 +72,7 @@ function Feedback({ classes, match }) {
                             {
                                 feedback.files.length > 0
                                     ? feedback.files.map((file, i) => (
-                                        <div className="col-3" key={i}>
+                                        <div className="col-xs-4 col-lg-3" key={i}>
                                             <div className="row align-items-center">
                                                 <div className="col-4">
                                                     <img src={file.url} alt={file.name} className={classes.file} />
@@ -96,7 +99,7 @@ function Feedback({ classes, match }) {
                             <p style={{ color: feedback.status.color }}>{'Статус: ' + feedback.status.name}</p>
                         </div>
                     </Card>
-                    <FeedbackActions feedback={feedback}/>
+                    <FeedbackActions feedback={feedback} reloadFeedbackCallBack={getFeedback} />
                 </div>
             </div>
         )
