@@ -24,6 +24,9 @@ $router->group(['prefix'=>'api'], function () use ($router){
     $router->get('comments', 'CommentController@index');
     $router->post('comments', 'CommentController@store');
     
+    $router->get('responses', 'ResponseController@index');
+    $router->post('responses', 'ResponseController@store');
+
 });
 
 $router->group(['prefix'=>'/'], function () use ($router){
