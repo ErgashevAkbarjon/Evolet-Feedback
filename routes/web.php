@@ -10,7 +10,7 @@
 | and give it the Closure to call when that URI is requested.
 |
 */
-$router->group(['prefix'=>'api'], function () use ($router){
+$router->group(['prefix'=>'api', 'middleware' => 'jwt.auth'], function () use ($router){
 
     $router->get('feedbacks', 'FeedbackController@index');
     $router->get('feedbacks/{id}', 'FeedbackController@show');
@@ -30,6 +30,9 @@ $router->group(['prefix'=>'api'], function () use ($router){
 });
 
 $router->group(['prefix'=>'/'], function () use ($router){
+    
+    $router->post('/login', 'AuthController@authenticate');
+
     $router->get('/{route:.*}', function (){
         return view('app');
     });
