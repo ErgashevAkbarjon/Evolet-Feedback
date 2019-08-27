@@ -3,10 +3,10 @@
 namespace App;
 
 use Illuminate\Auth\Authenticatable;
-use Laravel\Lumen\Auth\Authorizable;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use Illuminate\Database\Eloquent\Model;
+use Laravel\Lumen\Auth\Authorizable;
 
 class User extends Model implements AuthenticatableContract, AuthorizableContract
 {
@@ -18,7 +18,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $fillable = [
-        'name', 'email',
+        'full_name', 'email', 'password'
     ];
 
     /**
@@ -34,6 +34,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         return $this->hasMany(Customer::class);
     }
+
     public function employees()
     {
         return $this->hasMany(Employee::class);

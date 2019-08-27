@@ -1,13 +1,14 @@
 <?php
 
-use Illuminate\Database\Seeder;
-use App\Status;
-use App\FeedbackType;
+use App\Customer;
 use App\Feedback;
+use App\FeedbackType;
 use App\Group;
 use App\PC;
-use App\Customer;
+use App\Status;
 use App\User;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -27,67 +28,78 @@ class DatabaseSeeder extends Seeder
         $this->seedFactories([
             [
                 'class' => App\User::class,
-                'count' => 10
+                'count' => 10,
             ],
             [
                 'class' => App\Customer::class,
-                'count' => 10
+                'count' => 10,
             ],
             [
                 'class' => App\Employee::class,
-                'count' => 10
+                'count' => 10,
             ],
             [
                 'class' => App\Feedback::class,
-                'count' => 100
+                'count' => 100,
             ],
             [
                 'class' => App\Comment::class,
-                'count' => 100
+                'count' => 100,
             ],
             [
                 'class' => App\File::class,
-                'count' => 100
+                'count' => 100,
             ],
+        ]);
+
+        $this->seedUsers();
+    }
+
+    private function seedUsers()
+    {
+        User::create([
+            'full_name' => "Akbar Ergashev",
+            'email' => 'e@gmail.com',
+            'password' => Hash::make('admin'),
         ]);
     }
 
     private function seedStatuses()
     {
         Status::truncate();
-        Status::create(['name'=> 'На рассмотрении', 'color' => '#EBBF2F']);
-        Status::create(['name'=> 'Принят', 'color' => '#30D92A']);
-        Status::create(['name'=> 'Отклонен', 'color' => '#EB552F']);
+        Status::create(['name' => 'На рассмотрении', 'color' => '#EBBF2F']);
+        Status::create(['name' => 'Принят', 'color' => '#30D92A']);
+        Status::create(['name' => 'Отклонен', 'color' => '#EB552F']);
     }
     private function seedFeedbackTypes()
     {
         FeedbackType::truncate();
-        FeedbackType::create(['name'=> 'Проблема']);
-        FeedbackType::create(['name'=> 'Идея']);
+        FeedbackType::create(['name' => 'Проблема']);
+        FeedbackType::create(['name' => 'Идея']);
     }
     private function seedGroups()
     {
         Group::truncate();
-        Group::create(['name'=> 'Упаковки']);
-        Group::create(['name'=> 'Инструкции']);
-        Group::create(['name'=> 'Сайт']);
-        Group::create(['name'=> 'Упаковки']);
+        Group::create(['name' => 'Упаковки']);
+        Group::create(['name' => 'Инструкции']);
+        Group::create(['name' => 'Сайт']);
+        Group::create(['name' => 'Упаковки']);
     }
     private function seedPC()
     {
         PC::truncate();
-        PC::create(['name'=> 'Vegapharm', 'logo' => '/images/pc/vegapharm.png']);
-        PC::create(['name'=> 'Belinda', 'logo' => '/images/pc/belinda.png']);
-        PC::create(['name'=> 'Spey', 'logo' => '/images/pc/spey.png']);
-        PC::create(['name'=> 'Neo Universe', 'logo' => '/images/pc/neo.png']);
-        PC::create(['name'=> 'Lady Healthcare', 'logo' => '/images/pc/lady.png']);
+        PC::create(['name' => 'Vegapharm', 'logo' => '/images/pc/vegapharm.png']);
+        PC::create(['name' => 'Belinda', 'logo' => '/images/pc/belinda.png']);
+        PC::create(['name' => 'Spey', 'logo' => '/images/pc/spey.png']);
+        PC::create(['name' => 'Neo Universe', 'logo' => '/images/pc/neo.png']);
+        PC::create(['name' => 'Lady Healthcare', 'logo' => '/images/pc/lady.png']);
     }
 
     private function seedFactories($factories)
     {
         foreach ($factories as $factory) {
             $factory['class']::truncate();
-            factory($factory['class'],$factory['count'])->create();
+            factory($factory['class'], $factory['count'])->create();
         }
     }
 
