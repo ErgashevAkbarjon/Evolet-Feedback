@@ -6,11 +6,17 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Main from "./views/Main";
 import Login from "./views/Login";
 
+import {AuthContextProvider} from "./components/AuthContext";
+
 function App(props) {
     return (
         <BrowserRouter>
-            <Route exact path="/" component={Main} />
-            <Route exact path="/login" component={Login} />
+            <AuthContextProvider>
+                <Switch>
+                    <Route path="/login" component={Login} />
+                    <Route path="/" component={Main} />
+                </Switch>
+            </AuthContextProvider>
         </BrowserRouter>
     );
 }
