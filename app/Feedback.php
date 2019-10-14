@@ -32,4 +32,8 @@ class Feedback extends Model
     {
         return $this->hasMany(Comment::class);
     }
+    public function response()
+    {
+        return $this->hasOne(Response::class);
+    }
 }

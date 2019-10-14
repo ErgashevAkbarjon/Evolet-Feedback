@@ -20,6 +20,7 @@ class CreateFeedbacksTable extends Migration
             $table->integer('status_id');
             $table->integer('type_id');
             $table->integer('customer_id');
+            $table->integer('response_id')->nullable();
             $table->timestamps();
         });
     }
