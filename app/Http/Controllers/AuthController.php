@@ -34,20 +34,23 @@ class AuthController extends Controller
             );
         }
 
-        return response()->json($this->makeJwt($user));
+        return response()->json($this->makeJwt($user, $request->ip()));
     }
 
-    private function makeJwt(User $user)
+
+    /**
+     * Helpers
+     */
+
+    private function makeJwt(User $user, $ipAddress)
     {
         $payload = [
-            'iss' => "lumen-jwt", // Issuer of the token
-            'sub' => $user->id, // Subject of the token
-            'iat' => time(), // Time when JWT was issued. 
-            'exp' => time() + 60*60 // Expiration time
+            'iss' => "lumen-jwt",
+            'sub' => [$user, $ipAddress],
+            'iat' => time(),
+            'exp' => time() + 60*60
         ];
         
-        // As you can see we are passing `JWT_SECRET` as the second parameter that will 
-        // be used to decode the token in the future.
         return JWT::encode($payload, env('JWT_SECRET'));
     }
 }

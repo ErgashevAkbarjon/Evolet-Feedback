@@ -23,8 +23,8 @@ class JWTMiddleware
         
         if(!$token){
             return response()->json([
-                'eror' => "There isn't token"
-            ], 400);
+                'error' => "There isn't token"
+            ], 401);
         }
 
         try {
@@ -33,7 +33,7 @@ class JWTMiddleware
         catch(ExpiredException $e){
             return response()->json([
                 'error' => 'Key was expired'
-            ], 400);
+            ], 401);
         }
         catch(Exception $e){
             return response()->json([
@@ -41,7 +41,15 @@ class JWTMiddleware
             ], 400);
         }
 
-        $request->auth = User::find($credentials->sub);
+        $isSameIp = $request->ip() === $credentials->sub[1];
+
+        if(!$isSameIp){
+            return response()->json([
+                'error' => 'An error while decoding token.'
+            ], 400);
+        }
+
+        $request->auth = User::find($credentials->sub[0]->id);
 
         return $next($request);
     }
