@@ -40,12 +40,16 @@ function Comment({ classes, comment, addCallback }) {
         addCallback(commentBody, parentId);
     }
 
+    if(!employee) return ("");
+
+    const employeeAvatar = employee.hasOwnProperty('avatar') ? employee.avatar: "";
+
     return (
         <li key={id}>
             <div className="row">
                 <div className={"col " + classes.avatarWrapper}>
                     <div style={{ width: '50px' }}>
-                        <img src={comment.employee.avatar} alt={employee.user.full_name} className={classes.authorAvatar} />
+                        <img src={employeeAvatar} alt={employee.user.full_name} className={classes.authorAvatar} />
                     </div>
                 </div>
                 <div className="col pr-0 pl-0">
@@ -72,7 +76,7 @@ function Comment({ classes, comment, addCallback }) {
                             isArray(children) && children.length > 0
                                 ? children.map(child =>
                                     <Comment comment={child} key={child.id} classes={classes} addCallback={addCallback} />
-                                )
+                                )  
                                 : null
                         }
                     </ul>
