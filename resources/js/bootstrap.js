@@ -1,5 +1,4 @@
-
-window._ = require('lodash');
+window._ = require("lodash");
 
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
@@ -8,10 +7,10 @@ window._ = require('lodash');
  */
 
 try {
-    window.Popper = require('popper.js').default;
-    window.$ = window.jQuery = require('jquery');
+    window.Popper = require("popper.js").default;
+    window.$ = window.jQuery = require("jquery");
 
-    require('bootstrap');
+    require("bootstrap");
 } catch (e) {}
 
 /**
@@ -20,9 +19,28 @@ try {
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
-window.axios = require('axios');
+window.axios = require("axios");
 
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
+
+window.parseJwt = function (token) {
+    try {
+        const base64HeaderUrl = token.split(".")[0];
+        const base64Header = base64HeaderUrl
+            .replace("-", "+")
+            .replace("_", "/");
+        const headerData = JSON.parse(window.atob(base64Header));
+
+        const base64Url = token.split(".")[1];
+        const base64 = base64Url.replace("-", "+").replace("_", "/");
+        const dataJWT = JSON.parse(window.atob(base64));
+        dataJWT.header = headerData;
+
+        return dataJWT;
+    } catch (err) {
+        return false;
+    }
+}
 
 /**
  * Next we will register the CSRF Token as a common header with Axios so that

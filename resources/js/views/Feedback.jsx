@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import withStyles from 'react-jss';
 import axios from 'axios';
 
+import AuthContext from '../components/AuthContext';
 import Card from '../components/Card';
 import Comments from '../components/Comments/Comments';
 import FeedbackActions from '../components/FeedbackActions';
@@ -20,6 +21,12 @@ function Feedback({ classes, match }) {
 
     const [feedback, setFeedback] = useState();
     const [comments, setComments] = useState();
+
+    const authBearer = useContext(AuthContext);
+
+    const jwtPayload = parseJwt(authBearer.auth);
+
+    const user = jwtPayload.sub[0];
 
     const feedbackId = match.params.id;
 
@@ -45,7 +52,7 @@ function Feedback({ classes, match }) {
     const addComment = (commentBody, parentId = null) => {
         const newComment = {
             body: commentBody,
-            employee_id: 1,
+            employee_id: user.id, //FIXME Comment author
             feedback_id: feedback.id,
         };
 

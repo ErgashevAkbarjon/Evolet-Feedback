@@ -52,13 +52,10 @@ function Login(props) {
 
         if (!credentialsFilled) return;
 
-        let bearer;
-
         axios
             .post("/login", creadentials)
             .then(res => {
-                bearer = res.data;
-                applyBearer(bearer);
+                applyBearer(res.data);
             })
             .catch(e => {
                 console.log(e.response.data);
@@ -67,8 +64,13 @@ function Login(props) {
     };
 
     const applyBearer = (bearer) => {
-        window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + bearer;
+        
+        if(!bearer || bearer === 'null') return;
 
+        localStorage.setItem('noitazb', bearer)
+
+        window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + bearer;
+        
         authContext.setAuth(bearer);
         
         redirectBack();
