@@ -1,6 +1,7 @@
 <?php
 
 use App\Customer;
+use App\Employee;
 use App\Feedback;
 use App\FeedbackType;
 use App\Group;
@@ -28,7 +29,7 @@ class DatabaseSeeder extends Seeder
         $this->seedFactories([
             [
                 'class' => App\User::class,
-                'count' => 10,
+                'count' => 30,
             ],
             [
                 'class' => App\Customer::class,
@@ -57,10 +58,14 @@ class DatabaseSeeder extends Seeder
 
     private function seedUsers()
     {
-        User::create([
+        $akbar = User::create([
             'full_name' => "Akbar Ergashev",
             'email' => 'e@gmail.com',
             'password' => Hash::make('admin'),
+        ]);
+        Employee::create([
+            'user_id' => $akbar->id,
+            'avatar' => 'https://lorempixel.com/200/200/cats/?41078'
         ]);
     }
 
