@@ -4,6 +4,7 @@ import axios from "axios";
 
 import Table from "../components/table/Table";
 import FeedbackRow from "../components/FeedbackRow";
+import Loading from '../components/Loading';
 
 const styles = {
     title: {
@@ -101,7 +102,7 @@ function Feedbacks({ classes, match }) {
                         </tbody>
                     </Table>
                 ) : (
-                    "Загрузка..."
+                    <Loading />
                 )}
             </div>
         </div>

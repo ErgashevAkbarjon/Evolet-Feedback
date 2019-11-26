@@ -5,6 +5,8 @@ import axios from "axios";
 import { SidebarGroups } from "../routes";
 import { NavLink } from "react-router-dom";
 
+import Loading from '../components/Loading';
+
 const styles = {
     sidebar: {
         background: "#253338",
@@ -65,7 +67,7 @@ function Sidebar({ classes }) {
                             </div>
                         ))
                     ) : (
-                        <p>Загрузка...</p>
+                        <Loading />
                     )}
                 </nav>
             </div>
