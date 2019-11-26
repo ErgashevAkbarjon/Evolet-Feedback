@@ -3,9 +3,9 @@ import { Container, Row, Col } from "react-bootstrap";
 import withStyles from "react-jss";
 import { Switch, Route, Redirect } from "react-router-dom";
 
-import Sidebar from "../components/Sidebar";
-import routes from "../routes";
-import AuthContext from "../components/AuthContext";
+import Sidebar from "../../components/Sidebar";
+import routes from "../../routes";
+import AuthContext from "../../components/AuthContext";
 
 const styles = {};
 

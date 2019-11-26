@@ -2,11 +2,11 @@ import React, { useState, useEffect, useContext } from 'react'
 import withStyles from 'react-jss';
 import axios from 'axios';
 
-import AuthContext from '../components/AuthContext';
-import Card from '../components/Card';
-import Comments from '../components/Comments/Comments';
-import FeedbackActions from '../components/FeedbackActions';
-import Loading from '../components/Loading';
+import AuthContext from '../../components/AuthContext';
+import Card from '../../components/Card';
+import Comments from '../../components/Comments/Comments';
+import FeedbackActions from '../../components/FeedbackActions';
+import Loading from '../../components/Loading';
 
 const styles = {
     info: {

@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import withStyles from "react-jss";
 import axios from "axios";
 
-import Table from "../components/table/Table";
-import FeedbackRow from "../components/FeedbackRow";
-import Loading from '../components/Loading';
+import Table from "../../components/table/Table";
+import FeedbackRow from "../../components/FeedbackRow";
+import Loading from '../../components/Loading';
 
 const styles = {
     title: {

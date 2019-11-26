@@ -1,6 +1,6 @@
 
-import Feedbacks from './views/Feedbacks';
-import Feedback from './views/Feedback';
+import Feedbacks from './views/employee/Feedbacks';
+import Feedback from './views/employee/Feedback';
 
 export default [
     {

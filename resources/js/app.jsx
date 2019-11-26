@@ -3,7 +3,7 @@ require("./bootstrap");
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import Main from "./views/Main";
+import Main from "./views/employee/Main";
 import Login from "./views/Login";
 
 import {AuthContextProvider} from "./components/AuthContext";
