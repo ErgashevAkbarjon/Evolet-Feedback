@@ -6,6 +6,7 @@ import AuthContext from '../components/AuthContext';
 import Card from '../components/Card';
 import Comments from '../components/Comments/Comments';
 import FeedbackActions from '../components/FeedbackActions';
+import Loading from '../components/Loading';
 
 const styles = {
     info: {
@@ -24,10 +25,10 @@ function Feedback({ classes, match }) {
 
     const authBearer = useContext(AuthContext);
 
-    const jwtPayload = parseJwt(authBearer.auth);
-
+    const jwtPayload = parseJwt(authBearer.auth); //FIXME It shoud execute once not on every re-rendering
+    
     const user = jwtPayload.sub[0];
-
+    
     const feedbackId = match.params.id;
 
     const getFeedback = () => {
@@ -52,7 +53,7 @@ function Feedback({ classes, match }) {
     const addComment = (commentBody, parentId = null) => {
         const newComment = {
             body: commentBody,
-            employee_id: user.id, //FIXME Comment author
+            author_id: user.id,
             feedback_id: feedback.id,
         };
 
@@ -111,7 +112,7 @@ function Feedback({ classes, match }) {
             </div>
         )
         :
-        ('Загрузка...');
+        (<Loading />);
 }
 
 export default withStyles(styles)(Feedback);
