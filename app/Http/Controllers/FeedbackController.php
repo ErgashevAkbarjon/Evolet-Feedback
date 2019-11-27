@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Customer;
 use App\Feedback;
+use App\FeedbackType;
+use App\File;
+use App\Status;
 use Illuminate\Http\Request;
 
 class FeedbackController extends Controller
@@ -36,6 +40,55 @@ class FeedbackController extends Controller
 
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'type_id' => 'required',
+            'group_id' => 'required',
+            'description' => 'required',
+        ]);
+
+        $newFeedbackData = $request->only(['type_id', 'group_id', 'description']);
+        
+        $currentUser = $request->auth;
+
+        $customer = Customer::where('user_id', $currentUser->id)->first();
+        
+        if(!$customer){
+            return response()->json([
+                'error' => 'Only customers can create feedbacks'
+            ], 400);
+        }
+
+        $newFeedbackData['customer_id'] = $customer->id;
+
+        $newFeedback = Feedback::create($newFeedbackData);
+
+        $files = $request->allFiles()['files'];
+
+        if(!$files){
+            return $this->jsonUtf($newFeedback);
+        }
+
+        $feedbackFolderName = '\\'. $newFeedback->id;
+        $publicFolder = '\public';
+        $fileRelativeFolder = '\feedback-files' . $feedbackFolderName;
+        $fullFileFolder = base_path() . $publicFolder . $fileRelativeFolder;
+        
+
+        foreach ($files as $file) {
+            
+            $fileName = $file->getClientOriginalName();
+
+            $file->move($fullFileFolder, $fileName);
+
+            $fileUrl = $fileRelativeFolder. '\\' . $fileName;
+
+            File::create([
+                'name' => $fileName,
+                'url' => $fileUrl,
+                'feedback_id' => $newFeedback->id
+            ]);
+        }
+        return $this->jsonUtf($newFeedback);
     }
 
     public function update($id, Request $request)
