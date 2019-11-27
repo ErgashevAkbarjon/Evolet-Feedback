@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Customer;
+use App\Employee;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -32,6 +34,15 @@ class AuthController extends Controller
                 ['error' => "Incorrect password"],
                 400
             );
+        }
+
+        $userIsEmployee = Employee::where('user_id', $user->id)->exists();
+        $userIsCustomer = Customer::where('user_id', $user->id)->exists();
+
+        if($userIsEmployee && !$userIsCustomer){
+            $user->type = 1;
+        } else {
+            $user->type = 2;
         }
 
         return response()->json($this->makeJwt($user, $request->ip()));
