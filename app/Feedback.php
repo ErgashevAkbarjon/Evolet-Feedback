@@ -8,6 +8,8 @@ class Feedback extends Model
 {
     protected $table = "feedbacks";
 
+    protected $guarded = [];
+
     public function group()
     {
         return $this->belongsTo(Group::class);
