@@ -2,7 +2,7 @@
 import Feedbacks from './views/employee/Feedbacks';
 import Feedback from './views/employee/Feedback';
 
-export default [
+export const EmployeeRoutes = [
     {
         path: '/feedbacks/group/:id',
         component: Feedbacks
