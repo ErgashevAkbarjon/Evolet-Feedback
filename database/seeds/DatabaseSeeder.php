@@ -67,6 +67,16 @@ class DatabaseSeeder extends Seeder
             'user_id' => $akbar->id,
             'avatar' => 'https://lorempixel.com/200/200/cats/?41078'
         ]);
+        
+        $customer = User::create([
+            'full_name' => 'Customer customer',
+            'email' => 'c@gmail.com',
+            'password' => Hash::make('admin')
+        ]);
+        Customer::create([
+            'user_id' => $customer->id,
+            'pc_id' => 1
+        ]);
     }
 
     private function seedStatuses()
