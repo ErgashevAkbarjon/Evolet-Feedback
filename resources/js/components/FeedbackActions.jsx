@@ -4,6 +4,7 @@ import { Modal } from 'react-bootstrap';
 import axios from 'axios';
 
 import Card from './Card';
+import { ApiRoutes } from '../routes';
 
 const styles = {
     actionButton: {
@@ -38,6 +39,9 @@ const ACCEPT_STATUS_ID = 2;
 const DENY_STATUS_ID = 3;
 
 function FeedbackActions({ classes, feedback, reloadFeedbackCallBack }) {
+
+    const { feedbackResponses: responseRoute, feedbacks: feedbacksRoute } = ApiRoutes;
+
     const [modal, setModal] = useState({ show: false, status: null });
     const [message, setMessage] = useState();
     const [feedbackResponse, setFeedbackResponse] = useState();
@@ -45,7 +49,7 @@ function FeedbackActions({ classes, feedback, reloadFeedbackCallBack }) {
     const getFeedbackResponse = () => {
         //FIXME Fix time zones
         axios
-            .get('/api/responses?feedback_id=' + feedback.id)
+            .get(`${responseRoute}?feedback_id=${feedback.id}`)
             .then(({ data }) => setFeedbackResponse(data[0]))
             .catch((e) => console.log(e));
     }
@@ -96,10 +100,10 @@ function FeedbackActions({ classes, feedback, reloadFeedbackCallBack }) {
         };
 
         axios
-            .put(`/api/feedbacks/${feedback.id}`, newStatus)
+            .put( `${feedbacksRoute}/${feedback.id}`, newStatus)
             .then(() => {
                 axios
-                    .post('/api/responses', newResponse)
+                    .post(responseRoute, newResponse)
                     .then(() => {
                         //TODO Add some notificattion and loading
                         reloadFeedbackCallBack();

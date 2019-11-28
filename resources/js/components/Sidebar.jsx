@@ -2,10 +2,10 @@ import React, { useState, useEffect, useContext } from "react";
 import withStyles from "react-jss";
 import { Row, Col } from "react-bootstrap";
 import axios from "axios";
-import { SidebarGroups } from "../routes";
 import { NavLink } from "react-router-dom";
 
 import Loading from '../components/Loading';
+import { ApiRoutes } from "../routes";
 
 const styles = {
     sidebar: {
@@ -41,7 +41,7 @@ function Sidebar({ classes }) {
 
     useEffect(() => {
         axios
-            .get(SidebarGroups.path)
+            .get(ApiRoutes.feedbackGroups)
             .then(({ data }) => setGroups(data))
             .catch(e => {
                 console.log(e);

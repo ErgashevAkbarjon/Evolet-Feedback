@@ -5,6 +5,7 @@ import axios from 'axios';
 
 // import Sidebar from "../../components/Sidebar";
 // import { EmployeeRoutes } from "../../routes";
+import { ApiRoutes } from '../../routes';
 
 const btnColor = {
     background: "#B8CF41 !important",
@@ -29,6 +30,7 @@ const styles = {
 };
 
 function Main({classes}) {
+    const { feedbacks: feedbacksRoute } = ApiRoutes;
     
     const [type, setType] = useState(1);
     const [group, setGroup] = useState();
@@ -55,7 +57,7 @@ function Main({classes}) {
         }
         
         axios
-            .post('/api/feedbacks', formData, {
+            .post(feedbacksRoute, formData, {
                 headers:{
                     'Content-Type': 'multipart/form-data'
                 }
@@ -114,9 +116,9 @@ function Main({classes}) {
                                 value={group}
                                 onChange={onGroupSelected}
                             >
-                                <option value="1">Инструкция</option>
-                                <option value="2">Сайт</option>
-                                <option value="3">Упаковка</option>
+                                <option value="1">Упаковка</option>
+                                <option value="2">Инструкция</option>
+                                <option value="3">Сайт</option>
                             </select>
                         </div>
                         <div className="form-group">

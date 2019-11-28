@@ -13,6 +13,9 @@ export const EmployeeRoutes = [
     },
 ]
 
-export const SidebarGroups = {
-    path: '/api/groups'
+export const ApiRoutes = {
+    feedbackGroups: '/api/groups',
+    feedbacks: '/api/feedbacks',
+    feedbackResponses: '/api/responses',
+    feedbackComments: '/api/comments'
 }

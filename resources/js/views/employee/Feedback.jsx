@@ -7,6 +7,7 @@ import Card from '../../components/Card';
 import Comments from '../../components/Comments/Comments';
 import FeedbackActions from '../../components/FeedbackActions';
 import Loading from '../../components/Loading';
+import { ApiRoutes } from '../../routes';
 
 const styles = {
     info: {
@@ -19,6 +20,8 @@ const styles = {
 }
 
 function Feedback({ classes, match }) {
+
+    const {feedbacks: feedbacksRoute, feedbackComments: commentsRoute} = ApiRoutes;
 
     const [feedback, setFeedback] = useState();
     const [comments, setComments] = useState();
@@ -33,7 +36,7 @@ function Feedback({ classes, match }) {
 
     const getFeedback = () => {
         axios
-            .get('/api/feedbacks/' + feedbackId)
+            .get(`${feedbacksRoute}/${feedbackId}`)
             .then(({ data }) => setFeedback(data))
             .catch((e) => console.log(e));
     }
@@ -45,7 +48,7 @@ function Feedback({ classes, match }) {
 
     const getComments = () => {
         axios
-            .get('/api/comments?feedback_id=' + feedbackId)
+            .get(`${commentsRoute}?feedback_id=${feedbackId}`)
             .then(({ data }) => setComments(data))
             .catch((e) => console.log(e));
     };
@@ -61,7 +64,7 @@ function Feedback({ classes, match }) {
             newComment['parent_id'] = parentId;
 
         axios
-            .post('/api/comments', newComment)
+            .post(commentsRoute, newComment)
             .then(() => {
                 getComments();
             })

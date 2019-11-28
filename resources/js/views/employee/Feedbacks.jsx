@@ -5,6 +5,7 @@ import axios from "axios";
 import Table from "../../components/table/Table";
 import FeedbackRow from "../../components/FeedbackRow";
 import Loading from '../../components/Loading';
+import { ApiRoutes } from '../../routes';
 
 const styles = {
     title: {
@@ -39,13 +40,16 @@ const printable = {
 };
 
 function Feedbacks({ classes, match }) {
+    
+    const {feedbacks: feedbacksRoute, feedbackGroups: groupsRoute} = ApiRoutes;
+
     const [feedbacks, setFeedbacks] = useState();
     const [title, setTitle] = useState("");
     const [feedbacksType, setType] = useState(1);
 
     const groupId = match.params.id;
 
-    const filteredFeedbacksURL = `/api/feedbacks?group_id=${groupId}&type_id=${feedbacksType}`;
+    const filteredFeedbacksURL = `${feedbacksRoute}?group_id=${groupId}&type_id=${feedbacksType}`;
 
     useEffect(() => {
         axios
@@ -53,7 +57,7 @@ function Feedbacks({ classes, match }) {
             .then(({ data }) => setFeedbacks(data))
             .catch(e => console.log(e));
         axios
-            .get("/api/groups?id=" + groupId)
+            .get(`${feedbacksRoute}?id=${groupId}`)
             .then(({ data }) => setTitle(data[0].name))
             .catch(e => console.log(e));
     }, [filteredFeedbacksURL]);
