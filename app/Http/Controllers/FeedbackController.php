@@ -16,12 +16,20 @@ class FeedbackController extends Controller
         $result = Feedback::with([
                 'status',
                 'customer.user:id,full_name',
-                'customer.pc'
+                'customer.pc',
+                'group'
             ]);
+        
+        $currentUser = $request->auth;
+        
+        if($currentUser->isCustomer()){
+            $customerID = Customer::where('user_id', $currentUser->id)->first()->id;
+            $result->where('customer_id', $customerID);
+        }
 
         $result = $this->filterByRequest($request, $result)->get();
         
-        return $this->jsonUtf($result);
+        return $this->jsonUtf($result); 
     }
 
     public function show($id)
