@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 
 import { ApiRoutes } from "../../routes";
 import Loading from "../../components/Loading";
+import Card from "../../components/Card";
 
 const btnColor = {
     background: "#B8CF41 !important",
@@ -18,7 +19,6 @@ const styles = {
             boxShadow: "0 0 0 0.2rem rgba(184, 207, 65, 0.5) !important"
         },
         "& .btn": {
-            padding: "0.75em 0",
             ...btnColor,
             "&:hover, &:active": btnColor,
             "&:focus, &:active:focus": {
@@ -78,101 +78,95 @@ function NewFeedback({ classes }) {
 
     return (
         <div className={classes.container + " col-9 col-sm-8 col-md-5 col-lg-4"}>
-            <div className="row">
-                <div className="col-9">
-                    <h2 className="mb-4">Новый feedback</h2>
-                </div>
-                <div className="col">
-                    <Link to="/customer/feedbacks">История</Link>
-                </div>
-            </div>
-            {feedbackGroups ? (
-                <form onSubmit={onFormSubmit}>
-                    <div className="mb-2">
-                        <div className="form-check form-check-inline">
-                            <input
-                                className="form-check-input"
-                                type="radio"
-                                id="inlineRadio1"
-                                value="1"
-                                checked={type == 1}
-                                onChange={onTypeChecked}
-                            />
-                            <label
-                                className="form-check-label"
-                                htmlFor="inlineRadio1"
-                            >
-                                Проблема
-                            </label>
+            <Card title="Новый фидбек">
+                {feedbackGroups ? (
+                    <form onSubmit={onFormSubmit}>
+                        <div className="mb-2">
+                            <div className="form-check form-check-inline">
+                                <input
+                                    className="form-check-input"
+                                    type="radio"
+                                    id="inlineRadio1"
+                                    value="1"
+                                    checked={type == 1}
+                                    onChange={onTypeChecked}
+                                />
+                                <label
+                                    className="form-check-label"
+                                    htmlFor="inlineRadio1"
+                                >
+                                    Проблема
+                                </label>
+                            </div>
+                            <div className="form-check form-check-inline">
+                                <input
+                                    className="form-check-input"
+                                    type="radio"
+                                    id="inlineRadio2"
+                                    value="2"
+                                    checked={type == 2}
+                                    onChange={onTypeChecked}
+                                />
+                                <label
+                                    className="form-check-label"
+                                    htmlFor="inlineRadio2"
+                                >
+                                    Идея
+                                </label>
+                            </div>
                         </div>
-                        <div className="form-check form-check-inline">
-                            <input
-                                className="form-check-input"
-                                type="radio"
-                                id="inlineRadio2"
-                                value="2"
-                                checked={type == 2}
-                                onChange={onTypeChecked}
-                            />
-                            <label
-                                className="form-check-label"
-                                htmlFor="inlineRadio2"
+                        <div className="form-group">
+                            <label htmlFor="feedback_group"></label>
+                            Направление
+                            <select
+                                className="form-control"
+                                id="feedback_group"
+                                value={group}
+                                onChange={onGroupSelected}
                             >
-                                Идея
-                            </label>
+                                {feedbackGroups.map((group, i) => (
+                                    <option value={group.id} key={i}>
+                                        {group.name}
+                                    </option>
+                                ))}
+                            </select>
                         </div>
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="feedback_group"></label>
-                        Направление
-                        <select
-                            className="form-control"
-                            id="feedback_group"
-                            value={group}
-                            onChange={onGroupSelected}
-                        >
-                            {feedbackGroups.map((group, i) => (
-                                <option value={group.id} key={i}>
-                                    {group.name}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-                    <div className="form-group">
-                        <textarea
-                            className="form-control"
-                            id="exampleFormControlTextarea1"
-                            rows="3"
-                            placeholder="Описание"
-                            required
-                            value={description}
-                            onChange={onDescriptionChange}
-                        ></textarea>
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="exampleFormControlFile1">
-                            Прикрепить файлы
-                        </label>
-                        <input
-                            type="file"
-                            className="form-control-file"
-                            id="exampleFormControlFile1"
-                            multiple
-                            onChange={onFilesAdded}
-                        />
-                    </div>
-                    <div>
-                        <button
-                            type="submit"
-                            className="btn btn-primary btn-block"
-                        >
-                            Отправить
-                        </button>
-                    </div>
-                </form>
-            ) : (
-                <Loading />
-            )}
+                        <div className="form-group">
+                            <textarea
+                                className="form-control"
+                                id="exampleFormControlTextarea1"
+                                rows="3"
+                                placeholder="Описание"
+                                required
+                                value={description}
+                                onChange={onDescriptionChange}
+                            ></textarea>
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="exampleFormControlFile1">
+                                Прикрепить файлы
+                            </label>
+                            <input
+                                type="file"
+                                className="form-control-file"
+                                id="exampleFormControlFile1"
+                                multiple
+                                onChange={onFilesAdded}
+                            />
+                        </div>
+                        <div className="text-right">
+                            <button
+                                type="submit"
+                                className="btn btn-primary"
+                            >
+                                Отправить
+                            </button>
+                        </div>
+                    </form>
+                ) : (
+                    <Loading />
+                )}
+            </Card>
         </div>
     );
 }
