@@ -3,8 +3,8 @@ import React from 'react'
 
 function Loading() {
     return (
-        <div>
-            <div className="spinner-border" role="staus"/>
+        <div className="text-center">
+            <div className="spinner-border text-secondary" role="staus"/>
         </div>
     )
 }
