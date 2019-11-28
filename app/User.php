@@ -39,4 +39,14 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         return $this->hasMany(Employee::class);
     }
+
+    public function isCustomer()
+    {
+        return Customer::where('user_id', $this->id)->exists();
+    }
+
+    public function isEmployee()
+    {
+        return Employee::where('user_id', $this->id)->exists();
+    }
 }
