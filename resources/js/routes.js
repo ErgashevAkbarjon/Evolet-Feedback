@@ -4,6 +4,7 @@ import Feedback from './views/employee/Feedback';
 
 import NewFeedback from './views/customer/NewFeedback';
 import CustomerFeedbacks from './views/customer/Feedbacks';
+import CustomerFeedback from './views/customer/Feedback';
 
 export const EmployeeRoutes = [
     {
@@ -24,11 +25,12 @@ export const CustomerRoutes = [
     },
     {
         path: '/customer/feedbacks',
-        component: CustomerFeedbacks
+        component: CustomerFeedbacks,
+        exact: true
     },
     {
         path: '/customer/feedbacks/:id',
-        component: Feedback
+        component: CustomerFeedback
     }
 ]
 
