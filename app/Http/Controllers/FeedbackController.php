@@ -27,7 +27,7 @@ class FeedbackController extends Controller
             $result->where('customer_id', $customerID);
         }
 
-        $result = $this->filterByRequest($request, $result)->get();
+        $result = $this->filterByRequest($request, $result)->latest()->get();
         
         return $this->jsonUtf($result); 
     }
@@ -40,6 +40,7 @@ class FeedbackController extends Controller
             'type',
             'customer.user:id,full_name',
             'customer.pc',
+            'response',
             'files'
         ])->find($id);
 
