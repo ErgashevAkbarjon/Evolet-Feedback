@@ -13,7 +13,6 @@ const styles = {
         fontWeight: "400"
     },
     menuWrapper: {
-        width: "10%",
         flexWrap: "nowrap",
         fontSize: "22px",
         color: "#707070",
@@ -22,7 +21,6 @@ const styles = {
     },
     menu: {
         cursor: "pointer",
-        paddingBottom: " 6px"
     },
     menuActive: {
         borderBottom: "2px solid",
@@ -67,20 +65,20 @@ function Feedbacks({ classes, match }) {
             <div className="col">
                 <div className={"row " + classes.menuWrapper}>
                     <div
-                        className={`col ${classes.menu} ${
+                        className={`${classes.menu} ${
                             feedbacksType === 1 ? classes.menuActive : ""
                         }`}
                         onClick={() => setType(1)}
                     >
-                        Проблемы
+                        <div className="mx-2 mb-1">Проблемы</div>
                     </div>
                     <div
-                        className={`col ${classes.menu} ${
+                        className={`${classes.menu} ${
                             feedbacksType === 2 ? classes.menuActive : ""
                         }`}
                         onClick={() => setType(2)}
                     >
-                        Идеи
+                        <div className="mx-2 mb-1">Идеи</div>
                     </div>
                 </div>
                 <h2 className={classes.title}>{title}</h2>
