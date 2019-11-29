@@ -24,7 +24,11 @@ class Controller extends BaseController
 
         $tempQuery = clone $query;
 
-        $modelAttributes = array_keys($tempQuery->first()->getAttributes());
+        $sampleModel = $tempQuery->first();
+
+        if(!$sampleModel) return $query;
+
+        $modelAttributes = array_keys($sampleModel->getAttributes());
         $requests = $request->all();
 
         foreach ($requests as $key => $value) {
