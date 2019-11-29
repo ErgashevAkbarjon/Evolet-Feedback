@@ -87,7 +87,7 @@ function Login(props) {
     return !authContext.auth ? (
         <div className={classes.container + " container"}>
             <div className="row justify-content-center align-items-center">
-                <div className="col-4 text-center">
+                <div className="col-7 col-md-6 col-lg-4 text-center">
                     <img
                         src="/images/Evolet.png"
                         alt="Evolet"
