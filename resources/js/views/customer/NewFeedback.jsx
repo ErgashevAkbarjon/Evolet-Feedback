@@ -13,7 +13,7 @@ const btnColor = {
 };
 
 const styles = {
-    container: {
+    form: {
         "& .form-control:focus": {
             borderColor: btnColor.borderColor,
             boxShadow: "0 0 0 0.2rem rgba(184, 207, 65, 0.5) !important"
@@ -30,6 +30,8 @@ const styles = {
 
 function NewFeedback({ classes }) {
     const { feedbacks: feedbacksRoute } = ApiRoutes;
+
+    const [isSendingData, setSendingData] = useState(false);
 
     const [feedbackGroups, setFeedbackGroups] = useState();
 
@@ -65,109 +67,113 @@ function NewFeedback({ classes }) {
         for (const file of files) {
             formData.append("files[]", file);
         }
-
+        setSendingData(true);
         axios
             .post(feedbacksRoute, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data"
                 }
             })
-            .then(r => console.log(r))
+            .then(r => cleanForm())
             .catch(e => console.log(e));
     };
 
+    const cleanForm = () => {
+        setType(1);
+        setGroup(feedbackGroups[0].id);
+        setDescription("");
+        setFiles(null);
+
+        setSendingData(false);
+    };
+
     return (
-        <div className={classes.container + " col-9 col-sm-8 col-md-5 col-lg-4"}>
-            <Card title="Новый фидбек">
-                {feedbackGroups ? (
-                    <form onSubmit={onFormSubmit}>
-                        <div className="mb-2">
-                            <div className="form-check form-check-inline">
-                                <input
-                                    className="form-check-input"
-                                    type="radio"
-                                    id="inlineRadio1"
-                                    value="1"
-                                    checked={type == 1}
-                                    onChange={onTypeChecked}
-                                />
-                                <label
-                                    className="form-check-label"
-                                    htmlFor="inlineRadio1"
-                                >
-                                    Проблема
-                                </label>
-                            </div>
-                            <div className="form-check form-check-inline">
-                                <input
-                                    className="form-check-input"
-                                    type="radio"
-                                    id="inlineRadio2"
-                                    value="2"
-                                    checked={type == 2}
-                                    onChange={onTypeChecked}
-                                />
-                                <label
-                                    className="form-check-label"
-                                    htmlFor="inlineRadio2"
-                                >
-                                    Идея
-                                </label>
-                            </div>
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="feedback_group"></label>
-                            Направление
-                            <select
-                                className="form-control"
-                                id="feedback_group"
-                                value={group}
-                                onChange={onGroupSelected}
-                            >
-                                {feedbackGroups.map((group, i) => (
-                                    <option value={group.id} key={i}>
-                                        {group.name}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-                        <div className="form-group">
-                            <textarea
-                                className="form-control"
-                                id="exampleFormControlTextarea1"
-                                rows="3"
-                                placeholder="Описание"
-                                required
-                                value={description}
-                                onChange={onDescriptionChange}
-                            ></textarea>
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="exampleFormControlFile1">
-                                Прикрепить файлы
-                            </label>
+        <Card title="Новый фидбек">
+            {feedbackGroups && !isSendingData ? (
+                <form onSubmit={onFormSubmit} className={classes.form}>
+                    <div className="mb-2">
+                        <div className="form-check form-check-inline">
                             <input
-                                type="file"
-                                className="form-control-file"
-                                id="exampleFormControlFile1"
-                                multiple
-                                onChange={onFilesAdded}
+                                className="form-check-input"
+                                type="radio"
+                                id="inlineRadio1"
+                                value="1"
+                                checked={type == 1}
+                                onChange={onTypeChecked}
                             />
-                        </div>
-                        <div className="text-right">
-                            <button
-                                type="submit"
-                                className="btn btn-primary"
+                            <label
+                                className="form-check-label"
+                                htmlFor="inlineRadio1"
                             >
-                                Отправить
-                            </button>
+                                Проблема
+                            </label>
                         </div>
-                    </form>
-                ) : (
-                    <Loading />
-                )}
-            </Card>
-        </div>
+                        <div className="form-check form-check-inline">
+                            <input
+                                className="form-check-input"
+                                type="radio"
+                                id="inlineRadio2"
+                                value="2"
+                                checked={type == 2}
+                                onChange={onTypeChecked}
+                            />
+                            <label
+                                className="form-check-label"
+                                htmlFor="inlineRadio2"
+                            >
+                                Идея
+                            </label>
+                        </div>
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="feedback_group"></label>
+                        Направление
+                        <select
+                            className="form-control"
+                            id="feedback_group"
+                            value={group}
+                            onChange={onGroupSelected}
+                        >
+                            {feedbackGroups.map((group, i) => (
+                                <option value={group.id} key={i}>
+                                    {group.name}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                    <div className="form-group">
+                        <textarea
+                            className="form-control"
+                            id="exampleFormControlTextarea1"
+                            rows="3"
+                            placeholder="Описание"
+                            required
+                            value={description}
+                            onChange={onDescriptionChange}
+                        ></textarea>
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="exampleFormControlFile1">
+                            Прикрепить файлы
+                        </label>
+                        <input
+                            type="file"
+                            className="form-control-file"
+                            id="exampleFormControlFile1"
+                            multiple
+                            onChange={onFilesAdded}
+                        />
+                    </div>
+                    <div className="text-right">
+                        <button type="submit" className="btn btn-primary">
+                            Отправить
+                        </button>
+                    </div>
+                </form>
+            ) : (
+                <Loading />
+            )}
+        </Card>
     );
 }
 
