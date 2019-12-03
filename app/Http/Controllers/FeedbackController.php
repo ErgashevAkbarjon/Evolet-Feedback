@@ -109,7 +109,7 @@ class FeedbackController extends Controller
 
         foreach ($requests as $key => $value) {
             if(in_array($key, $modelProps)){
-                $feedback->$key = $value;
+                $this->updateField($request, $key, $value, $feedback);
             }
         }
 
@@ -118,5 +118,37 @@ class FeedbackController extends Controller
 
     public function destroy($id)
     {
+    }
+
+    /**
+     * Helpers
+     */
+
+    private function updateField($request, $field, $value, $feedback)
+    {
+        switch ($field) {
+            case 'status_id':
+                $this->onStatusUpdate($request, $feedback, $value);
+                break;
+            default:
+                $feedback->$field = $value;
+        }        
+    }
+
+    private function onStatusUpdate(Request $request, Feedback $feedback, $statusValue)
+    {
+        $currentUser = $request->auth;
+        
+        if(!$currentUser->isEmployee()){
+            return;
+        }
+        
+        $feedback->status_id = $statusValue;
+        
+        if($statusValue === Status::ACCEPT_STATUS_ID){
+            $currentCustomer = Customer::find($feedback->customer_id);
+            $currentCustomer->bonus += 1;
+            $currentCustomer->save();
+        }
     }
 }
