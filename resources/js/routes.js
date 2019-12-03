@@ -38,5 +38,6 @@ export const ApiRoutes = {
     feedbackGroups: '/api/groups',
     feedbacks: '/api/feedbacks',
     feedbackResponses: '/api/responses',
-    feedbackComments: '/api/comments'
+    feedbackComments: '/api/comments',
+    customers: '/api/customers'
 }

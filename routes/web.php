@@ -27,6 +27,7 @@ $router->group(['prefix'=>'api', 'middleware' => 'jwt.auth'], function () use ($
     $router->get('responses', 'ResponseController@index');
     $router->post('responses', 'ResponseController@store');
 
+    $router->get('customers', 'CustomerController@index');
 });
 
 $router->group(['prefix'=>'/'], function () use ($router){
