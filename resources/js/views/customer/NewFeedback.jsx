@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import withStyles from "react-jss";
 import axios from "axios";
-import { Link } from "react-router-dom";
 
 import { ApiRoutes } from "../../routes";
 import Loading from "../../components/Loading";
@@ -38,12 +37,15 @@ function NewFeedback({ classes }) {
     const [type, setType] = useState(1);
     const [group, setGroup] = useState();
     const [description, setDescription] = useState();
-    const [files, setFiles] = useState();
+    const [files, setFiles] = useState([]);
 
     const getFeedbackGroups = () => {
         axios
             .get(ApiRoutes.feedbackGroups)
-            .then(({ data }) => setFeedbackGroups(data))
+            .then(({ data }) => {
+                setGroup(data[0].id) //TODO Needs a refactor
+                setFeedbackGroups(data)
+            })
             .catch(e => console.log(e));
     };
 
@@ -67,6 +69,7 @@ function NewFeedback({ classes }) {
         for (const file of files) {
             formData.append("files[]", file);
         }
+
         setSendingData(true);
         axios
             .post(feedbacksRoute, formData, {
@@ -80,7 +83,7 @@ function NewFeedback({ classes }) {
 
     const cleanForm = () => {
         setType(1);
-        setGroup(feedbackGroups[0].id);
+        setGroup(feedbackGroups[0].id); //TODO Needs a refactor
         setDescription("");
         setFiles(null);
 
