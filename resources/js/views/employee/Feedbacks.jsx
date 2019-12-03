@@ -50,6 +50,7 @@ function Feedbacks({ classes, match }) {
     const filteredFeedbacksURL = `${feedbacksRoute}?group_id=${groupId}&type_id=${feedbacksType}`;
 
     useEffect(() => {
+        setFeedbacks(null);
         axios
             .get(filteredFeedbacksURL)
             .then(({ data }) => setFeedbacks(data))
