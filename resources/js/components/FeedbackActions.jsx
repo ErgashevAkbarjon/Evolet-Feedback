@@ -34,7 +34,7 @@ const styles = {
     }
 }
 
-const APPROVE_STATUS_ID = 1;
+const PENDING_STATUS_ID = 1;
 const ACCEPT_STATUS_ID = 2;
 const DENY_STATUS_ID = 3;
 
@@ -95,7 +95,7 @@ function FeedbackActions({ classes, feedback, reloadFeedbackCallBack }) {
         const newStatus = { status_id: statusId };
         const newResponse = {
             body: message,
-            employee_id: 1, //TODO Make employee_id dymanic
+            employee_id: 11, //TODO Make employee_id dymanic
             feedback_id: feedback.id
         };
 
@@ -131,7 +131,7 @@ function FeedbackActions({ classes, feedback, reloadFeedbackCallBack }) {
     return (
         <React.Fragment>
             {
-                statusId === APPROVE_STATUS_ID
+                statusId === PENDING_STATUS_ID
                     ? (
                         <div className="row justify-content-center">
                             <div className="col-xs-6 col-xl-5 mb-2 mb-xl-0">
