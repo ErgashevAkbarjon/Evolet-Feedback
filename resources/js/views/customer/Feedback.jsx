@@ -25,10 +25,7 @@ function Feedback({ classes, match }) {
     const fetchFeedback = () => {
         axios
             .get(feedbackApiRoute)
-            .then(({ data }) => {
-                console.log(data);
-                setFeedback(data);
-            })
+            .then(({ data }) => setFeedback(data))
             .catch(e => console.log(e));
     };
 
@@ -44,6 +41,7 @@ function Feedback({ classes, match }) {
             <Card title="Информация">
                 <div className={classes.info}>
                     <p>{"Направление: " + feedback.group.name}</p>
+                    <p>{"Тип: " + feedback.type.name}</p>
                     <p>{"Дата: " + feedback.created_at}</p>
                     <p style={{ color: feedback.status.color }}>
                         {"Статус: " + feedback.status.name}
