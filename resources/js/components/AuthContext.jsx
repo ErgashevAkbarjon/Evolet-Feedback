@@ -7,6 +7,11 @@ export function AuthContextProvider(props) {
     const [auth, setAuth] = useState(null);
     
     const noitazb = localStorage.getItem('noitazb');
+
+    const resetAuth = () => {
+        localStorage.setItem('noitazb', null);
+        setAuth(null);
+    }
     
     window.axios.interceptors.response.use(
         response => response,
@@ -15,8 +20,7 @@ export function AuthContextProvider(props) {
             const unAutorized = error.response.status === UNAUTORIZE_CODE
 
             if(unAutorized){
-                localStorage.setItem('noitazb', null);
-                setAuth(null);
+                resetAuth();
             }      
         }
     )
@@ -27,7 +31,7 @@ export function AuthContextProvider(props) {
     }
 
     return (
-        <AuthContext.Provider value={{auth, setAuth}}>
+        <AuthContext.Provider value={{auth, setAuth, resetAuth}}>
             {props.children}
         </AuthContext.Provider>
     );
