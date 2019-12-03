@@ -1,7 +1,38 @@
-import React from "react";
-import { Link } from 'react-router-dom';
+import React, { useState, useContext, useEffect } from "react";
+import { Link } from "react-router-dom";
+
+import { ApiRoutes } from "../../routes";
+import axios from "axios";
+import AuthContext from "../../components/AuthContext";
+import Loading from "../../components/Loading";
+
+const navbarLinks = [
+    { name: "Новый фидбек", url: "/" },
+    { name: "История", url: "/customer/feedbacks" }
+];
 
 function Navbar() {
+    const currentUrl = window.location.pathname;
+
+    const [customer, setCustomer] = useState();
+
+    const authContext = useContext(AuthContext);
+
+    const fetchCustomerData = () => {
+        const user = parseJwt(authContext.auth).sub[0];
+
+        axios
+            .get(ApiRoutes.customers + "?user_id=" + user.id)
+            .then(({ data }) => {
+                setCustomer(data[0]);
+            })
+            .catch(e => console.log(e));
+    };
+
+    useEffect(() => {
+        fetchCustomerData();
+    }, []);
+
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
             <Link className="navbar-brand" to="/">
@@ -24,18 +55,21 @@ function Navbar() {
                 id="navbarSupportedContent"
             >
                 <ul className="navbar-nav mr-auto">
-                    <li className="nav-item active">
-                        <Link className="nav-link" to="/">
-                            Новый фидбек
-                            <span className="sr-only">(current)</span>
-                        </Link>
-                    </li>
-                    <li className="nav-item">
-                        <Link className="nav-link" to="/customer/feedbacks">
-                            История
-                        </Link>
-                    </li>
+                    {navbarLinks.map((link, i) => (
+                        <li
+                            key={i}
+                            className={
+                                "nav-item " +
+                                (currentUrl === link.url ? " active" : "")
+                            }
+                        >
+                            <Link className="nav-link" to={link.url}>
+                                {link.name}
+                            </Link>
+                        </li>
+                    ))}
                 </ul>
+                {customer ? <div>Баллы: {customer.bonus}</div> : <Loading />}
             </div>
         </nav>
     );
