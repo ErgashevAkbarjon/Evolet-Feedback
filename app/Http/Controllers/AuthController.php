@@ -22,7 +22,7 @@ class AuthController extends Controller
 
         if (!$user) {
             return response()->json(
-                ['error' => "There isn't a user with such email"],
+                ['error' => "Неправильно введен email или пароль"],
                 400
             );
         }
@@ -31,13 +31,13 @@ class AuthController extends Controller
         
         if(!$isPasswordCorrect){
             return response()->json(
-                ['error' => "Incorrect password"],
+                ['error' => "Неправильно введен email или пароль"],
                 400
             );
         }
 
-        $userIsEmployee = Employee::where('user_id', $user->id)->exists();
-        $userIsCustomer = Customer::where('user_id', $user->id)->exists();
+        $userIsEmployee = $user->isEmployee();
+        $userIsCustomer = $user->isCustomer();
 
         if($userIsEmployee && !$userIsCustomer){
             $user->type = 1;
