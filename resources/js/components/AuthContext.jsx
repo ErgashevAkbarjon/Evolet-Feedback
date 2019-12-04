@@ -21,7 +21,9 @@ export function AuthContextProvider(props) {
 
             if(unAutorized){
                 resetAuth();
-            }      
+            }
+            
+            return  Promise.reject(error);
         }
     )
 
