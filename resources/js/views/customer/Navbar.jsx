@@ -29,6 +29,10 @@ function Navbar() {
             .catch(e => console.log(e));
     };
 
+    const onSignOut = () => {
+        authContext.resetAuth();
+    }
+
     useEffect(() => {
         fetchCustomerData();
     }, []);
@@ -70,6 +74,7 @@ function Navbar() {
                     ))}
                 </ul>
                 {customer ? <div>Баллы: {customer.bonus}</div> : <Loading />}
+                <button className="btn btn-link" onClick={onSignOut}>Выйти</button>
             </div>
         </nav>
     );

@@ -4,12 +4,19 @@ import withStyles from "react-jss";
 import { Switch, Route } from "react-router-dom";
 
 import Sidebar from "../../components/Sidebar";
-import {EmployeeRoutes} from "../../routes";
+import { EmployeeRoutes } from "../../routes";
+import AuthContext from '../../components/AuthContext';
 
 const styles = {};
 
 function Main(props) {
     const { classes, location } = props;
+    
+    const authContext = useContext(AuthContext);
+
+    const onSignOut = () => {
+        authContext.resetAuth();
+    }
 
     return (
         <Container fluid className={classes.main}>
@@ -17,7 +24,12 @@ function Main(props) {
                 <Col xs={2} style={{ position: "fixed" }}>
                     <Sidebar />
                 </Col>
-                <Col className="mt-5 offset-2 pl-4">
+                <Col className="offset-2 pl-4">
+                    <div className="py-3 text-right">
+                        <button type="button" className="btn btn-link" onClick={onSignOut}>
+                            Выйти
+                        </button>
+                    </div>
                     <Switch>
                         {EmployeeRoutes.map((routeProps, i) => (
                             <Route key={i} {...routeProps} />
