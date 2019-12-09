@@ -13,7 +13,7 @@ class ResponseController extends Controller
 
         $response = $this->filterByRequest($request, $responsesQuery)->get();
 
-        return $this->jsonUtf($response);
+        return $response;
     }
 
     public function show($id)

@@ -22,6 +22,6 @@ class GroupController extends Controller
 
         $response = $this->filterByRequest($request, $response)->get();
 
-        return $this->jsonUtf($response); 
+        return $response; 
     }
 }

@@ -4,11 +4,10 @@ namespace App\Http\Controllers;
 
 use Laravel\Lumen\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
-use Illuminate\Database\Eloquent\Builder;
 
 class Controller extends BaseController
 {
-    protected function jsonUtf($data, $code = 200)
+    public static function jsonUtf($data, $code = 200)
     {
         return response()->json(
             $data,
@@ -18,7 +17,7 @@ class Controller extends BaseController
         );
     }
 
-    protected function filterByRequest(Request $request, Builder $query)
+    protected function filterByRequest(Request $request, $query)
     {
         if($request->method() !== 'GET') return $query;
 

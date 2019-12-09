@@ -27,7 +27,8 @@ class CommentController extends Controller
         $comments = $this->filterByRequest($request, $commentQuery)->get()->toArray();
 
         $response = $this->toTree($comments);
-        return $this->jsonUtf($response);
+        
+        return $response;
     }
 
     public function store(Request $request)

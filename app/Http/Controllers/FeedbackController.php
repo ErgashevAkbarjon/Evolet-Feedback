@@ -29,7 +29,7 @@ class FeedbackController extends Controller
 
         $result = $this->filterByRequest($request, $result)->latest()->get();
         
-        return $this->jsonUtf($result); 
+        return $result; 
     }
 
     public function show($id)
@@ -44,7 +44,7 @@ class FeedbackController extends Controller
             'files'
         ])->find($id);
 
-        return $this->jsonUtf($result);
+        return $result;
     }
 
     public function store(Request $request)
@@ -71,11 +71,13 @@ class FeedbackController extends Controller
 
         $newFeedback = Feedback::create($newFeedbackData);
 
-        $files = $request->allFiles()['files'];
+        $files = $request->allFiles();
 
         if(!$files){
-            return $this->jsonUtf($newFeedback);
+            return $newFeedback;
         }
+
+        $files = $files['files'];
 
         $feedbackFolderName = '\\'. $newFeedback->id;
         $publicFolder = '\public';
@@ -97,7 +99,7 @@ class FeedbackController extends Controller
                 'feedback_id' => $newFeedback->id
             ]);
         }
-        return $this->jsonUtf($newFeedback);
+        return $newFeedback;
     }
 
     public function update($id, Request $request)
