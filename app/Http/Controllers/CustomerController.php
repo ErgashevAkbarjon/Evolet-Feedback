@@ -9,10 +9,10 @@ class CustomerController extends Controller
 {
     public function index(Request $request)
     {
-        $result = Customer::query();
+        $result = Customer::with(['user', 'pc']);
 
         $result = $this->filterByRequest( $request, $result )->get();
 
-        return $this->jsonUtf($result);
+        return $result;
     }
 }
