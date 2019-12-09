@@ -24,7 +24,7 @@ function Main(props) {
                 <Col xs={2} style={{ position: "fixed" }}>
                     <Sidebar />
                 </Col>
-                <Col className="offset-2 pl-4">
+                <Col className="offset-2 pl-lg-4">
                     <div className="py-3 text-right">
                         <button type="button" className="btn btn-link" onClick={onSignOut}>
                             Выйти

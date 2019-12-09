@@ -104,7 +104,7 @@ function Login(props) {
     return !authContext.auth ? (
         <div className={classes.container + " container"}>
             <div className="row justify-content-center align-items-center">
-                <div className="col-7 col-md-6 col-lg-4 text-center">
+                <div className="col-9 col-md-6 col-lg-4 text-center">
                     <img
                         src="/images/Evolet.png"
                         alt="Evolet"
@@ -124,6 +124,7 @@ function Login(props) {
                                     }
                                     className="form-control py-4"
                                     placeholder="Введите E-mail"
+                                    required
                                 />
                             </div>
                             <div className="form-group">
@@ -138,6 +139,7 @@ function Login(props) {
                                     }
                                     className="form-control py-4"
                                     placeholder="Введите пароль"
+                                    required
                                 />
                             </div>
                             <div>
