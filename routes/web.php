@@ -10,8 +10,8 @@
 | and give it the Closure to call when that URI is requested.
 |
 */
-$router->group(['prefix'=>'api', 'middleware' => 'jwt.auth'], function () use ($router){
-
+$router->group(['prefix'=>'api', 'middleware' => ['jwt.auth', 'utf.serializer', 'api.fields_limiter']], function () use ($router){
+    
     $router->get('feedbacks', 'FeedbackController@index');
     $router->get('feedbacks/{id}', 'FeedbackController@show');
     $router->post('feedbacks', 'FeedbackController@store');
