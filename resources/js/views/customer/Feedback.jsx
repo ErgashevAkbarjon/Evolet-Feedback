@@ -5,6 +5,7 @@ import withStyles from "react-jss";
 
 import Loading from "../../components/Loading";
 import Card from "../../components/Card";
+import FileViewer from "../../components/FileViewer";
 
 const styles = {
     info: {
@@ -12,7 +13,8 @@ const styles = {
     },
     file: {
         width: "100%",
-        borderRadius: "5px"
+        borderRadius: "5px",
+        cursor: 'zoom-in'
     }
 };
 
@@ -21,6 +23,8 @@ function Feedback({ classes, match }) {
     const feedbackApiRoute = ApiRoutes.feedbacks + "/" + feedbackId;
 
     const [feedback, setFeedback] = useState();
+
+    const [selectedFile, setSelectedFile] = useState();
 
     const fetchFeedback = () => {
         axios
@@ -65,6 +69,7 @@ function Feedback({ classes, match }) {
                                         src={file.url}
                                         alt={file.name}
                                         className={classes.file}
+                                        onClick={() => setSelectedFile(file.url)}
                                     />
                                 </div>
                                 <div className="col pl-0">
@@ -84,6 +89,11 @@ function Feedback({ classes, match }) {
             >
                 <p>{feedback.response ? feedback.response.body : null}</p>
             </Card>
+            {
+                selectedFile ? (
+                    <FileViewer file={selectedFile} onHide={() => setSelectedFile(null)}/>
+                ) : null
+            }
         </div>
     ) : (
         <Loading />
