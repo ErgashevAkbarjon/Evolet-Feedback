@@ -28,6 +28,9 @@ $router->group(['prefix'=>'api', 'middleware' => ['jwt.auth', 'utf.serializer', 
     $router->post('responses', 'ResponseController@store');
 
     $router->get('customers', 'CustomerController@index');
+    $router->post('customers', 'CustomerController@store');
+
+    $router->get('pc', 'PCController@index');
 });
 
 $router->group(['prefix'=>'/'], function () use ($router){
