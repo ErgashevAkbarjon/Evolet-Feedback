@@ -4,7 +4,7 @@ import { Row, Col } from "react-bootstrap";
 import axios from "axios";
 import { NavLink } from "react-router-dom";
 
-import Loading from '../components/Loading';
+import Loading from "../components/Loading";
 import { ApiRoutes } from "../routes";
 
 const styles = {
@@ -69,6 +69,15 @@ function Sidebar({ classes }) {
                     ) : (
                         <Loading />
                     )}
+                    <div>
+                        <NavLink
+                            to="/customers"
+                            className={classes.sidebarLink}
+                            activeClassName={classes.sidebarLinkActive}
+                        >
+                            Пользователи
+                        </NavLink>
+                    </div>
                 </nav>
             </div>
         </Row>
