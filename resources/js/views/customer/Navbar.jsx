@@ -22,7 +22,7 @@ function Navbar() {
         const user = parseJwt(authContext.auth).sub[0];
 
         axios
-            .get(ApiRoutes.customers + "?user_id=" + user.id)
+            .get(`${ApiRoutes.customers}?user_id=${user.id}&fields=bonus`)
             .then(({ data }) => {
                 setCustomer(data[0]);
             })
