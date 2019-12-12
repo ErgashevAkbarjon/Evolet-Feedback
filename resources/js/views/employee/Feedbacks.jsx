@@ -3,7 +3,7 @@ import withStyles from "react-jss";
 import axios from "axios";
 
 import Table from "../../components/table/Table";
-import FeedbackRow from "../../components/FeedbackRow";
+import FeedbackRow from "../../components/table/FeedbackRow";
 import Loading from '../../components/Loading';
 import { ApiRoutes } from '../../routes';
 
@@ -56,7 +56,7 @@ function Feedbacks({ classes, match }) {
             .then(({ data }) => setFeedbacks(data))
             .catch(e => console.log(e));
         axios
-            .get(`${feedbacksRoute}?id=${groupId}`)
+            .get(`${groupsRoute}?id=${groupId}`)
             .then(({ data }) => setTitle(data[0].name))
             .catch(e => console.log(e));
     }, [filteredFeedbacksURL]);
