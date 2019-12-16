@@ -39,7 +39,10 @@ function NewCustomer({ classes, show, onHide }) {
     const fetchPC = () => {
         axios
             .get(ApiRoutes.pc)
-            .then(({ data }) => setPCItems(data))
+            .then(({ data }) => {
+                setPCItems(data);
+                setPC(data[0].id);
+            })
             .catch(e => console.log(e));
     };
 
