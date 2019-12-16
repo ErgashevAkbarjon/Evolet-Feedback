@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Customer;
-use App\Employee;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Firebase\JWT\JWT;
+use Illuminate\Support\Facades\DB;
 
 class AuthController extends Controller
 {
@@ -48,6 +47,33 @@ class AuthController extends Controller
         return response()->json($this->makeJwt($user, $request->ip()));
     }
 
+    public function showPasswordReset($token)
+    {
+        $validToken = DB::table('password_resets')->where('token', $token)->exists();
+
+        if(!$validToken) return response('Invalid token');
+
+        return view('auth.passwordReset', compact('token'));
+    }
+
+    public function passwordReset(Request $request, $token)
+    {
+        $this->validate($request, [
+            'password' => 'required|confirmed'
+        ]);
+        
+        $userEmail = DB::table('password_resets')->where('token', $token)->value('email');
+
+        $user = User::where('email', $userEmail)->first();
+        
+        $user->password = Hash::make($request->password);
+
+        $user->save();
+        
+        DB::table('password_resets')->where('token', $token)->delete();
+
+        return redirect('/');
+    }
 
     /**
      * Helpers

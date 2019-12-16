@@ -37,6 +37,9 @@ $router->group(['prefix'=>'/'], function () use ($router){
     
     $router->post('/login', 'AuthController@authenticate');
 
+    $router->get('/password/reset/{token}', 'AuthController@showPasswordReset');
+    $router->post('/password/reset/{token}', 'AuthController@passwordReset');
+
     $router->get('/{route:.*}', function (){
         return view('app');
     });
