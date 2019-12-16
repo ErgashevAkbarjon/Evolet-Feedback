@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Customer;
 use App\Feedback;
-use App\FeedbackType;
 use App\File;
 use App\Status;
 use Illuminate\Http\Request;
