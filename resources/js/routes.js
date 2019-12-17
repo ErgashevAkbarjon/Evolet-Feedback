@@ -1,7 +1,7 @@
 
 import Feedbacks from './views/employee/Feedbacks';
 import Feedback from './views/employee/Feedback';
-import Customers from './views/employee/Customers';
+import Customers from './views/employee/customers/Customers';
 
 import NewFeedback from './views/customer/NewFeedback';
 import CustomerFeedbacks from './views/customer/Feedbacks';
