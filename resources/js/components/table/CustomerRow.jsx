@@ -1,15 +1,25 @@
 import React from "react";
+import withStyles from 'react-jss';
 
-function CustomerRow({ customer, printable }) {
+const styles = {
+    tableRow: {
+        cursor: 'pointer',
+        '&:hover': {
+            background: '#f5f5f5'
+        }
+    }
+}
+
+function CustomerRow({ classes, customer, printable, onCustomerClick }) {
     
     const fields = {
         "user.full_name": customer.user.full_name,
-        "pc.logo": <img style={{ width: "5em" }} src={customer.pc.logo} />,
+        "pc.logo": <img style={{ height: "2em" }} src={customer.pc.logo} />,
         bonus: customer.bonus
     };
 
     return (
-        <tr>
+        <tr className={classes.tableRow} onClick={() => onCustomerClick(customer)}>
             {Object.keys(printable).map(
                 (fieldToPrint, i) => (<td key={i}>{fields[fieldToPrint]}</td> )
             )}
@@ -17,4 +27,4 @@ function CustomerRow({ customer, printable }) {
     );
 }
 
-export default CustomerRow;
+export default withStyles(styles)(CustomerRow);
