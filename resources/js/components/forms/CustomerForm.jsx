@@ -132,6 +132,7 @@ function CustomerForm({ classes, customer, onSubmit, onCancel }) {
                                     "btn btn-primary " + classes.actionButton
                                 }
                                 onClick={onCancel}
+                                type='button'
                             >
                                 Отмена
                             </button>
