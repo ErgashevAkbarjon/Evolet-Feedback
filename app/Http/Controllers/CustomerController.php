@@ -44,10 +44,37 @@ class CustomerController extends Controller
         return $newCustomer;
     }
     
+    public function update($id, Request $request)
+    {
+        $customerToUpdate = Customer::find($id);
+        $requestItems = $request->all();
+        
+        foreach ($requestItems as $item => $value) {
+            switch ($item) {
+                case 'full_name':
+                case 'email':
+                    $this->updateCustomerUser($customerToUpdate, $item, $value);
+                    break;
+                case 'pc':
+                    $customerToUpdate->pc_id = $value;
+                    break;
+            }
+        }
+
+        $customerToUpdate->save();
+        
+        return $customerToUpdate->load('user', 'pc');
+    }
+
     private function notifyToSetupPassword(User $user)
     {
         $resetToken = $user->getPasswordResetToken();
 
         Mail::to($user)->send(new SetupPassword($resetToken));
+    }
+
+    private function updateCustomerUser($customer, $attribute, $value)
+    {
+        User::where('id', $customer->user_id)->update([$attribute => $value]);
     }
 }

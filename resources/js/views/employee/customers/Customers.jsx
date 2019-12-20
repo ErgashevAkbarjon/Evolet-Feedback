@@ -35,10 +35,7 @@ function Customers({ classes }) {
     const fetchCustomers = () => {
         axios
             .get(ApiRoutes.customers)
-            .then(({ data }) => {
-                console.log(data);
-                setCustomers(data);
-            })
+            .then(({ data }) => setCustomers(data))
             .catch(e => console.log(e));
     };
 
@@ -53,6 +50,14 @@ function Customers({ classes }) {
     const onCustomerEdit = customer => {
         setSelectedCustomer(null);
         setCustomerToEdit(customer);
+    }
+
+    const onCustomerUpdated = customer => {
+        setCustomerToEdit(null);
+        setCustomers(null);
+        
+        fetchCustomers();
+        setSelectedCustomer(customer);
     }
 
     return customers ? (
@@ -103,6 +108,7 @@ function Customers({ classes }) {
                 customer={customerToEdit}
                 show={customerToEdit !== null}
                 onHide={() => setCustomerToEdit(null)}
+                onCustomerUpdated={onCustomerUpdated}
             />
         </div>
     ) : (

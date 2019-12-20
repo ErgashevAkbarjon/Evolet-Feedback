@@ -29,6 +29,7 @@ $router->group(['prefix'=>'api', 'middleware' => ['jwt.auth', 'utf.serializer', 
 
     $router->get('customers', 'CustomerController@index');
     $router->post('customers', 'CustomerController@store');
+    $router->put('customers/{id}', 'CustomerController@update');
 
     $router->get('pc', 'PCController@index');
 });
