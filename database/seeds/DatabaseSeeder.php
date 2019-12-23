@@ -53,6 +53,7 @@ class DatabaseSeeder extends Seeder
             ],
         ]);
 
+        $this->attachEmployeesToGroups();
         $this->seedUsers();
     }
 
@@ -65,17 +66,17 @@ class DatabaseSeeder extends Seeder
         ]);
         Employee::create([
             'user_id' => $akbar->id,
-            'avatar' => 'https://lorempixel.com/200/200/cats/?41078'
+            'avatar' => 'https://lorempixel.com/200/200/cats/?41078',
         ]);
-        
+
         $customer = User::create([
             'full_name' => 'Customer customer',
             'email' => 'c@gmail.com',
-            'password' => Hash::make('admin')
+            'password' => Hash::make('admin'),
         ]);
         Customer::create([
             'user_id' => $customer->id,
-            'pc_id' => 1
+            'pc_id' => 1,
         ]);
     }
 
@@ -86,12 +87,14 @@ class DatabaseSeeder extends Seeder
         Status::create(['name' => 'Принят', 'color' => '#30D92A']);
         Status::create(['name' => 'Отклонен', 'color' => '#EB552F']);
     }
+
     private function seedFeedbackTypes()
     {
         FeedbackType::truncate();
         FeedbackType::create(['name' => 'Проблема']);
         FeedbackType::create(['name' => 'Идея']);
     }
+
     private function seedGroups()
     {
         Group::truncate();
@@ -100,6 +103,7 @@ class DatabaseSeeder extends Seeder
         Group::create(['name' => 'Сайт']);
         Group::create(['name' => 'Упаковки']);
     }
+
     private function seedPC()
     {
         PC::truncate();
@@ -108,6 +112,20 @@ class DatabaseSeeder extends Seeder
         PC::create(['name' => 'Spey', 'logo' => '/images/pc/spey.png']);
         PC::create(['name' => 'Neo Universe', 'logo' => '/images/pc/neo.png']);
         PC::create(['name' => 'Lady Healthcare', 'logo' => '/images/pc/lady.png']);
+    }
+
+    private function attachEmployeesToGroups()
+    {
+        $groups = Group::all();
+
+        foreach ($groups as $group) {
+            $employeeCount = rand(1,3);
+
+            for ($i=0; $i < $employeeCount; $i++) {
+                $randomEmpoyee = Employee::inRandomOrder()->first();
+                $group->employees()->attach($randomEmpoyee->id);
+            }
+        }
     }
 
     private function seedFactories($factories)
