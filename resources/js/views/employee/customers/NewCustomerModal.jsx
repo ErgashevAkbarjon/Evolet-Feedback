@@ -6,7 +6,7 @@ import Loading from "../../../components/Loading";
 import CardModal from "../../../components/CardModal";
 import CustomerForm from "../../../components/forms/CustomerForm";
 
-function NewCustomer({ show, onHide }) {
+function NewCustomer({ show, onHide, onCustomerAdded }) {
     const [isSendingData, setSendingData] = useState(false);
 
     const formSubmitted = newCustomer => {
@@ -14,7 +14,9 @@ function NewCustomer({ show, onHide }) {
 
         axios
             .post(ApiRoutes.customers, newCustomer)
-            .then(r => setSendingData(false))
+            .then(({data}) => {
+                onCustomerAdded(data);
+            })
             .catch(e => console.log(e));
     };
 
