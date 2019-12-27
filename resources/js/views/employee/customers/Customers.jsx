@@ -9,6 +9,7 @@ import CustomerRow from "../../../components/table/CustomerRow";
 import NewCustomerModal from "./NewCustomerModal";
 import CustomerModal from "./CustomerModal";
 import CustomerEditModal from "./CustomerEditModal";
+import CustomerDeleteModal from "./CustomerDeleteModal";
 
 const styles = {
     title: {
@@ -32,6 +33,8 @@ function Customers({ classes }) {
 
     const [customerToEdit, setCustomerToEdit] = useState(null);
 
+    const [customerToDelete, setCustomerToDelete] = useState(null);
+
     const fetchCustomers = () => {
         axios
             .get(ApiRoutes.customers)
@@ -47,18 +50,37 @@ function Customers({ classes }) {
         setSelectedCustomer(customer);
     };
 
+    const updateCustomersList = () => {
+        setCustomers(null);
+        fetchCustomers();
+    };
+
+    const onCustomerAdded = customer => {
+        setShowNewCustomer(false);
+        updateCustomersList();
+    };
+
     const onCustomerEdit = customer => {
         setSelectedCustomer(null);
         setCustomerToEdit(customer);
-    }
+    };
 
     const onCustomerUpdated = customer => {
         setCustomerToEdit(null);
-        setCustomers(null);
-        
-        fetchCustomers();
+        updateCustomersList();
+
         setSelectedCustomer(customer);
-    }
+    };
+
+    const onCustomerDelete = customer => {
+        setSelectedCustomer(null);
+        setCustomerToDelete(customer);
+    };
+
+    const onCustomerDeleted = () => {
+        setCustomerToDelete(null);
+        updateCustomersList();
+    };
 
     return customers ? (
         <div>
@@ -97,18 +119,26 @@ function Customers({ classes }) {
             <NewCustomerModal
                 show={showNewCustomer}
                 onHide={() => setShowNewCustomer(false)}
+                onCustomerAdded={onCustomerAdded}
             />
             <CustomerModal
                 customer={selectedCustomer}
                 show={selectedCustomer !== null}
                 onHide={() => setSelectedCustomer(null)}
                 onCustomerEdit={onCustomerEdit}
+                onDelete={onCustomerDelete}
             />
             <CustomerEditModal
                 customer={customerToEdit}
                 show={customerToEdit !== null}
                 onHide={() => setCustomerToEdit(null)}
                 onCustomerUpdated={onCustomerUpdated}
+            />
+            <CustomerDeleteModal
+                customer={customerToDelete}
+                show={customerToDelete !== null}
+                onHide={() => setCustomerToDelete(null)}
+                onCustomerDeleted={onCustomerDeleted}
             />
         </div>
     ) : (

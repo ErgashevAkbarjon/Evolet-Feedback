@@ -66,6 +66,19 @@ class CustomerController extends Controller
         return $customerToUpdate->load('user', 'pc');
     }
 
+    public function destroy($id)
+    {
+        $customerToDelete = Customer::find($id);
+        $customerUserId = $customerToDelete->user_id;
+
+        Customer::destroy($customerToDelete->id);
+        User::destroy($customerUserId);
+    }   
+
+    /**
+     * Helpers
+     */
+
     private function notifyToSetupPassword(User $user)
     {
         $resetToken = $user->getPasswordResetToken();

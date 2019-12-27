@@ -12,7 +12,7 @@ const styles = {
     }
 };
 
-function CustomerModal({ classes, customer, show, onHide, onCustomerEdit }) {
+function CustomerModal({ classes, customer, show, onHide, onCustomerEdit, onDelete }) {
     return customer ? (
         <CardModal show={show} onHide={onHide} title="Пользователь">
             <div className="show">
@@ -27,8 +27,11 @@ function CustomerModal({ classes, customer, show, onHide, onCustomerEdit }) {
                     <button className="btn btn-primary mr-3" onClick={onHide}>
                         Отмена
                     </button>
+                    <button className="btn btn-danger mr-3" onClick={() => onDelete(customer)}>
+                        Удалить
+                    </button>
                     <button
-                        className="btn btn-primary"
+                        className="btn btn-success"
                         onClick={() => onCustomerEdit(customer)}
                     >
                         Изменить
