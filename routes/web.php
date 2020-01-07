@@ -18,6 +18,7 @@ $router->group(['prefix'=>'api', 'middleware' => ['jwt.auth', 'utf.serializer', 
     $router->put('feedbacks/{id}', 'FeedbackController@update');
 
     $router->get('groups', 'GroupController@index');
+    $router->post('groups', 'GroupController@store');
 
     $router->get('types', 'FeedbackTypeController@index');
 
@@ -30,7 +31,13 @@ $router->group(['prefix'=>'api', 'middleware' => ['jwt.auth', 'utf.serializer', 
     $router->get('customers', 'CustomerController@index');
     $router->post('customers', 'CustomerController@store');
     $router->put('customers/{id}', 'CustomerController@update');
-
+    $router->delete('customers/{id}', 'CustomerController@destroy');
+    
+    $router->get('employees', 'EmployeeController@index');
+    $router->post('employees', 'EmployeeController@store');
+    $router->put('employees/{id}', 'EmployeeController@update');
+    $router->delete('employees/{id}', 'EmployeeController@destroy');
+    
     $router->get('pc', 'PCController@index');
 });
 
