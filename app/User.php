@@ -2,12 +2,14 @@
 
 namespace App;
 
+use App\Mail\SetupPassword;
 use Carbon\Carbon;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Laravel\Lumen\Auth\Authorizable;
 
 class User extends Model implements AuthenticatableContract, AuthorizableContract
@@ -72,5 +74,12 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         DB::table('password_resets')->insert($newPasswordReset);
 
         return $token;
+    }
+    
+    public function notifyToSetupPassword()
+    {
+        $resetToken = $this->getPasswordResetToken();
+
+        Mail::to($this)->send(new SetupPassword($resetToken));
     }
 }

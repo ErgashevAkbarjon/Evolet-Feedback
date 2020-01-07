@@ -3,11 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Customer;
-use App\Mail\SetupPassword;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
 
 class CustomerController extends Controller
 {
@@ -29,11 +27,12 @@ class CustomerController extends Controller
         ]);
         
         $user = $request->only(['full_name', 'email']);
+        
         $user['password'] = Hash::make(str_random(10));
         
         $user = User::create($user);
         
-        $this->notifyToSetupPassword($user);
+        $user->notifyToSetupPassword();
 
         $customerData = [
             'user_id' => $user->id,
@@ -78,13 +77,6 @@ class CustomerController extends Controller
     /**
      * Helpers
      */
-
-    private function notifyToSetupPassword(User $user)
-    {
-        $resetToken = $user->getPasswordResetToken();
-
-        Mail::to($user)->send(new SetupPassword($resetToken));
-    }
 
     private function updateCustomerUser($customer, $attribute, $value)
     {
