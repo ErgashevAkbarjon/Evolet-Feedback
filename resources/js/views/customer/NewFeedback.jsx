@@ -99,14 +99,14 @@ function NewFeedback({ classes }) {
                             <input
                                 className="form-check-input"
                                 type="radio"
-                                id="inlineRadio1"
+                                id="problemRadio"
                                 value="1"
                                 checked={type == 1}
                                 onChange={onTypeChecked}
                             />
                             <label
                                 className="form-check-label"
-                                htmlFor="inlineRadio1"
+                                htmlFor="problemRadio"
                             >
                                 Проблема
                             </label>
@@ -115,14 +115,14 @@ function NewFeedback({ classes }) {
                             <input
                                 className="form-check-input"
                                 type="radio"
-                                id="inlineRadio2"
+                                id="ideaRadio"
                                 value="2"
                                 checked={type == 2}
                                 onChange={onTypeChecked}
                             />
                             <label
                                 className="form-check-label"
-                                htmlFor="inlineRadio2"
+                                htmlFor="ideaRadio"
                             >
                                 Идея
                             </label>
@@ -147,7 +147,6 @@ function NewFeedback({ classes }) {
                     <div className="form-group">
                         <textarea
                             className="form-control"
-                            id="exampleFormControlTextarea1"
                             rows="3"
                             placeholder="Описание"
                             required
@@ -156,13 +155,13 @@ function NewFeedback({ classes }) {
                         ></textarea>
                     </div>
                     <div className="form-group">
-                        <label htmlFor="exampleFormControlFile1">
+                        <label htmlFor="attachment">
                             Прикрепить файлы
                         </label>
                         <input
                             type="file"
                             className="form-control-file"
-                            id="exampleFormControlFile1"
+                            id="attachment"
                             multiple
                             onChange={onFilesAdded}
                         />
