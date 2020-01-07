@@ -2,6 +2,8 @@
 import Feedbacks from './views/employee/Feedbacks';
 import Feedback from './views/employee/Feedback';
 import Customers from './views/employee/customers/Customers';
+import Employees from './views/employee/employees/Employees';
+import FeedbackGroups from './views/employee/groups/FeedbackGroups';
 
 import NewFeedback from './views/customer/NewFeedback';
 import CustomerFeedbacks from './views/customer/Feedbacks';
@@ -19,6 +21,14 @@ export const EmployeeRoutes = [
     {
         path: '/customers',
         component: Customers
+    },
+    {
+        path: '/employees',
+        component: Employees
+    },
+    {
+        path: '/groups',
+        component: FeedbackGroups
     }
 ]
 
@@ -45,5 +55,6 @@ export const ApiRoutes = {
     feedbackResponses: '/api/responses',
     feedbackComments: '/api/comments',
     customers: '/api/customers',
-    pc: '/api/pc'
+    pc: '/api/pc',
+    employees: '/api/employees'
 }

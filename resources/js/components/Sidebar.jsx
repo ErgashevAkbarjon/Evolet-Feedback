@@ -78,6 +78,24 @@ function Sidebar({ classes }) {
                             Пользователи
                         </NavLink>
                     </div>
+                    <div>
+                        <NavLink
+                            to="/employees"
+                            className={classes.sidebarLink}
+                            activeClassName={classes.sidebarLinkActive}
+                        >
+                            Сотрудники
+                        </NavLink>
+                    </div>
+                    <div>
+                        <NavLink
+                            to="/groups"
+                            className={classes.sidebarLink}
+                            activeClassName={classes.sidebarLinkActive}
+                        >
+                            Группы
+                        </NavLink>
+                    </div>
                 </nav>
             </div>
         </Row>
