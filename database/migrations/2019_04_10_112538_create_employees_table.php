@@ -15,7 +15,7 @@ class CreateEmployeesTable extends Migration
     {
         Schema::create('employees', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('avatar')->nullable();
+            $table->string('avatar')->default('/images/avatars/default.jpg');
             $table->integer('user_id');
             $table->timestamps();
         });
