@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import withStyles from "react-jss";
 
 import { ApiRoutes } from "../../../routes";
 import Table from "../../../components/table/Table";
@@ -10,13 +9,7 @@ import NewCustomerModal from "./NewCustomerModal";
 import CustomerModal from "./CustomerModal";
 import CustomerEditModal from "./CustomerEditModal";
 import CustomerDeleteModal from "./CustomerDeleteModal";
-
-const styles = {
-    title: {
-        color: "#707070",
-        fontWeight: "400"
-    }
-};
+import TableTitle from "../../../components/table/Title";
 
 const printable = {
     "user.full_name": "Имя",
@@ -24,7 +17,7 @@ const printable = {
     bonus: "Баллы"
 };
 
-function Customers({ classes }) {
+function Customers() {
     const [customers, setCustomers] = useState();
 
     const [showNewCustomer, setShowNewCustomer] = useState(false);
@@ -84,11 +77,8 @@ function Customers({ classes }) {
 
     return customers ? (
         <div>
-            <div className="row">
-                <div className="col-8">
-                    <h2 className={classes.title}>Пользователи</h2>
-                </div>
-                <div className="col text-right">
+            <TableTitle title="Пользователи">
+                <div className="text-right">
                     <button
                         className="btn btn-outline-primary"
                         onClick={() => setShowNewCustomer(true)}
@@ -96,7 +86,7 @@ function Customers({ classes }) {
                         Добавить
                     </button>
                 </div>
-            </div>
+            </TableTitle>
             <Table>
                 <thead>
                     <tr>
@@ -146,4 +136,4 @@ function Customers({ classes }) {
     );
 }
 
-export default withStyles(styles)(Customers);
+export default Customers;

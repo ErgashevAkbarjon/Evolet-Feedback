@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import withStyles from "react-jss";
 
 import { ApiRoutes } from "../../../routes";
 import Table from "../../../components/table/Table";
@@ -10,13 +9,7 @@ import EmployeeModal from "./EmployeeModal";
 import EmployeeEditModal from "./EmployeeEditModal";
 import NewEmployeeModal from "./NewEmployeeModal";
 import EmployeeDeleteModal from "./EmployeeDeleteModal";
-
-const styles = {
-    title: {
-        color: "#707070",
-        fontWeight: "400"
-    }
-};
+import TableTitle from "../../../components/table/Title";
 
 const printableFields = {
     avatar: "Аватар",
@@ -24,7 +17,7 @@ const printableFields = {
     "user.email": "Почта"
 };
 
-function Employees({ classes }) {
+function Employees({ match }) {
     const [employees, setEmployees] = useState();
 
     const [selectedEmployee, setSelectedEmployee] = useState(null);
@@ -33,6 +26,21 @@ function Employees({ classes }) {
 
     const [employeeToEdit, setEmployeeToEdit] = useState(null);
     const [employeeToDelete, setEmployeeToDelete] = useState(null);
+
+    const fetchEmployee = id => {
+        const employeeURL = ApiRoutes.employees + "?id=" + id;
+
+        axios
+            .get(employeeURL)
+            .then(({ data }) => setSelectedEmployee(data[0]))
+            .catch(e => console.log(e));
+    };
+
+    useEffect(() => {
+        if (match && match.params.hasOwnProperty("id")) {
+            fetchEmployee(match.params.id);
+        }
+    }, [match]);
 
     const fetchEmployees = () => {
         axios
@@ -59,7 +67,7 @@ function Employees({ classes }) {
 
     const onNewEmployeeAdded = () => {
         setShowNewEmployee(false);
-        
+
         resetEmployeeList();
     };
 
@@ -76,23 +84,20 @@ function Employees({ classes }) {
     const onEmployeeUpdated = employee => {
         setEmployeeToEdit(null);
         resetEmployeeList();
-        
+
         setSelectedEmployee(employee);
     };
 
     const onEmployeeDeleted = employee => {
         setEmployeeToDelete(null);
-        
+
         resetEmployeeList();
     };
 
     return employees ? (
         <div>
-            <div className="row">
-                <div className="col-8">
-                    <h2 className={classes.title}>Сотрудники</h2>
-                </div>
-                <div className="col text-right">
+            <TableTitle title="Сотрудники">
+                <div className="text-right">
                     <button
                         className="btn btn-outline-primary"
                         onClick={() => setShowNewEmployee(true)}
@@ -100,7 +105,7 @@ function Employees({ classes }) {
                         Добавить
                     </button>
                 </div>
-            </div>
+            </TableTitle>
             <Table>
                 <thead>
                     <tr>
@@ -120,7 +125,7 @@ function Employees({ classes }) {
                     ))}
                 </tbody>
             </Table>
-            <NewEmployeeModal 
+            <NewEmployeeModal
                 show={showNewEmployee}
                 onHide={() => setShowNewEmployee(false)}
                 onNewEmployeeAdded={onNewEmployeeAdded}
@@ -150,4 +155,4 @@ function Employees({ classes }) {
     );
 }
 
-export default withStyles(styles)(Employees);
+export default Employees;
