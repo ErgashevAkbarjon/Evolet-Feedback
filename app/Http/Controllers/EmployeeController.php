@@ -32,17 +32,14 @@ class EmployeeController extends Controller
         $newUser = User::create($userData);
 
         $newUser->notifyToSetupPassword();
-
-        $relativeAvatarPath = null;
+        
+        $newEmployeeData['user_id'] = $newUser->id;
 
         if ($request->hasFile('avatar')) {
-            $relativeAvatarPath = $this->saveAvatar($newUser->id, $request->file('avatar'));
+            $newEmployeeData['avatar'] = $this->saveAvatar($newUser->id, $request->file('avatar'));
         }
 
-        $newEmployee = Employee::create([
-            'user_id' => $newUser->id,
-            'avatar' => $relativeAvatarPath
-        ]);
+        $newEmployee = Employee::create($newEmployeeData);
         
         $groups = json_decode($request->groups);
 
