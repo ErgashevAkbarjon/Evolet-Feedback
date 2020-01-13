@@ -54,14 +54,14 @@ function EmployeeForm({ employee, onSubmit, onCancel }) {
 
     const onFormSubmit = e => {
         e.preventDefault();
-        
+
         console.log({
             fullName,
             email,
             groups,
             avatar
         });
-        
+
         const formData = new FormData();
 
         formData.append("full_name", fullName);
@@ -115,6 +115,7 @@ function EmployeeForm({ employee, onSubmit, onCancel }) {
                     id="avatar"
                     name="avatar"
                     onChange={handleInputChange}
+                    accept="image/*"
                 />
             </div>
 
