@@ -19,6 +19,9 @@ $router->group(['prefix'=>'api', 'middleware' => ['jwt.auth', 'utf.serializer', 
 
     $router->get('groups', 'GroupController@index');
     $router->post('groups', 'GroupController@store');
+    $router->get('groups/{id}', 'GroupController@show');
+    $router->put('groups/{id}', 'GroupController@update');
+    $router->delete('groups/{id}', 'GroupController@destroy');
 
     $router->get('types', 'FeedbackTypeController@index');
 
