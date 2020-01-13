@@ -42,11 +42,6 @@ window.parseJwt = function (token) {
     }
 }
 
-//Just a short form of hasOwnProperty
-window.Object.prototype.hOP = function (property) {
-    return this.hasOwnProperty(property);
-}
-
 /**
  * Next we will register the CSRF Token as a common header with Axios so that
  * all outgoing HTTP requests automatically have it attached. This is just
