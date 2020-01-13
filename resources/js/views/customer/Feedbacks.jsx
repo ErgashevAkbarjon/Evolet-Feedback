@@ -10,7 +10,7 @@ import Card from "../../components/Card";
 const styles = {
     mainWrapper: {
         maxHeight: "30rem",
-        overflowY: "scroll"
+        overflowY: "auto"
     }
 };
 
