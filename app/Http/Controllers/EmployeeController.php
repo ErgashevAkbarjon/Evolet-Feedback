@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 
 class EmployeeController extends Controller
 {
+    const AVATARS_FOLDER = "/images/avatars/";
 
     public function index(Request $request)
     {
@@ -48,6 +49,11 @@ class EmployeeController extends Controller
         }
 
         return $newEmployee->load('user');
+    }
+
+    public function show($id)
+    {
+        return Employee::with(['groups', 'user'])->where('id', $id)->first();
     }
 
     public function update($id, Request $request)
@@ -93,12 +99,11 @@ class EmployeeController extends Controller
     {
         $fileExtension = $avatar->extension();
         $fileName = "$name.$fileExtension";
-        $publicPath = base_path() . '/public';
-        $avatarsFolderPath = '/images/avatars/';
+        $publicPath = $this->public_path();
 
-        $avatar->move($publicPath . $avatarsFolderPath, $fileName);
+        $avatar->move($publicPath . self::AVATARS_FOLDER, $fileName);
 
-        return $avatarsFolderPath . $fileName;
+        return self::AVATARS_FOLDER . $fileName;
     }
 
     public function updateAvatar(Employee $employee, $avatar)
