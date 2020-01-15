@@ -56,4 +56,9 @@ class Controller extends BaseController
         }
         return $tree;
     }
+
+    public function public_path()
+    {
+        return base_path() . '/public';
+    }
 }
