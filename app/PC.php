@@ -14,6 +14,6 @@ class PC extends Model
 
     public function customers()
     {
-        return $this->hasMany(Customer::class);
+        return $this->hasMany(Customer::class, 'pc_id');
     }
 }
