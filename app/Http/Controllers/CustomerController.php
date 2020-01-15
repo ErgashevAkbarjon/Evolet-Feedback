@@ -43,6 +43,11 @@ class CustomerController extends Controller
         return $newCustomer;
     }
     
+    public function show($id)
+    {
+        return Customer::with(['user', 'pc'])->where('id', $id)->first();
+    }
+
     public function update($id, Request $request)
     {
         $customerToUpdate = Customer::find($id);
