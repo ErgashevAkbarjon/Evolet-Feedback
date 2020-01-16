@@ -4,7 +4,7 @@ import axios from "axios";
 
 import AuthContext from "../../components/AuthContext";
 import Card from "../../components/Card";
-import Comments from "../../components/Comments/Comments";
+import Comments from "../../components/comments/Comments";
 import FeedbackActions from "../../components/FeedbackActions";
 import Loading from "../../components/Loading";
 import { ApiRoutes } from "../../routes";
