@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 class EmployeeController extends Controller
 {
     const AVATARS_FOLDER = "/images/avatars/";
+    const DEFAULT_AVATAR_PATH = "/images/avatars/default.jpg";
 
     public function index(Request $request)
     {
@@ -78,15 +79,19 @@ class EmployeeController extends Controller
                     break;
             }
         }
-
+        
         return $employeeToUpdate->load(['user', 'groups']);
     }
 
-    public function destroy($id, Request $request)
+    public function destroy($id)
     {
         $employeeToDelete = Employee::find($id);
 
         $employeeUserID = $employeeToDelete->user_id;
+        
+        if($employeeToDelete->avatar != self::DEFAULT_AVATAR_PATH){
+            $this->deletePublicFile($employeeToDelete->avatar); 
+        }
 
         Employee::destroy($employeeToDelete->id);
         User::destroy($employeeUserID);
