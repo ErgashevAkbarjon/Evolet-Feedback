@@ -28,11 +28,10 @@ function Employees({ match }) {
     const [employeeToDelete, setEmployeeToDelete] = useState(null);
 
     const fetchEmployee = id => {
-        const employeeURL = ApiRoutes.employees + "?id=" + id;
-
+        const employeeURL = ApiRoutes.employees + "/" + id;
         axios
             .get(employeeURL)
-            .then(({ data }) => setSelectedEmployee(data[0]))
+            .then(({ data }) => setSelectedEmployee(data))
             .catch(e => console.log(e));
     };
 
