@@ -33,15 +33,22 @@ $router->group(['prefix'=>'api', 'middleware' => ['jwt.auth', 'utf.serializer', 
 
     $router->get('customers', 'CustomerController@index');
     $router->post('customers', 'CustomerController@store');
+    $router->get('customers/{id}', 'CustomerController@show');
     $router->put('customers/{id}', 'CustomerController@update');
     $router->delete('customers/{id}', 'CustomerController@destroy');
     
     $router->get('employees', 'EmployeeController@index');
     $router->post('employees', 'EmployeeController@store');
+    $router->get('employees/{id}', 'EmployeeController@show');
     $router->put('employees/{id}', 'EmployeeController@update');
     $router->delete('employees/{id}', 'EmployeeController@destroy');
     
     $router->get('pc', 'PCController@index');
+    $router->post('pc', 'PCController@store');
+    $router->get('pc/{id}', 'PCController@show');
+    $router->put('pc/{id}', 'PCController@update');
+    $router->delete('pc/{id}', 'PCController@destroy');
+
 });
 
 $router->group(['prefix'=>'/'], function () use ($router){

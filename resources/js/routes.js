@@ -8,6 +8,7 @@ import FeedbackGroups from './views/employee/groups/FeedbackGroups';
 import NewFeedback from './views/customer/NewFeedback';
 import CustomerFeedbacks from './views/customer/Feedbacks';
 import CustomerFeedback from './views/customer/Feedback';
+import PromoCompanies from './views/employee/pc/PromoCompanies';
 
 export const EmployeeRoutes = [
     {
@@ -19,8 +20,16 @@ export const EmployeeRoutes = [
         component: Feedback
     },
     {
+        path: '/customers/:id',
+        component: Customers
+    },
+    {
         path: '/customers',
         component: Customers
+    },
+    {
+        path: '/employees/:id',
+        component: Employees
     },
     {
         path: '/employees',
@@ -29,6 +38,10 @@ export const EmployeeRoutes = [
     {
         path: '/groups',
         component: FeedbackGroups
+    },
+    {
+        path: '/pc',
+        component: PromoCompanies
     }
 ]
 

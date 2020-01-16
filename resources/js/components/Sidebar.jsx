@@ -96,6 +96,15 @@ function Sidebar({ classes }) {
                             Группы
                         </NavLink>
                     </div>
+                    <div>
+                        <NavLink
+                            to="/pc"
+                            className={classes.sidebarLink}
+                            activeClassName={classes.sidebarLinkActive}
+                        >
+                            Промо Компании
+                        </NavLink>
+                    </div>
                 </nav>
             </div>
         </Row>
