@@ -57,8 +57,15 @@ class Controller extends BaseController
         return $tree;
     }
 
-    public function public_path()
+    public function public_path($pathToConcat = '')
     {
-        return base_path() . '/public';
+        return base_path() . '/public' . $pathToConcat;
+    }
+
+    public function deletePublicFile($path)
+    {
+        $filePath = $this->public_path($path);
+
+        unlink($filePath);
     }
 }
