@@ -18,7 +18,7 @@ function EmployeeDeleteModal({ employee, show, onHide, onEmployeeDeleted }) {
             <p className="text-center">
                 Вы действительно хотите удалить сотрудника
                 <br />
-                <b>{employee.user.full_name}</b>
+                <b>{employee.user.full_name}?</b>
             </p>
             <div className="text-center">
                 <button
