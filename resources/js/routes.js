@@ -4,6 +4,7 @@ import Feedback from './views/employee/Feedback';
 import Customers from './views/employee/customers/Customers';
 import Employees from './views/employee/employees/Employees';
 import FeedbackGroups from './views/employee/groups/FeedbackGroups';
+import Settings from './views/employee/Settings';
 
 import NewFeedback from './views/customer/NewFeedback';
 import CustomerFeedbacks from './views/customer/Feedbacks';
@@ -42,6 +43,10 @@ export const EmployeeRoutes = [
     {
         path: '/pc',
         component: PromoCompanies
+    },
+    {
+        path: '/settings',
+        component: Settings
     }
 ]
 

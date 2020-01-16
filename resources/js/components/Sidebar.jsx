@@ -71,38 +71,11 @@ function Sidebar({ classes }) {
                     )}
                     <div>
                         <NavLink
-                            to="/customers"
+                            to="/settings"
                             className={classes.sidebarLink}
                             activeClassName={classes.sidebarLinkActive}
                         >
-                            Пользователи
-                        </NavLink>
-                    </div>
-                    <div>
-                        <NavLink
-                            to="/employees"
-                            className={classes.sidebarLink}
-                            activeClassName={classes.sidebarLinkActive}
-                        >
-                            Сотрудники
-                        </NavLink>
-                    </div>
-                    <div>
-                        <NavLink
-                            to="/groups"
-                            className={classes.sidebarLink}
-                            activeClassName={classes.sidebarLinkActive}
-                        >
-                            Группы
-                        </NavLink>
-                    </div>
-                    <div>
-                        <NavLink
-                            to="/pc"
-                            className={classes.sidebarLink}
-                            activeClassName={classes.sidebarLinkActive}
-                        >
-                            Промо Компании
+                            Настройки
                         </NavLink>
                     </div>
                 </nav>
