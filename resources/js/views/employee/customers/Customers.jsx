@@ -17,7 +17,7 @@ const printable = {
     bonus: "Баллы"
 };
 
-function Customers() {
+function Customers({ match }) {
     const [customers, setCustomers] = useState();
 
     const [showNewCustomer, setShowNewCustomer] = useState(false);
@@ -27,6 +27,20 @@ function Customers() {
     const [customerToEdit, setCustomerToEdit] = useState(null);
 
     const [customerToDelete, setCustomerToDelete] = useState(null);
+
+    const fetchCustomer = id => {
+        const customerURL = ApiRoutes.customers + "/" + id;
+        axios
+            .get(customerURL)
+            .then(({ data }) => setSelectedCustomer(data))
+            .catch(e => console.log(e));
+    };
+
+    useEffect(() => {
+        if (match && match.params.hasOwnProperty("id")) {
+            fetchCustomer(match.params.id);
+        }
+    }, [match]);
 
     const fetchCustomers = () => {
         axios
