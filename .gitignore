@@ -1,8 +1,8 @@
 node_modules
 /public/js
 /public/feedback-files/
-!/public/images/avatars/default.jpg
 /public/images/avatars/
+!/public/images/avatars/default.jpg
 /public/storage
 /storage/*.key
 /vendor
