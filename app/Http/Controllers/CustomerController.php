@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Customer;
+use App\Role;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -31,7 +32,9 @@ class CustomerController extends Controller
         $user['password'] = Hash::make(str_random(10));
         
         $user = User::create($user);
-        
+
+        $user->roles()->attach(Role::where('name', 'customer')->first());
+
         $user->notifyToSetupPassword();
 
         $customerData = [
