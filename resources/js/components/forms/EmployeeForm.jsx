@@ -6,18 +6,13 @@ import Loading from "../Loading";
 import MultipleSelect from "./MultipleSelect";
 
 function EmployeeForm({ employee, onSubmit, onCancel }) {
-    let employeeGroups = [];
-
-    if (employee) {
-        employeeGroups = employee.groups.map(g => g.id);
-    }
-
+    
     const [feedbackGroups, setFeedbackGroups] = useState();
 
     const [fullName, setFullName] = useState(
         employee ? employee.user.full_name : ""
     );
-    const [email, setEmail] = useState(employee ? employee.user.email : "");
+    const [email, setEmail] = useState("");
     const [avatar, setAvatar] = useState(null);
     const [groups, setGroups] = useState([]);
 
@@ -29,7 +24,10 @@ function EmployeeForm({ employee, onSubmit, onCancel }) {
     };
 
     useEffect(() => {
-        setGroups(employeeGroups);
+        if (employee) {
+            setGroups(employee.groups.map(g => g.id));
+            setEmail(employee.user.email);
+        }
         fetchFeedbackGroups();
     }, []);
 
@@ -54,13 +52,6 @@ function EmployeeForm({ employee, onSubmit, onCancel }) {
 
     const onFormSubmit = e => {
         e.preventDefault();
-
-        console.log({
-            fullName,
-            email,
-            groups,
-            avatar
-        });
 
         const formData = new FormData();
 
@@ -120,15 +111,15 @@ function EmployeeForm({ employee, onSubmit, onCancel }) {
             </div>
 
             <div className="text-right">
+                <button type="submit" className="btn btn-success rounded-pill mr-3">
+                    Сохранить
+                </button>
                 <button
                     type="button"
-                    className="btn btn-primary rounded-pill mr-3"
+                    className="btn btn-primary rounded-pill"
                     onClick={onCancel}
                 >
                     Отмена
-                </button>
-                <button type="submit" className="btn btn-success rounded-pill">
-                    Сохранить
                 </button>
             </div>
         </form>
