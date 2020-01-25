@@ -9,6 +9,11 @@ const styles = {
             borderRadius: "50px",
             padding: "5px 15px"
         }
+    },
+    avatar: {
+        height: "115px",
+        width: "115px",
+        objectFit: 'cover'
     }
 };
 
@@ -18,10 +23,14 @@ function EmployeeModal({ classes, employee, show, onHide, onEdit, onDelete }) {
             <div className="text-center" style={{ color: "#707070" }}>
                 <img
                     src={employee.avatar}
-                    style={{ height: "115px" }}
-                    className="rounded-circle mb-2"
+                    className={classes.avatar + " rounded-circle mb-2"}
                 />
                 <h5>{employee.user.full_name}</h5>
+
+                {employee.user.roles.length ? (
+                    <p>{employee.user.roles[0].name}</p>
+                ) : null}
+
                 <p>{employee.user.email}</p>
                 <div className="row justify-content-center mb-5">
                     <div className="col-7">

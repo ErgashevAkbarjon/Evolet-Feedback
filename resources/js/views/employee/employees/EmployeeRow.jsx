@@ -9,7 +9,9 @@ const styles = {
         }
     },
     avatar: {
-        height: "3.3rem!important"
+        height: "3.3rem!important",
+        width: "3.3rem!important",
+        objectFit: 'cover'
     }
 };
 

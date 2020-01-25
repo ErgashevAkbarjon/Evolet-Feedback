@@ -7,6 +7,8 @@ const styles = {
     authorAvatar: {
         borderRadius: '100%',
         width: '100%',
+        height: "3.13rem",
+        objectFit: "cover"
     },
     reply: {
         border: 'none',
