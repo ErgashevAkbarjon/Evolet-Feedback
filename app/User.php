@@ -34,14 +34,19 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'password',
     ];
 
-    public function customers()
+    public function customer()
     {
-        return $this->hasMany(Customer::class);
+        return $this->hasOne(Customer::class);
     }
 
-    public function employees()
+    public function employee()
     {
-        return $this->hasMany(Employee::class);
+        return $this->hasOne(Employee::class);
+    }
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
     }
 
     public function isCustomer()
@@ -52,6 +57,12 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function isEmployee()
     {
         return Employee::where('user_id', $this->id)->exists();
+    }
+
+    public function hasRole($roleName)
+    {
+        $r = $this->roles->contains('name', $roleName);
+        return $r;
     }
 
     public function getPasswordResetToken()
