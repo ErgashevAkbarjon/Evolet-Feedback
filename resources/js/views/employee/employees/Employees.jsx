@@ -18,7 +18,7 @@ const printableFields = {
 };
 
 function Employees({ match }) {
-    const [employees, setEmployees] = useState();
+    const [employees, setEmployees] = useState([]);
 
     const [selectedEmployee, setSelectedEmployee] = useState(null);
 
@@ -44,10 +44,7 @@ function Employees({ match }) {
     const fetchEmployees = () => {
         axios
             .get(ApiRoutes.employees)
-            .then(({ data }) => {
-                console.log(data);
-                setEmployees(data);
-            })
+            .then(({ data }) => setEmployees(data))
             .catch(e => console.log(e));
     };
 
@@ -56,7 +53,7 @@ function Employees({ match }) {
     }, []);
 
     const resetEmployeeList = () => {
-        setEmployees(null);
+        setEmployees([]);
         fetchEmployees();
     };
 
@@ -93,7 +90,7 @@ function Employees({ match }) {
         resetEmployeeList();
     };
 
-    return employees ? (
+    return employees.length ? (
         <div>
             <TableTitle title="Сотрудники">
                 <div className="text-right">

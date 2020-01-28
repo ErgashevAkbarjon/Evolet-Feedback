@@ -1,11 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
 import withStyles from "react-jss";
 import { Row, Col } from "react-bootstrap";
-import axios from "axios";
 import { NavLink } from "react-router-dom";
 
 import Loading from "../components/Loading";
-import { ApiRoutes } from "../routes";
 
 const styles = {
     sidebar: {
@@ -36,48 +34,27 @@ const styles = {
     }
 };
 
-function Sidebar({ classes }) {
-    const [groups, setGroups] = useState();
-
-    useEffect(() => {
-        axios
-            .get(ApiRoutes.feedbackGroups)
-            .then(({ data }) => setGroups(data))
-            .catch(e => {
-                console.log(e);
-            });
-    }, []);
-
+function Sidebar({ classes, links }) {
     return (
         <Row>
             <div className={classes.sidebar}>
                 <h1 className={classes.header}>Feedback</h1>
-
                 <nav>
-                    {groups ? (
-                        groups.map((group, i) => (
+                    {links ? (
+                        links.map((link, i) => (
                             <div key={i}>
                                 <NavLink
-                                    to={"/feedbacks/group/" + group.id}
+                                    to={link.to}
                                     className={classes.sidebarLink}
                                     activeClassName={classes.sidebarLinkActive}
                                 >
-                                    {group.name}
+                                    {link.text}
                                 </NavLink>
                             </div>
                         ))
                     ) : (
                         <Loading />
                     )}
-                    <div>
-                        <NavLink
-                            to="/settings"
-                            className={classes.sidebarLink}
-                            activeClassName={classes.sidebarLinkActive}
-                        >
-                            Настройки
-                        </NavLink>
-                    </div>
                 </nav>
             </div>
         </Row>

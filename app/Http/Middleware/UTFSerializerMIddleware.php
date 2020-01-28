@@ -18,6 +18,10 @@ class UTFSerializerMIddleware
     {
         $response = $next($request);
 
-        return Controller::jsonUtf($response->original);
+        if($response->status() === 200){
+            return Controller::jsonUtf($response->original);
+        }
+
+        return $response;
     }
 }

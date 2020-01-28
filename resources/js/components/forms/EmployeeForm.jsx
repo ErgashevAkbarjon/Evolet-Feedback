@@ -6,30 +6,49 @@ import Loading from "../Loading";
 import MultipleSelect from "./MultipleSelect";
 
 function EmployeeForm({ employee, onSubmit, onCancel }) {
-    
-    const [feedbackGroups, setFeedbackGroups] = useState();
+    const [groupsList, setGroupsList] = useState();
+    const [rolesList, setRolesList] = useState([]);
 
-    const [fullName, setFullName] = useState(
-        employee ? employee.user.full_name : ""
-    );
+    const [fullName, setFullName] = useState("");
     const [email, setEmail] = useState("");
+    const [role, setRole] = useState();
     const [avatar, setAvatar] = useState(null);
     const [groups, setGroups] = useState([]);
 
     const fetchFeedbackGroups = () => {
         axios
             .get(ApiRoutes.feedbackGroups)
-            .then(({ data }) => setFeedbackGroups(data))
+            .then(({ data }) => setGroupsList(data))
+            .catch(e => console.log(e));
+    };
+
+    const fetchUserRoles = () => {
+        axios
+            .get(ApiRoutes.roles)
+            .then(({ data }) => {
+                setRolesList(data);
+                if (!employee) {
+                    setRole(data[0].id);
+                }
+            })
             .catch(e => console.log(e));
     };
 
     useEffect(() => {
-        if (employee) {
-            setGroups(employee.groups.map(g => g.id));
-            setEmail(employee.user.email);
-        }
         fetchFeedbackGroups();
+        fetchUserRoles();
     }, []);
+
+    useEffect(() => {
+        if (!employee) return;
+
+        const { user, groups } = employee;
+
+        setFullName(user.full_name);
+        setEmail(user.email);
+        setGroups(groups.map(g => g.id));
+        setRole(user.roles[0].id);
+    }, [employee]);
 
     const handleInputChange = ({ target }) => {
         const { name, value } = target;
@@ -43,6 +62,9 @@ function EmployeeForm({ employee, onSubmit, onCancel }) {
                 break;
             case "groups":
                 setGroups(value);
+                break;
+            case "role":
+                setRole(value);
                 break;
             case "avatar":
                 setAvatar(target.files[0]);
@@ -58,12 +80,13 @@ function EmployeeForm({ employee, onSubmit, onCancel }) {
         formData.append("full_name", fullName);
         formData.append("email", email);
         formData.append("groups", JSON.stringify(groups));
+        formData.append("role", role);
         formData.append("avatar", avatar);
 
         onSubmit(formData);
     };
 
-    return feedbackGroups ? (
+    return groupsList && rolesList ? (
         <form onSubmit={onFormSubmit}>
             <div className="form-group">
                 <label htmlFor="full_name">Имя</label>
@@ -91,13 +114,29 @@ function EmployeeForm({ employee, onSubmit, onCancel }) {
             </div>
             <MultipleSelect
                 label="Фидбек группы"
-                items={feedbackGroups}
+                items={groupsList}
                 itemValue="id"
                 itemText="name"
                 name="groups"
                 value={groups}
                 onChange={handleInputChange}
             />
+            <div className="form-group">
+                <label htmlFor="rolesSelector">Роль</label>
+                <select
+                    className="form-control"
+                    id="rolesSelector"
+                    name="role"
+                    value={role}
+                    onChange={handleInputChange}
+                >
+                    {rolesList.map((role, i) => (
+                        <option value={role.id} key={i}>
+                            {role.name}
+                        </option>
+                    ))}
+                </select>
+            </div>
             <div className="form-group">
                 <label htmlFor="avatar">Аватар</label>
                 <input
@@ -109,9 +148,11 @@ function EmployeeForm({ employee, onSubmit, onCancel }) {
                     accept="image/*"
                 />
             </div>
-
             <div className="text-right">
-                <button type="submit" className="btn btn-success rounded-pill mr-3">
+                <button
+                    type="submit"
+                    className="btn btn-success rounded-pill mr-3"
+                >
                     Сохранить
                 </button>
                 <button

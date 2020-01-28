@@ -22,7 +22,6 @@ export default function NewEmployeeModal({ show, onHide, onNewEmployeeAdded }) {
                 onNewEmployeeAdded();
             })
             .catch(e => {
-                console.log(e);
                 setSendingData(false);
             });
     };

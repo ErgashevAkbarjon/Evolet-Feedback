@@ -17,7 +17,7 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        $user = User::where('email', $request['email'])->first();
+        $user = User::with('roles:id')->where('email', $request['email'])->first();
 
         if (!$user) {
             return response()->json(
@@ -33,15 +33,6 @@ class AuthController extends Controller
                 ['error' => "Неправильно введен email или пароль"],
                 400
             );
-        }
-
-        $userIsEmployee = $user->isEmployee();
-        $userIsCustomer = $user->isCustomer();
-
-        if($userIsEmployee && !$userIsCustomer){
-            $user->type = 1;
-        } else {
-            $user->type = 2;
         }
 
         return response()->json($this->makeJwt($user, $request->ip()));
@@ -85,7 +76,7 @@ class AuthController extends Controller
             'iss' => "lumen-jwt",
             'sub' => [$user, $ipAddress],
             'iat' => time(),
-            'exp' => time() + 60*60
+            'exp' => time() + 60 * 60
         ];
         
         return JWT::encode($payload, env('JWT_SECRET'));

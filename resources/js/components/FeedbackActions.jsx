@@ -95,7 +95,6 @@ function FeedbackActions({ classes, feedback, reloadFeedbackCallBack }) {
         const newStatus = { status_id: statusId };
         const newResponse = {
             body: message,
-            employee_id: 11, //TODO Make employee_id dymanic
             feedback_id: feedback.id
         };
 
