@@ -18,7 +18,7 @@ const printable = {
 };
 
 function Customers({ match }) {
-    const [customers, setCustomers] = useState();
+    const [customers, setCustomers] = useState([]);
 
     const [showNewCustomer, setShowNewCustomer] = useState(false);
 
@@ -58,7 +58,7 @@ function Customers({ match }) {
     };
 
     const updateCustomersList = () => {
-        setCustomers(null);
+        setCustomers([]);
         fetchCustomers();
     };
 
@@ -89,7 +89,7 @@ function Customers({ match }) {
         updateCustomersList();
     };
 
-    return customers ? (
+    return customers.length ? (
         <div>
             <TableTitle title="Пользователи">
                 <div className="text-right">
