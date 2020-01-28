@@ -64,7 +64,8 @@ $app->singleton(
 $app->routeMiddleware([
     'jwt.auth' => App\Http\Middleware\JWTMiddleware::class,
     'utf.serializer' => App\Http\Middleware\UTFSerializerMIddleware::class,
-    'api.fields_limiter' => App\Http\Middleware\FieldsLimiterMIddleware::class
+    'api.fields_limiter' => App\Http\Middleware\FieldsLimiterMIddleware::class,
+    'role' => App\Http\Middleware\RoleMiddleware::class
 ]);
 
 /*

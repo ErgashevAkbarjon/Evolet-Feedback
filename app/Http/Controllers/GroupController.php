@@ -4,15 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Feedback;
 use App\Group;
+use App\Role;
 use Illuminate\Http\Request;
 
 class GroupController extends Controller
 {
 
+    public function __construct() {
+        $adminMIddleware = "role:" . Role::ADMIN_ROLE_NAME;
+
+        $this->middleware($adminMIddleware, ['except' => ['index']]);
+    }
+
     public function index(Request $request)
     {
         $response = Group::query();
-
+        
         $response = $this->filterByRequest($request, $response)->get();
 
         return $response;

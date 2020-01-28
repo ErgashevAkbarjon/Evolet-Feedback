@@ -17,7 +17,7 @@ const settingItems = [
     },
     {
         link: "/pc",
-        text: "Промо Компании"
+        text: "Промо компании"
     }
 ];
 

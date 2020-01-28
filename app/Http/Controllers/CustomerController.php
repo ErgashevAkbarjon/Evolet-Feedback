@@ -10,11 +10,22 @@ use Illuminate\Support\Facades\Hash;
 
 class CustomerController extends Controller
 {
+    public function __construct()
+    {
+        $adminMiddleware = "role:" . Role::ADMIN_ROLE_NAME;
+        $customerOrAdminMiddleware = $adminMiddleware . ',' . Role::CUSTOMER_ROLE_NAME;
+
+        $this->middleware($adminMiddleware, ['except' => ['index', 'show']]);
+         
+        //FIXME Deny index, after refactoring the frontend part
+        $this->middleware($customerOrAdminMiddleware, ['only' => ['index', 'show']]);
+    }
+
     public function index(Request $request)
     {
         $result = Customer::with(['user', 'pc']);
 
-        $result = $this->filterByRequest( $request, $result )->get();
+        $result = $this->filterByRequest($request, $result)->get();
 
         return $result;
     }
@@ -24,28 +35,28 @@ class CustomerController extends Controller
         $this->validate($request, [
             'full_name' => 'required',
             'email' => 'required|email|unique:users',
-            'pc' => 'required'
+            'pc' => 'required',
         ]);
-        
+
         $user = $request->only(['full_name', 'email']);
-        
+
         $user['password'] = Hash::make(str_random(10));
-        
+
         $user = User::create($user);
 
-        $user->roles()->attach(Role::where('name', 'customer')->first());
+        $user->roles()->attach(Role::where('name', Role::CUSTOMER_ROLE_NAME)->first());
 
         $user->notifyToSetupPassword();
 
         $customerData = [
             'user_id' => $user->id,
-            'pc_id' => $request->pc
+            'pc_id' => $request->pc,
         ];
 
         $newCustomer = Customer::create($customerData);
         return $newCustomer;
     }
-    
+
     public function show($id)
     {
         return Customer::with(['user', 'pc'])->where('id', $id)->first();
@@ -55,7 +66,7 @@ class CustomerController extends Controller
     {
         $customerToUpdate = Customer::find($id);
         $requestItems = $request->all();
-        
+
         foreach ($requestItems as $item => $value) {
             switch ($item) {
                 case 'full_name':
@@ -69,7 +80,7 @@ class CustomerController extends Controller
         }
 
         $customerToUpdate->save();
-        
+
         return $customerToUpdate->load('user', 'pc');
     }
 
@@ -80,7 +91,7 @@ class CustomerController extends Controller
 
         Customer::destroy($customerToDelete->id);
         User::destroy($customerUserId);
-    }   
+    }
 
     /**
      * Helpers

@@ -74,5 +74,6 @@ export const ApiRoutes = {
     feedbackComments: '/api/comments',
     customers: '/api/customers',
     pc: '/api/pc',
-    employees: '/api/employees'
+    employees: '/api/employees',
+    roles: '/api/roles'
 }

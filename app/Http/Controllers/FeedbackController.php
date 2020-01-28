@@ -5,11 +5,18 @@ namespace App\Http\Controllers;
 use App\Customer;
 use App\Feedback;
 use App\File;
+use App\Role;
 use App\Status;
 use Illuminate\Http\Request;
 
 class FeedbackController extends Controller
 {
+    public function __construct() {
+        $customerMIddleware = 'role:' . Role::CUSTOMER_ROLE_NAME;
+
+        $this->middleware($customerMIddleware, ['only' => ['store']]);
+    }
+
     public function index(Request $request)
     {
         $result = Feedback::with([
@@ -60,12 +67,6 @@ class FeedbackController extends Controller
 
         $customer = Customer::where('user_id', $currentUser->id)->first();
         
-        if(!$customer){
-            return response()->json([
-                'error' => 'Only customers can create feedbacks'
-            ], 400);
-        }
-
         $newFeedbackData['customer_id'] = $customer->id;
 
         $newFeedback = Feedback::create($newFeedbackData);

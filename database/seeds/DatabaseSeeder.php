@@ -6,8 +6,11 @@ use App\Feedback;
 use App\FeedbackType;
 use App\Group;
 use App\PC;
+use App\Role;
 use App\Status;
 use App\User;
+use App\Comment;
+use App\File;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -25,49 +28,64 @@ class DatabaseSeeder extends Seeder
         $this->seedFeedbackTypes();
         $this->seedGroups();
         $this->seedPC();
+        $this->seedRoles();
 
         $this->seedFactories([
             [
-                'class' => App\User::class,
+                'class' => User::class,
                 'count' => 30,
             ],
             [
-                'class' => App\Customer::class,
+                'class' => Customer::class,
                 'count' => 10,
             ],
             [
-                'class' => App\Employee::class,
+                'class' => Employee::class,
                 'count' => 10,
             ],
             [
-                'class' => App\Feedback::class,
+                'class' => Feedback::class,
                 'count' => 100,
             ],
             [
-                'class' => App\Comment::class,
+                'class' => Comment::class,
                 'count' => 100,
             ],
             [
-                'class' => App\File::class,
+                'class' => File::class,
                 'count' => 100,
             ],
         ]);
 
-        $this->attachEmployeesToGroups();
         $this->seedUsers();
+        $this->attachEmployeesToGroups();
     }
 
     private function seedUsers()
     {
         $akbar = User::create([
             'full_name' => "Akbar Ergashev",
-            'email' => 'e@gmail.com',
+            'email' => 'a@gmail.com',
             'password' => Hash::make('admin'),
         ]);
         Employee::create([
             'user_id' => $akbar->id,
             'avatar' => 'https://lorempixel.com/200/200/cats/?41078',
         ]);
+
+        $akbar->roles()->attach(Role::where('name', Role::ADMIN_ROLE_NAME)->first());
+
+        $employee = User::create([
+            'full_name' => "Employee Employee",
+            'email' => 'e@gmail.com',
+            'password' => Hash::make('admin'),
+        ]);
+        Employee::create([
+            'user_id' => $employee->id,
+            'avatar' => 'https://lorempixel.com/200/200/cats/?41078',
+        ]);
+
+        $employee->roles()->attach(Role::where('name', Role::EMPLOYEE_ROLE_NAME)->first());
 
         $customer = User::create([
             'full_name' => 'Customer customer',
@@ -78,6 +96,8 @@ class DatabaseSeeder extends Seeder
             'user_id' => $customer->id,
             'pc_id' => 1,
         ]);
+
+        $customer->roles()->attach(Role::where('name', Role::CUSTOMER_ROLE_NAME)->first());
     }
 
     private function seedStatuses()
@@ -112,6 +132,14 @@ class DatabaseSeeder extends Seeder
         PC::create(['name' => 'Spey', 'logo' => '/images/pc/spey.png']);
         PC::create(['name' => 'Neo Universe', 'logo' => '/images/pc/neo.png']);
         PC::create(['name' => 'Lady Healthcare', 'logo' => '/images/pc/lady.png']);
+    }
+
+    public function seedRoles()
+    {
+        Role::truncate();
+        Role::create(['name' => Role::ADMIN_ROLE_NAME]);
+        Role::create(['name' => Role::EMPLOYEE_ROLE_NAME]);
+        Role::create(['name' => Role::CUSTOMER_ROLE_NAME]);
     }
 
     private function attachEmployeesToGroups()

@@ -4,11 +4,18 @@ namespace App\Http\Controllers;
 
 use App\File;
 use App\PC;
+use App\Role;
 use Illuminate\Http\Request;
 
 class PCController extends Controller
 {
     const PC_LOGO_FOLDER = "/images/pc/";
+
+    public function __construct() {
+        $adminMIddleware = "role:" . Role::ADMIN_ROLE_NAME;
+
+        $this->middleware($adminMIddleware, ['except' => ['index']]);
+    }
 
     public function index(Request $request)
     {
