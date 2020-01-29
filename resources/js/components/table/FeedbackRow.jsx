@@ -41,7 +41,7 @@ function FeedbackRow({ classes, feedback, printableFields, history }) {
         history.push("/feedbacks/" + feedback.id);
     };
 
-    const emptyValue = ( <td>Данные были удалены</td> )
+    const emptyValue = "Данные были удалены";
 
     const { description, created_at, customer, status } = feedback;
 
