@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Http\Controllers\Controller;
 use Closure;
+use Illuminate\Http\Response;
 
 class UTFSerializerMIddleware
 {
@@ -18,7 +19,11 @@ class UTFSerializerMIddleware
     {
         $response = $next($request);
 
-        if($response->status() === 200){
+        if(
+            $response instanceof Response && 
+            $response->status() === 200
+        ){
+
             return Controller::jsonUtf($response->original);
         }
 
