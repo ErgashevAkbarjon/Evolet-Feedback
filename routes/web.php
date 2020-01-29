@@ -50,6 +50,8 @@ $router->group(['prefix'=>'api', 'middleware' => ['jwt.auth', 'utf.serializer', 
     $router->delete('pc/{id}', 'PCController@destroy');
 
     $router->get('roles', 'RoleController@index');
+    $router->get('/manual', 'ManualController@show');
+    
 });
 
 $router->group(['prefix'=>'/'], function () use ($router){

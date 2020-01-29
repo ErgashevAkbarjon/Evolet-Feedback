@@ -5,6 +5,7 @@ import { ApiRoutes } from "../../routes";
 import axios from "axios";
 import AuthContext from "../../components/AuthContext";
 import Loading from "../../components/Loading";
+import ManualLink from "../../components/ManualLink";
 
 const navbarLinks = [
     { name: "Новый фидбек", url: "/" },
@@ -31,7 +32,7 @@ function Navbar() {
 
     const onSignOut = () => {
         authContext.resetAuth();
-    }
+    };
 
     useEffect(() => {
         fetchCustomerData();
@@ -74,7 +75,10 @@ function Navbar() {
                     ))}
                 </ul>
                 {customer ? <div>Баллы: {customer.bonus}</div> : <Loading />}
-                <button className="btn btn-link" onClick={onSignOut}>Выйти</button>
+                <ManualLink />
+                <button className="btn btn-link" onClick={onSignOut}>
+                    Выйти
+                </button>
             </div>
         </nav>
     );

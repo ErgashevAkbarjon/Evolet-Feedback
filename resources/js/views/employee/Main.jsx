@@ -8,6 +8,7 @@ import Sidebar from "../../components/Sidebar";
 import { EmployeeRoutes } from "../../routes";
 import AuthContext from "../../components/AuthContext";
 import { ApiRoutes } from "../../routes";
+import ManualLink from "../../components/ManualLink";
 
 const styles = {};
 
@@ -77,6 +78,7 @@ function Main({ classes }) {
                 </Col>
                 <Col className="offset-2 pl-lg-4">
                     <div className="py-3 text-right">
+                        <ManualLink/>
                         <button
                             type="button"
                             className="btn btn-link"
