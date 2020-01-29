@@ -17,7 +17,7 @@ class CreateCustomersTable extends Migration
             $table->bigIncrements('id');
             $table->integer('user_id');
             $table->integer('pc_id');
-            $table->integer('bonus')->nullable();
+            $table->integer('bonus')->default(0);
             $table->timestamps();
         });
     }

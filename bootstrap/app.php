@@ -21,7 +21,7 @@ $app = new Laravel\Lumen\Application(
     dirname(__DIR__)
 );
 
-// $app->withFacades();
+$app->withFacades();
 
 $app->withEloquent();
 
@@ -61,9 +61,12 @@ $app->singleton(
 //     App\Http\Middleware\ExampleMiddleware::class
 // ]);
 
-// $app->routeMiddleware([
-//     'auth' => App\Http\Middleware\Authenticate::class,
-// ]);
+$app->routeMiddleware([
+    'jwt.auth' => App\Http\Middleware\JWTMiddleware::class,
+    'utf.serializer' => App\Http\Middleware\UTFSerializerMIddleware::class,
+    'api.fields_limiter' => App\Http\Middleware\FieldsLimiterMIddleware::class,
+    'role' => App\Http\Middleware\RoleMiddleware::class
+]);
 
 /*
 |--------------------------------------------------------------------------
@@ -79,6 +82,16 @@ $app->singleton(
 // $app->register(App\Providers\AppServiceProvider::class);
 // $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
+$app->register(Illuminate\Mail\MailServiceProvider::class);
+
+
+/**
+ * Mail
+ */
+$app->configure('mail');
+$app->alias('mailer', Illuminate\Mail\Mailer::class);
+$app->alias('mailer', Illuminate\Contracts\Mail\Mailer::class);
+$app->alias('mailer', Illuminate\Contracts\Mail\MailQueue::class);
 
 /*
 |--------------------------------------------------------------------------

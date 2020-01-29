@@ -8,6 +8,8 @@ class Feedback extends Model
 {
     protected $table = "feedbacks";
 
+    protected $guarded = [];
+
     public function group()
     {
         return $this->belongsTo(Group::class);
@@ -31,5 +33,9 @@ class Feedback extends Model
     public function comments()
     {
         return $this->hasMany(Comment::class);
+    }
+    public function response()
+    {
+        return $this->hasOne(Response::class);
     }
 }

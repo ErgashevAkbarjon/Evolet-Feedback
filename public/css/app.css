@@ -1,0 +1,25 @@
+body {
+    font-family: 'Segoe UI', Tahoma !important;
+    font-weight: 400;
+    height: 100vh;
+}
+#root {
+    height: 100%;
+}
+.btn-danger {
+    background: #EB552F;
+    border-color: #EB552F;
+}
+
+.btn-danger:focus {
+    box-shadow: 0 0 0 0.2rem #eb542f4a;
+}
+
+.btn-success {
+    background: #30D92A;
+    border-color: #30D92A;
+}
+
+.btn-success:focus {
+    box-shadow: 0 0 0 0.2rem #30da2a4a;
+}

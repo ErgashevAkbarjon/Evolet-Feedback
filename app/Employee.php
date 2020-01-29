@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Employee extends Model
 {
+    protected $guarded = [];
+
     public function groups()
     {
         return $this->belongsToMany(Group::class, 'employee_group');

@@ -6,6 +6,7 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateFeedbacksTable extends Migration
 {
+    const DEFAULT_STATUS_ID = 1;
     /**
      * Run the migrations.
      *
@@ -17,9 +18,10 @@ class CreateFeedbacksTable extends Migration
             $table->bigIncrements('id');
             $table->text('description');
             $table->integer('group_id');
-            $table->integer('status_id');
+            $table->integer('status_id')->default(self::DEFAULT_STATUS_ID);
             $table->integer('type_id');
             $table->integer('customer_id');
+            $table->integer('response_id')->nullable();
             $table->timestamps();
         });
     }
