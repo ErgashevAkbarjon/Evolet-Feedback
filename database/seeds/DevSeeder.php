@@ -3,11 +3,8 @@
 use App\Customer;
 use App\Employee;
 use App\Feedback;
-use App\FeedbackType;
 use App\Group;
-use App\PC;
 use App\Role;
-use App\Status;
 use App\User;
 use App\Comment;
 use App\File;
@@ -23,12 +20,12 @@ class DevSeeder extends Seeder
      */
     public function run()
     {
-        $this->seedStatuses();
-        $this->seedFeedbackTypes();
+        $this->call(StatusesSeeder::class);
+        $this->call(FeedbackTypesSeeder::class);
+        $this->call(PCSeeder::class);
+        $this->call(RolesSeeder::class);
         $this->seedGroups();
-        $this->seedPC();
-        $this->seedRoles();
-
+        
         $this->seedFactories([
             [
                 'class' => User::class,
@@ -99,46 +96,12 @@ class DevSeeder extends Seeder
         $customer->roles()->attach(Role::where('name', Role::CUSTOMER_ROLE_NAME)->first());
     }
 
-    private function seedStatuses()
-    {
-        Status::truncate();
-        Status::create(['name' => 'На рассмотрении', 'color' => '#EBBF2F']);
-        Status::create(['name' => 'Принят', 'color' => '#30D92A']);
-        Status::create(['name' => 'Отклонен', 'color' => '#EB552F']);
-    }
-
-    private function seedFeedbackTypes()
-    {
-        FeedbackType::truncate();
-        FeedbackType::create(['name' => 'Проблема']);
-        FeedbackType::create(['name' => 'Идея']);
-    }
-
     private function seedGroups()
     {
         Group::truncate();
         Group::create(['name' => 'Упаковки']);
         Group::create(['name' => 'Инструкции']);
         Group::create(['name' => 'Сайт']);
-        Group::create(['name' => 'Упаковки']);
-    }
-
-    private function seedPC()
-    {
-        PC::truncate();
-        PC::create(['name' => 'Vegapharm', 'logo' => '/images/pc/vegapharm.png']);
-        PC::create(['name' => 'Belinda', 'logo' => '/images/pc/belinda.png']);
-        PC::create(['name' => 'Spey', 'logo' => '/images/pc/spey.png']);
-        PC::create(['name' => 'Neo Universe', 'logo' => '/images/pc/neo.png']);
-        PC::create(['name' => 'Lady Healthcare', 'logo' => '/images/pc/lady.png']);
-    }
-
-    public function seedRoles()
-    {
-        Role::truncate();
-        Role::create(['name' => Role::ADMIN_ROLE_NAME]);
-        Role::create(['name' => Role::EMPLOYEE_ROLE_NAME]);
-        Role::create(['name' => Role::CUSTOMER_ROLE_NAME]);
     }
 
     private function attachEmployeesToGroups()
