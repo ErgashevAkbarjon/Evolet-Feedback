@@ -6,6 +6,11 @@ const styles = {
     listWrapper: {
         maxHeight: "15rem",
         overflowY: "auto"
+    },
+    avatar: {
+        height: "3rem",
+        width: " 3rem",
+        objectFit: " cover"
     }
 };
 
@@ -21,17 +26,17 @@ function UserList({ classes, users, placeHolder }) {
                 >
                     {users.map((user, i) => (
                         <Link
-                            to={user.link || ''}
+                            to={user.link || ""}
                             className="list-group-item list-group-item-action"
                             key={i}
                         >
                             <div className="row align-items-center">
                                 {user.hasOwnProperty("avatar") ? (
-                                    <div className="col-1 p-0">
+                                    <div className="p-0">
                                         <img
                                             src={user.avatar}
                                             alt={user.name}
-                                            className="img-fluid rounded-circle"
+                                            className={classes.avatar + " img-fluid rounded-circle"}
                                         />
                                     </div>
                                 ) : null}
