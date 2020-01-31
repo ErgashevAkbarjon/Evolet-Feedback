@@ -32,12 +32,6 @@ function Feedback({ classes, match }) {
 
     const [selectedFile, setSelectedFile] = useState();
 
-    const authBearer = useContext(AuthContext);
-
-    const jwtPayload = parseJwt(authBearer.auth); //FIXME It shoud execute once not on every re-rendering
-
-    const user = jwtPayload.sub[0];
-
     const feedbackId = match.params.id;
 
     const getFeedback = () => {
@@ -62,7 +56,6 @@ function Feedback({ classes, match }) {
     const addComment = (commentBody, parentId = null) => {
         const newComment = {
             body: commentBody,
-            author_id: user.id,
             feedback_id: feedback.id
         };
 

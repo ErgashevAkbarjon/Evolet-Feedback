@@ -36,7 +36,6 @@ class CommentController extends Controller
 
         $this->validate($request, [
             'body' => 'required',
-            'author_id' => 'required',
             'feedback_id' => 'required',
         ]);
 
@@ -46,13 +45,13 @@ class CommentController extends Controller
             'feedback_id',
         ]);
         
-        $employee = Employee::where('user_id', $request->author_id)->first();
+        $currentEmployee = $request->auth->employee; // Employee::where('user_id', $request->author_id)->first();
         
-        if(!$employee){
-            return response(['error' => 'Author is not an employee !']);
+        if(!$currentEmployee){
+            return response(['error' => 'Only employees can add comments !']);
         }
 
-        $commentFieldsValues['employee_id'] = $employee->id;
+        $commentFieldsValues['employee_id'] = $currentEmployee->id;
 
         Comment::create($commentFieldsValues);
     }
