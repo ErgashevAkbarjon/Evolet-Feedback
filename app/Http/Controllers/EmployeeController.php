@@ -88,6 +88,9 @@ class EmployeeController extends Controller
                 case 'groups':
                     $employeeToUpdate->groups()->sync(json_decode($value));
                     break;
+                case 'role':
+                    $employeeToUpdate->user->setRole($value);
+                    break;
                 case 'avatar':
                     $this->updateAvatar($employeeToUpdate, $value);
                     break;
