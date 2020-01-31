@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Employee;
 use App\Feedback;
 use App\Group;
 use App\Role;
@@ -32,6 +33,10 @@ class GroupController extends Controller
         ]);
 
         $newGroup = Group::create($request->only(['name']));
+        
+        $admins = Employee::withRole(Role::ADMIN_ROLE_NAME)->get();
+
+        $newGroup->employees()->attach($admins);
 
         return $newGroup;
     }
