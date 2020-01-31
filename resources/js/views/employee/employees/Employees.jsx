@@ -18,7 +18,7 @@ const printableFields = {
 };
 
 function Employees({ match }) {
-    const [employees, setEmployees] = useState([]);
+    const [employees, setEmployees] = useState(null);
 
     const [selectedEmployee, setSelectedEmployee] = useState(null);
 
@@ -90,7 +90,7 @@ function Employees({ match }) {
         resetEmployeeList();
     };
 
-    return employees.length ? (
+    return employees ? (
         <div>
             <TableTitle title="Сотрудники">
                 <div className="text-right">
@@ -111,14 +111,16 @@ function Employees({ match }) {
                     </tr>
                 </thead>
                 <tbody>
-                    {employees.map((employee, i) => (
-                        <EmployeeRow
-                            key={i}
-                            employee={employee}
-                            printables={printableFields}
-                            onClick={employeeSelected}
-                        />
-                    ))}
+                    {Array.isArray(employees)
+                        ? employees.map((employee, i) => (
+                              <EmployeeRow
+                                  key={i}
+                                  employee={employee}
+                                  printables={printableFields}
+                                  onClick={employeeSelected}
+                              />
+                          ))
+                        : null}
                 </tbody>
             </Table>
             <NewEmployeeModal

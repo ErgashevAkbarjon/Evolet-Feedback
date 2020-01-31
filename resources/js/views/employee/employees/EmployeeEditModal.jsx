@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 import CardModal from "../../../components/CardModal";
@@ -25,14 +25,15 @@ function EmployeeEditModal({ employee, show, onHide, onEmployeeUpdated }) {
                 }
             })
             .then(({data}) => {
+                setSendingData(false);
                 onEmployeeUpdated(data);
             })
             .catch(e => {
-                console.log(e);
                 setSendingData(false);
+                console.log(e);
             });
     };
-
+    
     return (
         <CardModal
             title="Изменить данные сотрудника"

@@ -33,10 +33,14 @@ function CustomerForm({ classes, customer, onSubmit, onCancel }) {
 
     const [pcItems, setPCItems] = useState();
 
+    let mounted;
+
     const fetchPC = () => {
         axios
             .get(ApiRoutes.pc)
             .then(({ data }) => {
+                if(!mounted) return;
+                
                 setPCItems(data);
 
                 if(!customer)
@@ -46,6 +50,8 @@ function CustomerForm({ classes, customer, onSubmit, onCancel }) {
     };
 
     useEffect(() => {
+        mounted = true;
+
         fetchPC();
 
         if(!customer) return;
@@ -54,6 +60,7 @@ function CustomerForm({ classes, customer, onSubmit, onCancel }) {
         setEmail(customer.user.email);
         setPC(customer.pc_id);
 
+        return () => mounted = false;
     }, []);
 
     const formSubmitted = (e) => {

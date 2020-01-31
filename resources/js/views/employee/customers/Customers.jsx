@@ -18,7 +18,7 @@ const printable = {
 };
 
 function Customers({ match }) {
-    const [customers, setCustomers] = useState([]);
+    const [customers, setCustomers] = useState(null);
 
     const [showNewCustomer, setShowNewCustomer] = useState(false);
 
@@ -89,7 +89,7 @@ function Customers({ match }) {
         updateCustomersList();
     };
 
-    return customers.length ? (
+    return customers ? (
         <div>
             <TableTitle title="Пользователи">
                 <div className="text-right">
@@ -110,14 +110,16 @@ function Customers({ match }) {
                     </tr>
                 </thead>
                 <tbody>
-                    {customers.map((customer, i) => (
-                        <CustomerRow
-                            customer={customer}
-                            printable={printable}
-                            onCustomerClick={onCustomerClick}
-                            key={i}
-                        />
-                    ))}
+                    {Array.isArray(customers)
+                        ? customers.map((customer, i) => (
+                              <CustomerRow
+                                  customer={customer}
+                                  printable={printable}
+                                  onCustomerClick={onCustomerClick}
+                                  key={i}
+                              />
+                          ))
+                        : null}
                 </tbody>
             </Table>
             <NewCustomerModal

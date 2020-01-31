@@ -8,17 +8,19 @@ import MultipleSelect from "./MultipleSelect";
 function EmployeeForm({ employee, onSubmit, onCancel }) {
     const [groupsList, setGroupsList] = useState();
     const [rolesList, setRolesList] = useState([]);
-
+    
     const [fullName, setFullName] = useState("");
     const [email, setEmail] = useState("");
     const [role, setRole] = useState();
     const [avatar, setAvatar] = useState(null);
     const [groups, setGroups] = useState([]);
-
+    
+    let mounted;
+    
     const fetchFeedbackGroups = () => {
         axios
             .get(ApiRoutes.feedbackGroups)
-            .then(({ data }) => setGroupsList(data))
+            .then(({ data }) => {if(mounted) setGroupsList(data)})
             .catch(e => console.log(e));
     };
 
@@ -26,6 +28,8 @@ function EmployeeForm({ employee, onSubmit, onCancel }) {
         axios
             .get(ApiRoutes.roles)
             .then(({ data }) => {
+                if(!mounted) return;
+
                 setRolesList(data);
                 if (!employee) {
                     setRole(data[0].id);
@@ -35,8 +39,11 @@ function EmployeeForm({ employee, onSubmit, onCancel }) {
     };
 
     useEffect(() => {
+        mounted = true;
         fetchFeedbackGroups();
         fetchUserRoles();
+
+        return () => mounted = false
     }, []);
 
     useEffect(() => {
