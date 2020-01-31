@@ -74,7 +74,7 @@ function Navbar() {
                         </li>
                     ))}
                 </ul>
-                {customer ? <div>Баллы: {customer.bonus}</div> : <Loading />}
+                {customer ? <div className="mx-3">Баллы: {customer.bonus}</div> : <Loading />}
                 <ManualLink />
                 <button className="btn btn-link" onClick={onSignOut}>
                     Выйти

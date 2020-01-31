@@ -18,6 +18,10 @@ function Main({ classes }) {
 
     const authContext = useContext(AuthContext);
 
+    const getAuthName = () => {
+        return authContext.getUser().full_name;
+    };
+    
     const onSignOut = () => {
         authContext.resetAuth();
     };
@@ -78,14 +82,33 @@ function Main({ classes }) {
                 </Col>
                 <Col className="offset-2 pl-lg-4">
                     <div className="py-3 text-right">
-                        <ManualLink/>
-                        <button
-                            type="button"
-                            className="btn btn-link"
-                            onClick={onSignOut}
-                        >
-                            Выйти
-                        </button>
+                        <ManualLink />
+                        <div className="dropdown d-inline">
+                            <button
+                                className="btn dropdown-toggle"
+                                type="button"
+                                id="dropdownMenuButton"
+                                data-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false"
+                            >
+                                <div className="d-inline-block">
+                                    <div>{getAuthName()}</div>
+                                </div>
+                            </button>
+                            <div
+                                className="dropdown-menu dropdown-menu-right"
+                                aria-labelledby="dropdownMenuButton"
+                            >
+                                <button
+                                    type="button"
+                                    className="btn dropdown-item"
+                                    onClick={onSignOut}
+                                >
+                                    Выйти
+                                </button>
+                            </div>
+                        </div>
                     </div>
                     <Switch>
                         {EmployeeRoutes.map((routeProps, i) => (
