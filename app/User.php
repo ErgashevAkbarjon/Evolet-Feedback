@@ -65,6 +65,12 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return $r;
     }
 
+    public function setRole($roleId)
+    {
+        $this->roles()->detach();
+        $this->roles()->attach($roleId);
+    }
+
     public function getPasswordResetToken()
     {
         $token = '';
