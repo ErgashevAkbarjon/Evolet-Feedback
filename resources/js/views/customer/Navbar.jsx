@@ -34,6 +34,10 @@ function Navbar() {
         authContext.resetAuth();
     };
 
+    const getAuthName = () => {
+        return authContext.getUser().full_name;
+    };
+
     useEffect(() => {
         fetchCustomerData();
     }, []);
@@ -74,11 +78,38 @@ function Navbar() {
                         </li>
                     ))}
                 </ul>
-                {customer ? <div className="mx-3">Баллы: {customer.bonus}</div> : <Loading />}
+                {customer ? (
+                    <div className="mx-3">Баллы: {customer.bonus}</div>
+                ) : (
+                    <Loading />
+                )}
                 <ManualLink />
-                <button className="btn btn-link" onClick={onSignOut}>
-                    Выйти
-                </button>
+                <div className="dropdown d-inline">
+                    <button
+                        className="btn dropdown-toggle"
+                        type="button"
+                        id="dropdownMenuButton"
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                    >
+                        <div className="d-inline-block">
+                            <div>{getAuthName()}</div>
+                        </div>
+                    </button>
+                    <div
+                        className="dropdown-menu dropdown-menu-right"
+                        aria-labelledby="dropdownMenuButton"
+                    >
+                        <button
+                            type="button"
+                            className="btn dropdown-item"
+                            onClick={onSignOut}
+                        >
+                            Выйти
+                        </button>
+                    </div>
+                </div>
             </div>
         </nav>
     );
