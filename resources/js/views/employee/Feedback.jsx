@@ -116,6 +116,7 @@ function Feedback({ classes, match }) {
                                 {"Отправитель: " +
                                     feedback.customer.user.full_name}
                             </p>
+                            <p>{"Группа: " + feedback.group.name}</p>
                             <p>{"ПК: " + feedback.customer.pc.name}</p>
                             <p>{"Дата: " + feedback.created_at}</p>
                             <p style={{ color: feedback.status.color }}>
