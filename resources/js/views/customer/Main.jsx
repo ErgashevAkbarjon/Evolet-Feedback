@@ -6,7 +6,7 @@ import Navbar from "../customer/Navbar";
 
 function Main() {
     return (
-        <div className="h-100">
+        <div>
             <Navbar />
             <div className="container-fluid h-100">
                 <div className="row d-flex justify-content-center h-100">
