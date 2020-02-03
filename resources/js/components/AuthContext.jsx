@@ -59,11 +59,11 @@ export function AuthContextProvider(props) {
         error => {
             const unAutorized = error.response.status === UNAUTORIZE_CODE;
             const forbidden = error.response.status === FORBIDDEN_CODE;
-            
+
             if (forbidden) {
                 setRequestForbidden(true);
             }
-            
+
             if (unAutorized) {
                 resetAuth();
             }
@@ -96,7 +96,9 @@ export function AuthContextProvider(props) {
                 show={requestForbidden}
                 onHide={() => setRequestForbidden(false)}
             >
-                <p>У вас нет доступа, обратитесь к администратору.</p>
+                <p className="text-center">
+                    У вас нет доступа, обратитесь к администратору.
+                </p>
                 <div className="text-center">
                     <button
                         className="btn btn-primary rounded-pill px-4"
