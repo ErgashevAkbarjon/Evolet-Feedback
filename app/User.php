@@ -61,8 +61,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     public function hasRole($roleName)
     {
-        $r = $this->roles->contains('name', $roleName);
-        return $r;
+        return $this->roles->contains('name', $roleName);
     }
 
     public function setRole($roleId)
