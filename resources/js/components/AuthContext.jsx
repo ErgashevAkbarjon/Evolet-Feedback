@@ -45,7 +45,7 @@ export function AuthContextProvider(props) {
     const authIsEmployee = () => {
         if (!auth) return;
 
-        return getUserRoles().includes(EMPLOYEE_ROLE);
+        return getUserRoles().includes(EMPLOYEE_ROLE) || authIsAdmin();
     };
 
     const authIsCustomer = () => {

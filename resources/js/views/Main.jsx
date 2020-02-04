@@ -20,7 +20,7 @@ function Main(props) {
         );
     }
 
-    if (authContext.authIsAdmin() || authContext.authIsEmployee()) {
+    if (authContext.authIsEmployee()) {
         return <EmployeeMain />;
     }
 
