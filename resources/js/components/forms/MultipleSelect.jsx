@@ -52,16 +52,16 @@ function MultipleSelect({
             <label>{label}</label>
             <div className={classes.selectWrapper + " form-control"}>
                 {items.map((item, i) => (
-                    <div className="form-check" key={i}>
+                    <div className="custom-control custom-checkbox" key={i}>
                         <input
-                            className="form-check-input"
+                            className="custom-control-input"
                             type="checkbox"
                             id={i}
                             value={item[itemValue]}
                             checked={arrayIncludes(localValue, item[itemValue])}
                             onChange={onCheckboxChange}
                         />
-                        <label className="form-check-label" htmlFor={i}>
+                        <label className="custom-control-label" htmlFor={i}>
                             {item[itemText]}
                         </label>
                     </div>
