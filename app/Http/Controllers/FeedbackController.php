@@ -38,9 +38,9 @@ class FeedbackController extends Controller
         return $result; 
     }
 
-    public function show($id)
+    public function show($id, Request $request)
     {
-        $result = Feedback::with([
+        $feedback = Feedback::with([
             'status',
             'group',
             'type',
@@ -49,8 +49,26 @@ class FeedbackController extends Controller
             'response',
             'files'
         ])->find($id);
+        
+        if (
+            $request->auth->isCustomer() && 
+            $feedback->customer->user->id === $request->auth->id
+        ){
+            return $feedback;
+        }
 
-        return $result;
+        if ($request->auth->isEmployee()){
+            $currentEmployee = $request->auth->employee;
+            $employeeHasAccess = $currentEmployee->groups->contains($feedback->group_id);
+
+            if($employeeHasAccess){
+                return $feedback;
+            }
+        }
+
+        return response()->json([
+            'error' => 'Access denied!'
+        ], 403);
     }
 
     public function store(Request $request)
