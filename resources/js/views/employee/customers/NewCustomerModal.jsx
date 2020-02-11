@@ -15,9 +15,13 @@ function NewCustomer({ show, onHide, onCustomerAdded }) {
         axios
             .post(ApiRoutes.customers, newCustomer)
             .then(({data}) => {
+                setSendingData(false);
                 onCustomerAdded(data);
             })
-            .catch(e => console.log(e));
+            .catch(e => {
+                setSendingData(false);
+                console.log(e)
+            });
     };
 
     return (
