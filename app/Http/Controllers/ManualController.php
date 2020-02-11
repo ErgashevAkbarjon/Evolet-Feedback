@@ -26,7 +26,7 @@ class ManualController extends Controller
             $manualName = self::CUSTOMER_MANUAL_NAME;
         }
         
-        $manualPath = $this->public_path("\manual\\" . $manualName);
+        $manualPath = $this->public_path("/manual/" . $manualName);
         return response()->download($manualPath , "Evolet-Feedback-Manual.docx");
     }    
 }
