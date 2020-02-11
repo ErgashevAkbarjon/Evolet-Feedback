@@ -97,9 +97,9 @@ class FeedbackController extends Controller
 
         $files = $files['files'];
 
-        $feedbackFolderName = '\\'. $newFeedback->id;
-        $publicFolder = '\public';
-        $fileRelativeFolder = '\feedback-files' . $feedbackFolderName;
+        $feedbackFolderName = '/'. $newFeedback->id;
+        $publicFolder = '/public';
+        $fileRelativeFolder = '/feedback-files' . $feedbackFolderName;
         $fullFileFolder = base_path() . $publicFolder . $fileRelativeFolder;
         
 
@@ -109,7 +109,7 @@ class FeedbackController extends Controller
 
             $file->move($fullFileFolder, $fileName);
 
-            $fileUrl = $fileRelativeFolder. '\\' . $fileName;
+            $fileUrl = $fileRelativeFolder. '/' . $fileName;
 
             File::create([
                 'name' => $fileName,
