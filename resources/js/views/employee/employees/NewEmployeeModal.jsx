@@ -6,8 +6,11 @@ import EmployeeForm from "../../../components/forms/EmployeeForm";
 import { ApiRoutes } from "../../../routes";
 import Loading from "../../../components/Loading";
 
+const FAILING_VALIDATION_CODE = 422;
+
 export default function NewEmployeeModal({ show, onHide, onNewEmployeeAdded }) {
     const [isSendingData, setSendingData] = useState(false);
+    const [validationErrors, setValidationErrors] = useState();
 
     const onFormSubmit = formData => {
         setSendingData(true);
@@ -21,7 +24,10 @@ export default function NewEmployeeModal({ show, onHide, onNewEmployeeAdded }) {
                 setSendingData(false);
                 onNewEmployeeAdded();
             })
-            .catch(e => {
+            .catch(({ response: r }) => {
+                if (r.status === FAILING_VALIDATION_CODE) {
+                    setValidationErrors(r.data);
+                }
                 setSendingData(false);
             });
     };
@@ -29,7 +35,11 @@ export default function NewEmployeeModal({ show, onHide, onNewEmployeeAdded }) {
     return (
         <CardModal title="Добавить сотрудника" show={show} onHide={onHide}>
             {!isSendingData ? (
-                <EmployeeForm onCancel={onHide} onSubmit={onFormSubmit} />
+                <EmployeeForm
+                    onCancel={onHide}
+                    onSubmit={onFormSubmit}
+                    validationErrors={validationErrors}
+                />
             ) : (
                 <Loading />
             )}
