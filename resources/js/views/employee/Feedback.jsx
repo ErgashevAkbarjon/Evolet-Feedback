@@ -69,20 +69,24 @@ function Feedback({ classes, match }) {
             .catch(e => console.log(e));
     };
 
-    return feedback ? (
+    if(!feedback) return <Loading/>;
+
+    const { description, files, customer, group, created_at, status } = feedback;
+    
+    return (
         <>
             <div className="row">
                 <div className="col-12 col-lg-8">
                     <Card title="Описание">
-                        <p>{feedback.description}</p>
+                        <p>{description}</p>
                     </Card>
                     <Card
                         title="Файлы"
                         info="Нет файлов"
-                        showInfo={!feedback.files || feedback.files.length == 0}
+                        showInfo={!files || files.length == 0}
                     >
                         <div className="row">
-                            {feedback.files.map((file, i) => (
+                            {files.map((file, i) => (
                                 <div
                                     className="col-8 col-md-6 col-lg-6 col-xl-4"
                                     key={i}
@@ -113,14 +117,13 @@ function Feedback({ classes, match }) {
                     <Card title="Информация">
                         <div className={classes.info}>
                             <p>
-                                {"Отправитель: " +
-                                    feedback.customer.user.full_name}
+                                Отправитель: {customer ? customer.user.full_name: null}
                             </p>
-                            <p>{"Группа: " + feedback.group.name}</p>
-                            <p>{"ПК: " + feedback.customer.pc.name}</p>
-                            <p>{"Дата: " + feedback.created_at}</p>
-                            <p style={{ color: feedback.status.color }}>
-                                {"Статус: " + feedback.status.name}
+                            <p>Группа: {group.name}</p>
+                            <p>ПК: {customer ? customer.pc.name: null}</p>
+                            <p>Дата: {created_at}</p>
+                            <p style={{ color: status.color }}>
+                                Статус:  {status.name}
                             </p>
                         </div>
                     </Card>
@@ -142,8 +145,6 @@ function Feedback({ classes, match }) {
                 </div>
             </div>
         </>
-    ) : (
-        <Loading />
     );
 }
 
