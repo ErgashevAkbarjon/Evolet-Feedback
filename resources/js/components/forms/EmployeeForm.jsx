@@ -5,7 +5,7 @@ import { ApiRoutes } from "../../routes";
 import Loading from "../Loading";
 import MultipleSelect from "./MultipleSelect";
 
-function EmployeeForm({ employee, onSubmit, onCancel }) {
+function EmployeeForm({ employee, onSubmit, onCancel, validationErrors: validationErrorsProp }) {
     const [groupsList, setGroupsList] = useState();
     const [rolesList, setRolesList] = useState([]);
     
@@ -15,6 +15,8 @@ function EmployeeForm({ employee, onSubmit, onCancel }) {
     const [avatar, setAvatar] = useState(null);
     const [groups, setGroups] = useState([]);
     
+    const [validationErrors, setValidationErrors] = useState();
+
     let mounted;
     
     const fetchFeedbackGroups = () => {
@@ -57,8 +59,19 @@ function EmployeeForm({ employee, onSubmit, onCancel }) {
         setRole(user.roles[0].id);
     }, [employee]);
 
+    useEffect(() => {
+        setValidationErrors(validationErrorsProp);
+    }, [validationErrorsProp]);
+
     const handleInputChange = ({ target }) => {
         const { name, value } = target;
+
+        if (validationErrors && validationErrors.hasOwnProperty(name)) {
+            let resetedInputErrors = validationErrors;
+            resetedInputErrors[name] = null;
+
+            setValidationErrors(resetedInputErrors);
+        }
 
         switch (name) {
             case "full_name":
@@ -93,6 +106,8 @@ function EmployeeForm({ employee, onSubmit, onCancel }) {
         onSubmit(formData);
     };
 
+    const emailErrors = validationErrors ? validationErrors.email : null;
+
     return groupsList && rolesList ? (
         <form onSubmit={onFormSubmit}>
             <div className="form-group">
@@ -111,13 +126,20 @@ function EmployeeForm({ employee, onSubmit, onCancel }) {
                 <label htmlFor="email">Email</label>
                 <input
                     type="email"
-                    className="form-control"
+                    className={
+                        emailErrors ? "form-control is-invalid" : "form-control"
+                    }
                     id="email"
                     name="email"
                     required
                     value={email}
                     onChange={handleInputChange}
                 />
+                {emailErrors
+                    ? emailErrors.map(error => (
+                          <div className="invalid-feedback">{error}</div>
+                      ))
+                    : null}
             </div>
             <MultipleSelect
                 label="Фидбек группы"
