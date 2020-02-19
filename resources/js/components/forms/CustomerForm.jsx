@@ -114,8 +114,8 @@ function CustomerForm({
                     required
                 />
                 {emailErrors
-                    ? emailErrors.map(error => (
-                          <div className="invalid-feedback">{error}</div>
+                    ? emailErrors.map((error, i) => (
+                          <div className="invalid-feedback" key={i}>{error}</div>
                       ))
                     : null}
             </div>
