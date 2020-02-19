@@ -8,7 +8,7 @@ import Loading from "../../../components/Loading";
 
 const FAILING_VALIDATION_CODE = 422;
 
-export default function NewEmployeeModal({ show, onHide, onNewEmployeeAdded }) {
+function NewEmployeeModal({ show, onHide, onNewEmployeeAdded }) {
     const [isSendingData, setSendingData] = useState(false);
     const [validationErrors, setValidationErrors] = useState();
 
@@ -46,3 +46,4 @@ export default function NewEmployeeModal({ show, onHide, onNewEmployeeAdded }) {
         </CardModal>
     );
 }
+export default NewEmployeeModal;
