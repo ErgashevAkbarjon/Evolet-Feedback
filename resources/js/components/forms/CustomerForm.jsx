@@ -1,37 +1,22 @@
 import React, { useState, useEffect } from "react";
-import withStyles from "react-jss";
 import axios from "axios";
 
 import { ApiRoutes } from "../../routes";
 import Loading from "../Loading";
 
-const styles = {
-    actionButton: {
-        borderRadius: "50px",
-        padding: ".5em",
-        color: "white",
-        display: "block",
-        width: "100%",
-        cursor: "pointer",
-        "&:hover": {
-            color: "white"
-        }
-    },
-    acceptActionButton: {
-        background: "#30D92A",
-        borderColor: "#30D92A",
-        "&:focus": {
-            boxShadow: "0 0 0 0.2rem #30da2a4a"
-        }
-    }
-};
-
-function CustomerForm({ classes, customer, onSubmit, onCancel }) {
-    const [fullName, setFullName] = useState('');
-    const [email, setEmail] = useState('');
+function CustomerForm({
+    customer,
+    onSubmit,
+    onCancel,
+    validationErrors: validationErrorsProp
+}) {
+    const [fullName, setFullName] = useState("");
+    const [email, setEmail] = useState("");
     const [pc, setPC] = useState();
 
     const [pcItems, setPCItems] = useState();
+
+    const [validationErrors, setValidationErrors] = useState();
 
     let mounted;
 
@@ -39,12 +24,11 @@ function CustomerForm({ classes, customer, onSubmit, onCancel }) {
         axios
             .get(ApiRoutes.pc)
             .then(({ data }) => {
-                if(!mounted) return;
-                
+                if (!mounted) return;
+
                 setPCItems(data);
 
-                if(!customer)
-                    setPC(data[0].id);
+                if (!customer) setPC(data[0].id);
             })
             .catch(e => console.log(e));
     };
@@ -54,38 +38,53 @@ function CustomerForm({ classes, customer, onSubmit, onCancel }) {
 
         fetchPC();
 
-        if(!customer) return;
+        if (!customer) return;
 
         setFullName(customer.user.full_name);
         setEmail(customer.user.email);
         setPC(customer.pc_id);
 
-        return () => mounted = false;
+        return () => (mounted = false);
     }, []);
 
-    const formSubmitted = (e) => {
+    useEffect(() => {
+        setValidationErrors(validationErrorsProp);
+    }, [validationErrorsProp]);
+
+    const formSubmitted = e => {
         e.preventDefault();
 
         onSubmit({
-            'full_name': fullName,
+            full_name: fullName,
             email,
             pc
         });
     };
 
     const inputChanged = ({ target }) => {
-        switch (target.name) {
+        const { name, value } = target;
+
+        if (validationErrors && validationErrors.hasOwnProperty(name)) {
+            let resetedInputErrors = validationErrors;
+            resetedInputErrors[name] = null;
+
+            setValidationErrors(resetedInputErrors);
+        }
+
+        switch (name) {
             case "full_name":
-                setFullName(target.value);
+                setFullName(value);
                 break;
             case "email":
-                setEmail(target.value);
+                setEmail(value);
                 break;
             case "pc":
-                setPC(target.value);
+                setPC(value);
                 break;
         }
     };
+
+    const emailErrors = validationErrors ? validationErrors.email : null;
 
     return pcItems ? (
         <form onSubmit={formSubmitted}>
@@ -105,13 +104,20 @@ function CustomerForm({ classes, customer, onSubmit, onCancel }) {
                 <label htmlFor="email">Email</label>
                 <input
                     type="email"
-                    className="form-control"
+                    className={
+                        emailErrors ? "form-control is-invalid" : "form-control"
+                    }
                     id="email"
                     name="email"
                     value={email}
                     onChange={inputChanged}
                     required
                 />
+                {emailErrors
+                    ? emailErrors.map(error => (
+                          <div className="invalid-feedback">{error}</div>
+                      ))
+                    : null}
             </div>
             <div className="form-group">
                 <label htmlFor="pc">ПК</label>
@@ -130,30 +136,20 @@ function CustomerForm({ classes, customer, onSubmit, onCancel }) {
                     ))}
                 </select>
             </div>
-            <div className="row justify-content-end">
-                <div className="col-7">
-                    <div className="row">
-                        <div className="col-6 mb-2 mb-xl-0">
-                            <button
-                                className={
-                                    "btn btn-primary " + classes.actionButton
-                                }
-                                onClick={onCancel}
-                                type='button'
-                            >
-                                Отмена
-                            </button>
-                        </div>
-                        <div className="col-6">
-                            <button
-                                className={`btn ${classes.actionButton} ${classes.acceptActionButton}`}
-                                type="submit"
-                            >
-                                Сохранить
-                            </button>
-                        </div>
-                    </div>
-                </div>
+            <div className="text-right">
+                <button
+                    type="submit"
+                    className="btn btn-success rounded-pill mr-3"
+                >
+                    Сохранить
+                </button>
+                <button
+                    type="button"
+                    className="btn btn-primary rounded-pill"
+                    onClick={onCancel}
+                >
+                    Отмена
+                </button>
             </div>
         </form>
     ) : (
@@ -161,4 +157,4 @@ function CustomerForm({ classes, customer, onSubmit, onCancel }) {
     );
 }
 
-export default withStyles(styles)(CustomerForm);
+export default CustomerForm;
