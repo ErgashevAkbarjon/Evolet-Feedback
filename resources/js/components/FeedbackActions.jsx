@@ -129,8 +129,8 @@ function FeedbackActions({ classes, feedback, reloadFeedbackCallBack }) {
     return (
         <React.Fragment>
             {statusId === PENDING_STATUS_ID ? (
-                <div className="row justify-content-center">
-                    <div className="col-xs-6 col-xl-5 mb-2 mb-xl-0">
+                <div className="row justify-content-center mb-4">
+                    <div className="col-xs-6 col-xl-5 mb-2">
                         <button
                             className={`btn ${getModalActionClasses(
                                 ACCEPT_STATUS_ID
@@ -145,7 +145,7 @@ function FeedbackActions({ classes, feedback, reloadFeedbackCallBack }) {
                             {getModalActionText(ACCEPT_STATUS_ID)}
                         </button>
                     </div>
-                    <div className="col-xs-6 col-xl-5">
+                    <div className="col-xs-6 col-xl-5 mb-2">
                         <button
                             className={`btn ${getModalActionClasses(
                                 DENY_STATUS_ID

@@ -15,9 +15,9 @@ const styles = {
 function Comments({ classes, comments, addCallback }) {
     return (
         <div>
+            <h3 className={'mb-4 ' + classes.commentsHead}>Обсуждение</h3>
             <CommentInput addCallback={addCallback} />
             <div>
-                <h3 className={'mb-4 ' + classes.commentsHead}>Обсуждение</h3>
                 <ul className="list-unstyled">
                     {
                         isArray(comments)

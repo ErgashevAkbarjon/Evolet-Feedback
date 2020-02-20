@@ -69,10 +69,43 @@ function Feedback({ classes, match }) {
             .catch(e => console.log(e));
     };
 
-    if(!feedback) return <Loading/>;
+    if (!feedback) return <Loading />;
 
-    const { description, files, customer, group, created_at, status } = feedback;
-    
+    const {
+        description,
+        files,
+        customer,
+        group,
+        created_at,
+        status,
+        response
+    } = feedback;
+
+    const infoBlock = (
+        <>
+            <Card title="Информация">
+                <div className={classes.info}>
+                    <p>
+                        Отправитель: {customer ? customer.user.full_name : null}
+                    </p>
+                    <p>Группа: {group.name}</p>
+                    <p>ПК: {customer ? customer.pc.name : null}</p>
+                    <p>Дата: {created_at}</p>
+                    <p style={{ color: status.color }}>Статус: {status.name}</p>
+                </div>
+            </Card>
+            {response ? (
+                <Card title="Отправленный ответ">
+                    <p>{response.body}</p>
+                </Card>
+            ) : null}
+            <FeedbackActions
+                feedback={feedback}
+                reloadFeedbackCallBack={getFeedback}
+            />
+        </>
+    );
+
     return (
         <>
             <div className="row">
@@ -112,25 +145,11 @@ function Feedback({ classes, match }) {
                             ))}
                         </div>
                     </Card>
+                    <div className="d-block d-lg-none">{infoBlock}</div>
+                    <Comments comments={comments} addCallback={addComment} />
                 </div>
-                <div className="col-12 col-lg-4 pr-xl-5">
-                    <Card title="Информация">
-                        <div className={classes.info}>
-                            <p>
-                                Отправитель: {customer ? customer.user.full_name: null}
-                            </p>
-                            <p>Группа: {group.name}</p>
-                            <p>ПК: {customer ? customer.pc.name: null}</p>
-                            <p>Дата: {created_at}</p>
-                            <p style={{ color: status.color }}>
-                                Статус:  {status.name}
-                            </p>
-                        </div>
-                    </Card>
-                    <FeedbackActions
-                        feedback={feedback}
-                        reloadFeedbackCallBack={getFeedback}
-                    />
+                <div className="col-lg-4 pr-xl-5 d-none d-lg-block">
+                    {infoBlock}
                 </div>
                 {selectedFile ? (
                     <FileViewer
@@ -138,11 +157,6 @@ function Feedback({ classes, match }) {
                         onHide={() => setSelectedFile(null)}
                     />
                 ) : null}
-            </div>
-            <div className="row">
-                <div className="col-12 col-lg-8">
-                    <Comments comments={comments} addCallback={addComment} />
-                </div>
             </div>
         </>
     );
