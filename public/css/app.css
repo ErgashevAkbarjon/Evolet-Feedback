@@ -3,6 +3,12 @@ body {
     font-weight: 400;
     height: 100vh;
 }
+
+p {
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+
 #root {
     height: 100%;
 }
