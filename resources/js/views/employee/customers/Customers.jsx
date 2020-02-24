@@ -14,6 +14,7 @@ import TableTitle from "../../../components/table/Title";
 const printable = {
     "user.full_name": "Имя",
     "pc.logo": "ПК",
+    "user.email": "Почта",
     bonus: "Баллы"
 };
 

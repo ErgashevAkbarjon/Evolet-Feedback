@@ -14,6 +14,7 @@ function CustomerRow({ classes, customer, printable, onCustomerClick }) {
     const fields = {
         "user.full_name": customer.user.full_name,
         "pc.logo": <img style={{ width: "5.3rem" }} src={customer.pc.logo} />,
+        "user.email": customer.user.email,
         bonus: customer.bonus
     };
 
