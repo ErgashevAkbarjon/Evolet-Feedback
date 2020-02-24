@@ -1,6 +1,7 @@
 node_modules
 /public/js
 /public/feedback-files/
+/public/mix-manifest.json
 /public/images/avatars/*
 !/public/images/avatars/default.jpg
 /public/storage
