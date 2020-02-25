@@ -6,6 +6,7 @@ use App\Customer;
 use App\Role;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class CustomerController extends Controller
@@ -86,9 +87,10 @@ class CustomerController extends Controller
 
     public function destroy($id)
     {
-        $customerToDelete = Customer::find($id);
+        $customerToDelete = Customer::with('user')->where('id', $id)->first();
         $customerUserId = $customerToDelete->user_id;
 
+        DB::table('password_resets')->where('email', $customerToDelete->user->email)->delete();
         Customer::destroy($customerToDelete->id);
         User::destroy($customerUserId);
     }

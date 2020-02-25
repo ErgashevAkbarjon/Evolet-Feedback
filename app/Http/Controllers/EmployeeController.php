@@ -7,6 +7,7 @@ use App\Employee;
 use App\Group;
 use App\Role;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class EmployeeController extends Controller
@@ -102,7 +103,7 @@ class EmployeeController extends Controller
 
     public function destroy($id)
     {
-        $employeeToDelete = Employee::find($id);
+        $employeeToDelete = Employee::with('user')->where('id', $id)->first();
 
         $employeeUserID = $employeeToDelete->user_id;
         
@@ -110,6 +111,7 @@ class EmployeeController extends Controller
             $this->deletePublicFile($employeeToDelete->avatar); 
         }
 
+        DB::table('password_resets')->where('email', $employeeToDelete->user->email)->delete();
         Employee::destroy($employeeToDelete->id);
         User::destroy($employeeUserID);
     }
