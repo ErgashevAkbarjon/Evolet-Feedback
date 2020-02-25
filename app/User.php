@@ -4,11 +4,13 @@ namespace App;
 
 use App\Mail\SetupPassword;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Laravel\Lumen\Auth\Authorizable;
 
@@ -95,7 +97,14 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function notifyToSetupPassword()
     {
         $resetToken = $this->getPasswordResetToken();
-
-        Mail::to($this)->send(new SetupPassword($resetToken));
+        
+        try{
+            Mail::to($this)->send(new SetupPassword($resetToken));
+        } catch(Exception $e){
+            Log::error(
+                "Error while sending notification to: " . $this->email . PHP_EOL . 
+                "ErorMessage: " . $e
+            );
+        }
     }
 }
