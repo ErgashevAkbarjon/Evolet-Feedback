@@ -42,7 +42,7 @@ class AuthController extends Controller
     {
         $validToken = DB::table('password_resets')->where('token', $token)->exists();
 
-        if(!$validToken) return response('Invalid token');
+        if(!$validToken) return redirect('/');
 
         return view('auth.passwordReset', compact('token'));
     }
