@@ -22,6 +22,17 @@ export function AuthContextProvider(props) {
         setAuth(null);
     };
 
+    const applyBearer = bearer => {
+        if (!bearer || bearer === "null") return;
+
+        localStorage.setItem("noitazb", bearer);
+
+        window.axios.defaults.headers.common["Authorization"] =
+            "Bearer " + bearer;
+
+        setAuth(bearer);
+    };
+
     const getUser = () => {
         if (!auth) return null;
 
@@ -84,6 +95,7 @@ export function AuthContextProvider(props) {
                 auth,
                 setAuth,
                 resetAuth,
+                applyBearer,
                 getUser,
                 authIsAdmin,
                 authIsEmployee,
