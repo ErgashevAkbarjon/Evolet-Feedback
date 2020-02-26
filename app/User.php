@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Mail\ResetPassword;
 use App\Mail\SetupPassword;
 use Carbon\Carbon;
 use Exception;
@@ -9,6 +10,7 @@ use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Mail\Mailable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -98,11 +100,23 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         $resetToken = $this->getPasswordResetToken();
         
+        $this->sendEmail(new SetupPassword($resetToken));
+    }
+
+    public function notifyToResetPassword()
+    {
+        $resetToken = $this->getPasswordResetToken();
+        
+        $this->sendEmail(new ResetPassword($resetToken));
+    }
+
+    private function sendEmail(Mailable $mailable)
+    {
         try{
-            Mail::to($this)->send(new SetupPassword($resetToken));
+            Mail::to($this)->send($mailable);
         } catch(Exception $e){
             Log::error(
-                "Error while sending notification to: " . $this->email . PHP_EOL . 
+                "Error while sending email to: " . $this->email . PHP_EOL . 
                 "ErorMessage: " . $e
             );
         }

@@ -57,6 +57,7 @@ $router->group(['prefix'=>'api', 'middleware' => ['jwt.auth', 'utf.serializer', 
 $router->group(['prefix'=>'/'], function () use ($router){
     
     $router->post('/login', 'AuthController@authenticate');
+    $router->post('/password/forgot', 'AuthController@notifyPasswordReset');
 
     $router->get('/password/reset/{token}', 'AuthController@showPasswordReset');
     $router->post('/password/reset/{token}', 'AuthController@passwordReset');

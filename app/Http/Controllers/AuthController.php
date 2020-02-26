@@ -38,6 +38,25 @@ class AuthController extends Controller
         return response()->json($this->makeJwt($user, $request->ip()));
     }
 
+    public function notifyPasswordReset(Request $request)
+    {
+        $this->validate($request, [
+            'email' => 'required'
+        ]);
+
+        $userToNotify = User::where('email', $request->email)->first();
+        
+        if(!$userToNotify){
+            return response()->json(
+                ['error' => "Нет пользователя с подобной почтой."],
+                400
+            );
+        }
+
+        $userToNotify->notifyToResetPassword();
+        
+    }
+
     public function showPasswordReset($token)
     {
         $validToken = DB::table('password_resets')->where('token', $token)->exists();

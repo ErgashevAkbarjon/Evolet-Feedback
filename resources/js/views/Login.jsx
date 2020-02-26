@@ -1,11 +1,18 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import withStyle from "react-jss";
 import { Redirect } from "react-router-dom";
 import axios from "axios";
 
+import AuthContext from "../components/AuthContext";
+import Loading from "../components/Loading";
+import LoginForm from "../components/forms/LoginForm";
+import ForgotPasswordForm from "../components/forms/ForgotPasswordForm";
+
+const primaryColor = "#B8CF41";
+
 const btnColor = {
-    background: "#B8CF41 !important",
-    borderColor: "#B8CF41 !important"
+    background: primaryColor + " !important",
+    borderColor: primaryColor + " !important"
 };
 
 const style = {
@@ -18,13 +25,16 @@ const style = {
             borderColor: btnColor.borderColor,
             boxShadow: "0 0 0 0.2rem rgba(184, 207, 65, 0.5) !important"
         },
-        "& .btn": {
+        "& .btn-primary": {
             padding: "0.75em 0",
             ...btnColor,
             "&:hover, &:active": btnColor,
             "&:focus, &:active:focus": {
                 boxShadow: "0 0 0 0.2rem rgba(184, 207, 65, 0.5) !important"
             }
+        },
+        "& .btn-link": {
+            color: primaryColor
         }
     },
     logo: {
@@ -33,24 +43,15 @@ const style = {
     }
 };
 
-import AuthContext from "../components/AuthContext";
-import Loading from "../components/Loading";
-
-function Login(props) {
-    const { classes, history, location } = props;
-
+function Login({ classes, history, location }) {
     const authContext = useContext(AuthContext);
-
-    const [creadentials, setCreadentials] = useState({
-        email: "",
-        password: ""
-    });
 
     const [isSendingData, setSendingData] = useState(false);
     const [error, setError] = useState();
+    const [form, setForm] = useState();
+    const [info, setInfo] = useState();
 
-    const sendCredentials = e => {
-        e.preventDefault();
+    const onSignInClick = creadentials => {
         setSendingData(true);
         setError(null);
 
@@ -62,7 +63,8 @@ function Login(props) {
             .post("/login", creadentials)
             .then(res => {
                 setSendingData(false);
-                applyBearer(res.data);
+                authContext.applyBearer(res.data);
+                redirectBack();
             })
             .catch(e => {
                 setSendingData(false);
@@ -70,18 +72,47 @@ function Login(props) {
             });
     };
 
-    const applyBearer = bearer => {
-        if (!bearer || bearer === "null") return;
-
-        localStorage.setItem("noitazb", bearer);
-
-        window.axios.defaults.headers.common["Authorization"] =
-            "Bearer " + bearer;
-
-        authContext.setAuth(bearer);
-
-        redirectBack();
+    const onForgotPasswordClick = () => {
+        setForm(forgotPasswordForm);
     };
+
+    const onEmailSent = () => {
+        setSendingData(false);
+        
+        setForm(null);
+
+        setInfo((
+            <div className="text-center">
+                Письмо с дальнейшими инструкциями отправлено в указанную вами почту.
+            </div>
+        ));
+    };
+
+    const onSendEmailClick = email => {
+        setSendingData(true);
+        axios
+            .post("/password/forgot", {email})
+            .then(onEmailSent)
+            .catch(e => {
+                setSendingData(false);
+                processErrors(e);
+            })
+    };
+
+    const loginForm = (
+        <LoginForm
+            onSignInClick={onSignInClick}
+            onForgotPasswordClick={onForgotPasswordClick}
+        />
+    );
+
+    const forgotPasswordForm = (
+        <ForgotPasswordForm onSendEmailClick={onSendEmailClick} />
+    );
+
+    useEffect(() => {
+        setForm(loginForm);
+    }, []);
 
     const processErrors = e => {
         if (
@@ -110,55 +141,20 @@ function Login(props) {
                         alt="Evolet"
                         className={classes.logo}
                     />
-                    {!isSendingData ? (
-                        <form onSubmit={sendCredentials}>
-                            <div className="form-group">
-                                <input
-                                    type="email"
-                                    value={creadentials.email}
-                                    onChange={({ target }) =>
-                                        setCreadentials({
-                                            ...creadentials,
-                                            email: target.value
-                                        })
-                                    }
-                                    className="form-control py-4"
-                                    placeholder="Введите E-mail"
-                                    required
-                                />
-                            </div>
-                            <div className="form-group">
-                                <input
-                                    type="password"
-                                    value={creadentials.password}
-                                    onChange={({ target }) =>
-                                        setCreadentials({
-                                            ...creadentials,
-                                            password: target.value
-                                        })
-                                    }
-                                    className="form-control py-4"
-                                    placeholder="Введите пароль"
-                                    required
-                                />
-                            </div>
-                            <div>
-                                <button
-                                    type="submit"
-                                    className="btn btn-primary btn-block"
-                                >
-                                    Войти
-                                </button>
-                            </div>
-                        </form>
-                    ) : (
-                        <Loading />
-                    )}
+                    {!isSendingData ? form : <Loading />}
+
+                    {info ? (
+                        <div className="alert alert-success" role="alert">
+                            {info}
+                        </div>
+                    ) : null}
+
                     {error ? (
                         <div className="alert alert-danger mt-3" role="alert">
                             {error}
                         </div>
                     ) : null}
+                    
                 </div>
             </div>
         </div>
