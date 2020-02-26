@@ -78,25 +78,26 @@ function Login({ classes, history, location }) {
 
     const onEmailSent = () => {
         setSendingData(false);
-        
+
         setForm(null);
 
-        setInfo((
+        setInfo(
             <div className="text-center">
-                Письмо с дальнейшими инструкциями отправлено в указанную вами почту.
+                Письмо с дальнейшими инструкциями отправлено в указанную вами
+                почту.
             </div>
-        ));
+        );
     };
 
     const onSendEmailClick = email => {
         setSendingData(true);
         axios
-            .post("/password/forgot", {email})
+            .post("/password/forgot", { email })
             .then(onEmailSent)
             .catch(e => {
                 setSendingData(false);
                 processErrors(e);
-            })
+            });
     };
 
     const loginForm = (
@@ -136,11 +137,13 @@ function Login({ classes, history, location }) {
         <div className={classes.container + " container"}>
             <div className="row justify-content-center align-items-center">
                 <div className="col-9 col-md-6 col-lg-4 text-center">
-                    <img
-                        src="/images/Evolet.png"
-                        alt="Evolet"
-                        className={classes.logo}
-                    />
+                    <a href="/">
+                        <img
+                            src="/images/Evolet.png"
+                            alt="Evolet"
+                            className={classes.logo}
+                        />
+                    </a>
                     {!isSendingData ? form : <Loading />}
 
                     {info ? (
@@ -154,7 +157,6 @@ function Login({ classes, history, location }) {
                             {error}
                         </div>
                     ) : null}
-                    
                 </div>
             </div>
         </div>
