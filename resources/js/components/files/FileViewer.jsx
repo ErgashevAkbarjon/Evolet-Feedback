@@ -27,7 +27,7 @@ function FileViewer({ classes, file, onHide }) {
             onClick={onHide}
         >
             <img
-                src={file}
+                src={file.url}
                 onClick={onHide}
                 className="img-fluid img-thumbnail"
             />
