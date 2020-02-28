@@ -10,20 +10,19 @@ const styles = {
 };
 
 function File({ classes, file, size, onClick }) {
-    
-        let thumbnailCols = "col-4";
+    let thumbnailCols = "col-4";
 
-        switch (size) {
-            case "small":
-                thumbnailCols = "col-2";
-                break;
-            case "medium":
-                thumbnailCols = "col-4";
-                break;
-            case "large":
-                thumbnailCols = "col-6";
-                break;
-        }
+    switch (size) {
+        case "small":
+            thumbnailCols = "col-2";
+            break;
+        case "medium":
+            thumbnailCols = "col-4";
+            break;
+        case "large":
+            thumbnailCols = "col-6";
+            break;
+    }
 
     return (
         <div className="col-8 col-md-6 col-lg-6 col-xl-4">

@@ -6,9 +6,18 @@ import File from "./File";
 function FileGallery({ files, size }) {
     const [selectedFile, setSelectedFile] = useState();
 
-    return (
+    let localFiles = files;
+
+    if(files instanceof FileList){
+        localFiles = Array.from(files).map(f => ({
+            url: URL.createObjectURL(f),
+            name: f.name
+        }));
+    }
+
+    return localFiles ? (
         <div className="row">
-            {files.map((file, i) => (
+            {localFiles.map((file, i) => (
                 <File
                     file={file}
                     onClick={file => setSelectedFile(file)}
@@ -23,11 +32,14 @@ function FileGallery({ files, size }) {
                 />
             ) : null}
         </div>
-    );
+    ) : null;
 }
 
 FileGallery.propTypes = {
-    files: PropTypes.array.isRequired,
+    files: PropTypes.oneOfType([
+        PropTypes.array,
+        PropTypes.instanceOf(FileList),
+    ]),
     size: PropTypes.oneOf(["small", "medium", "large"])
 };
 
