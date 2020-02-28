@@ -5,7 +5,7 @@ import withStyles from "react-jss";
 
 import Loading from "../../components/Loading";
 import Card from "../../components/Card";
-import FileGallery from "../../components/FileGallery";
+import FileGallery from "../../components/files/FileGallery";
 
 const styles = {
     info: {

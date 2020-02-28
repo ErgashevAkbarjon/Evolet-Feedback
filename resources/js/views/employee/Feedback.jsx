@@ -2,14 +2,12 @@ import React, { useState, useEffect, useContext } from "react";
 import withStyles from "react-jss";
 import axios from "axios";
 
-import AuthContext from "../../components/AuthContext";
 import Card from "../../components/Card";
 import Comments from "../../components/comments/Comments";
 import FeedbackActions from "../../components/FeedbackActions";
 import Loading from "../../components/Loading";
 import { ApiRoutes } from "../../routes";
-import FileViewer from "../../components/FileViewer";
-import FileGallery from "../../components/FileGallery";
+import FileGallery from "../../components/files/FileGallery";
 
 const styles = {
     info: {
