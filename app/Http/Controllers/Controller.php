@@ -7,11 +7,21 @@ use Illuminate\Http\Request;
 
 class Controller extends BaseController
 {
+
+    /**
+     * Analog of public_path() from Laravel, returns full path to public folder.
+     *
+     */
     public function public_path($pathToConcat = '')
     {
         return base_path() . '/public' . $pathToConcat;
     }
 
+    /**
+     * Removes file from public folder
+     * 
+     * @param string $path Relative path from public folder 
+     */
     public function deletePublicFile($path)
     {
         $filePath = $this->public_path($path);
@@ -19,6 +29,11 @@ class Controller extends BaseController
         unlink($filePath);
     }
 
+    /**
+     * Converts array with keys "parent_id" to nested tree array where nested
+     * nodes will be stored into "children" key
+     * 
+     */
     protected function toTree(Array $array, $parentId = null)
     {
         $tree = [];
@@ -37,6 +52,11 @@ class Controller extends BaseController
         return $tree;
     }
 
+    /**
+     * Add filters to query from request items, for example: 
+     * URL: /users?name=John -> Query: $query->where('name', 'John')
+     * 
+     */
     protected function filterByRequest(Request $request, $query)
     {
         if($request->method() !== 'GET') return $query;
@@ -58,6 +78,5 @@ class Controller extends BaseController
 
         return $query;
     }
-
 
 }
