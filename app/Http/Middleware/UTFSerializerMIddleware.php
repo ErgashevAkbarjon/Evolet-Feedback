@@ -21,7 +21,7 @@ class UTFSerializerMIddleware
         if($response instanceof Response){
             
             return response()->json(
-                $request->original,
+                $response->original,
                 $response->status(),
                 ['Content-Type' => 'application/json;charset=UTF-8', 'Charset' => 'utf-8'],
                 JSON_UNESCAPED_UNICODE
