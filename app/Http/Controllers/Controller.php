@@ -7,14 +7,34 @@ use Illuminate\Http\Request;
 
 class Controller extends BaseController
 {
-    public static function jsonUtf($data, $code = 200)
+    public function public_path($pathToConcat = '')
     {
-        return response()->json(
-            $data,
-            $code,
-            ['Content-Type' => 'application/json;charset=UTF-8', 'Charset' => 'utf-8'],
-            JSON_UNESCAPED_UNICODE
-        );
+        return base_path() . '/public' . $pathToConcat;
+    }
+
+    public function deletePublicFile($path)
+    {
+        $filePath = $this->public_path($path);
+
+        unlink($filePath);
+    }
+
+    protected function toTree(Array $array, $parentId = null)
+    {
+        $tree = [];
+        foreach ($array as $item) {
+            if($item['parent_id'] === $parentId){
+
+                foreach ($array as $innerItem) {
+                    if($item['id'] === $innerItem['parent_id']){
+                        $item['children'] = $innerItem;
+                    }
+                }
+                $item['children'] = $this->toTree($array, $item['id']);
+                $tree[] = $item;
+            }
+        }
+        return $tree;
     }
 
     protected function filterByRequest(Request $request, $query)
@@ -38,34 +58,6 @@ class Controller extends BaseController
 
         return $query;
     }
-    
-    public function toTree(Array $array, $parentId = null)
-    {
-        $tree = [];
-        foreach ($array as $item) {
-            if($item['parent_id'] === $parentId){
 
-                foreach ($array as $innerItem) {
-                    if($item['id'] === $innerItem['parent_id']){
-                        $item['children'] = $innerItem;
-                    }
-                }
-                $item['children'] = $this->toTree($array, $item['id']);
-                $tree[] = $item;
-            }
-        }
-        return $tree;
-    }
 
-    public function public_path($pathToConcat = '')
-    {
-        return base_path() . '/public' . $pathToConcat;
-    }
-
-    public function deletePublicFile($path)
-    {
-        $filePath = $this->public_path($path);
-
-        unlink($filePath);
-    }
 }

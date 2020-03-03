@@ -2,7 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use App\Http\Controllers\Controller;
 use Closure;
 use Illuminate\Http\Response;
 
@@ -19,12 +18,14 @@ class UTFSerializerMIddleware
     {
         $response = $next($request);
 
-        if(
-            $response instanceof Response && 
-            $response->status() === 200
-        ){
-
-            return Controller::jsonUtf($response->original);
+        if($response instanceof Response){
+            
+            return response()->json(
+                $request->original,
+                $response->status(),
+                ['Content-Type' => 'application/json;charset=UTF-8', 'Charset' => 'utf-8'],
+                JSON_UNESCAPED_UNICODE
+            );
         }
 
         return $response;
