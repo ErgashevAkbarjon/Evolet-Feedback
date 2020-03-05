@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Helpers\Paginator;
 use Closure;
 
 class FieldsLimiterMIddleware
@@ -21,21 +22,55 @@ class FieldsLimiterMIddleware
             return $response;
         }
 
-        $fieldsString = $request->fields;
-        $fields = explode(',', $fieldsString);
+        $fields = explode(',', $request->fields);
 
-        $newResponse = [];
+        $newResponse = $response->original;
         
-        $newResponse = collect($response->original)->map(function ($item) use ($fields){
+        if($newResponse instanceof Paginator){
+
+            return $response->setContent(
+                $this->limitPaginatorData($newResponse, $fields)
+            );    
+        }
+
+        $newResponse = $this->limitToFields($newResponse, $fields);
+
+        return $response->setContent($newResponse);
+    }
+
+    /**
+     * Removes all fields (keys) from $items item, except those that defined in $fields
+     * 
+     */
+    private function limitToFields($items, $fields)
+    {
+        return collect($items)->map(function ($item) use ($fields){
             $temp = [];
 
             foreach ($fields as $field) {
-                $temp[$field] = $item[$field];
+                
+                if(isset($item[$field])){
+                    $temp[$field] = $item[$field];
+                }
             }
 
             return $temp;
         });
+    }
 
-        return $response->setContent($newResponse);
+    /**
+     * Removes all fields from Paginator data item, except those that defined in $fields
+     * 
+     */
+    private function limitPaginatorData(Paginator $paginator, $fields)
+    {
+        $limitedFieldsData = $this->limitToFields(
+            $paginator->getData(), 
+            $fields
+        );
+
+        $paginator->setData($limitedFieldsData);
+
+        return $paginator;
     }
 }
