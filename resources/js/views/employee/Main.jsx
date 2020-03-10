@@ -27,19 +27,10 @@ function Main({ classes }) {
     };
 
     const fetchFeedbackGroups = () => {
-        const authUser = authContext.getUser();
-        const employeeByUserURL =
-            ApiRoutes.employees + "?user_id=" + authUser.id;
-
         axios
-            .get(employeeByUserURL)
-            .then(({ data: employees }) => {
-                console.log();
-                setFeedbackGroups(employees[0].groups);
-            })
-            .catch(e => {
-                console.log(e);
-            });
+            .get(ApiRoutes.feedbackGroups)
+            .then(({ data }) => setFeedbackGroups(data))
+            .catch(e => console.log(e));
     };
 
     useEffect(() => {
