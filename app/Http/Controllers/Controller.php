@@ -55,8 +55,27 @@ class Controller extends BaseController
     }
 
     /**
+     * Processes request items for index method: 
+     * - Filtering: ?[field]=[value],
+     * - Sorting: ?sortBy=[field] and ?sortByDesc=[field],
+     * - Pagination: ?page=[number] and ?perPage=[number] and ?no_pagination
+     */
+    protected function processIndexRequestItems(Request $request, $query, bool $withPagination = true)
+    {
+        $filteredQuery = $this->filterByRequest($request, $query);
+
+        $sortedResultCollection = $this->sortByRequest($request, $filteredQuery->get());
+
+        if(!$withPagination || $request->has('no_pagination')) return $sortedResultCollection;
+
+        $paginatedResult = $this->paginateByRequest($request, $sortedResultCollection);
+
+        return $paginatedResult;
+    }
+
+    /**
      * Add filters to query from request items, for example:
-     * URL: /users?name=John -> Query: $query->where('name', 'John')
+     * - URL: ?name=John -> Query: $query->where('name', 'John')
      *
      */
     protected function filterByRequest(Request $request, $query)
@@ -86,10 +105,9 @@ class Controller extends BaseController
     }
 
     /**
-     * Sorts result collection by request items, for examples:
-     * URL: /users?sortBy=name -> Collection: $result->sortBy('name')
-     * or
-     * URL: /users?sortByDesc=name -> Collection: $result->sortByDesc('name')
+     * Sorts result collection by request items, for example:
+     * - URL: ?sortBy=name -> Collection: $result->sortBy('name')
+     * - URL: ?sortByDesc=name -> Collection: $result->sortByDesc('name')
      *
      */
     protected function sortByRequest(Request $request, Collection $collection)
@@ -106,8 +124,9 @@ class Controller extends BaseController
     }
 
     /**
-     * Custom paginator to paginate collection by request items: ?page= and ?perPage=
-     * 
+     * Custom paginator to paginate collection by request items: 
+     * - ?page=[number]
+     * - ?perPage=[number | 'all']
      */
     protected function paginateByRequest(Request $request, Collection $collection)
     {
