@@ -20,6 +20,10 @@ class Paginator implements Arrayable {
         $this->items = $items;
         $this->perPage = $perPage ?: self::DEFAULT_ITEMS_PER_PAGE;
         $this->currentPage = $currentPage ?: self::DEFAULT_PAGE;
+
+        if($perPage == "all"){
+            $this->perPage = $items->count();
+        }
     }
 
     public function toArray()
