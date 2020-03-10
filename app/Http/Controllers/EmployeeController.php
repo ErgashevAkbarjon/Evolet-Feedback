@@ -27,8 +27,7 @@ class EmployeeController extends Controller
     {
         $query = Employee::with(['groups', 'user.roles']);
 
-        $result = $this->filterByRequest($request, $query)->get();
-        return $result;
+        return $this->processIndexRequestItems($request, $query);
     }
 
     public function store(Request $request)

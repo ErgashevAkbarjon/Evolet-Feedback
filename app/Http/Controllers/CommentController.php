@@ -24,7 +24,7 @@ class CommentController extends Controller
     {
         $commentQuery = Comment::query();
 
-        $comments = $this->filterByRequest($request, $commentQuery)->get()->toArray();
+        $comments = $this->processIndexRequestItems($request, $commentQuery, false)->toArray();
 
         $response = $this->toTree($comments);
         

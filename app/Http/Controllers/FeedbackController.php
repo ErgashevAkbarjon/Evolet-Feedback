@@ -19,7 +19,7 @@ class FeedbackController extends Controller
 
     public function index(Request $request)
     {
-        $result = Feedback::with([
+        $query = Feedback::with([
                 'status',
                 'customer.user:id,full_name',
                 'customer.pc',
@@ -30,12 +30,10 @@ class FeedbackController extends Controller
         
         if($currentUser->isCustomer()){
             $customerID = Customer::where('user_id', $currentUser->id)->first()->id;
-            $result->where('customer_id', $customerID);
+            $query->where('customer_id', $customerID);
         }
 
-        $result = $this->filterByRequest($request, $result)->latest()->get();
-        
-        return $result; 
+        return $this->processIndexRequestItems($request, $query->latest());
     }
 
     public function show($id, Request $request)

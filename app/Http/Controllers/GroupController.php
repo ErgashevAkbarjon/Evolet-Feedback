@@ -33,7 +33,7 @@ class GroupController extends Controller
             });
         }
 
-        return $this->filterByRequest($request, $query)->get();
+        return $this->processIndexRequestItems($request, $query);
     }
 
     public function store(Request $request)
