@@ -20,7 +20,7 @@ class PCController extends Controller
     {
         $query = PC::query();
 
-        return $this->processIndexRequestItems($request, $query);
+        return $this->processIndexRequestItems($request, $query, false);
     }
 
     public function store(Request $request)
