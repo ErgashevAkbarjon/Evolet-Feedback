@@ -56,8 +56,8 @@ function Feedbacks({ classes, match }) {
             .then(({ data }) => setFeedbacks(data))
             .catch(e => console.log(e));
         axios
-            .get(`${groupsRoute}?id=${groupId}`)
-            .then(({ data }) => setTitle(data[0].name))
+            .get(`${groupsRoute}/${groupId}?fields=name`)
+            .then(({ data }) => setTitle(data.name))
             .catch(e => console.log(e));
     }, [filteredFeedbacksURL]);
 
