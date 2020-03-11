@@ -94,7 +94,7 @@ function NewFeedback({ classes }) {
         setType(1);
         setGroup(feedbackGroups[0].id); //TODO Needs a refactor
         setDescription("");
-        setFiles(null);
+        setFiles([]);
 
         setSendingData(false);
     };
