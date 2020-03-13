@@ -74,6 +74,7 @@ function Login({ classes, history, location }) {
 
     const onForgotPasswordClick = () => {
         setForm(forgotPasswordForm);
+        setError(null);
     };
 
     const onEmailSent = () => {
