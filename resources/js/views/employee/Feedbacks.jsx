@@ -40,7 +40,8 @@ const printables = [
     },
     {
         name: "customer.pc",
-        label: "ПК"
+        label: "ПК",
+        sortColumn: "customer.pc.name"
     },
     {
         name: "customer.user.full_name",
@@ -87,11 +88,13 @@ function Feedbacks({ classes, match }) {
     }, [filteredFeedbacksURL]);
 
     const onSortFeedbacksBy = (columnLabel, isDesc) => {
-        const column = printables.find(f => f.label === columnLabel).name;
+        const column = printables.find(f => f.label === columnLabel);
+
+        const columName = column.hasOwnProperty('sortColumn') ? column.sortColumn : column.name;
 
         const sortQuery = isDesc ? "&sortByDesc=" : "&sortBy=";
 
-        fetchFeedbacks(filteredFeedbacksURL + sortQuery + column);
+        fetchFeedbacks(filteredFeedbacksURL + sortQuery + columName);
     };
 
     return (
