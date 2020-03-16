@@ -114,6 +114,11 @@ function FeedbackActions({ classes, feedback, reloadFeedbackCallBack }) {
         });
     };
 
+    const onResponseFormSubmit = e => {
+        e.preventDefault();
+        updateFeedbackStatus(modal.status);
+    };
+
     const feedbackStatusInfo = feedbackResponse ? (
         <div
             className={`alert ${
@@ -166,51 +171,55 @@ function FeedbackActions({ classes, feedback, reloadFeedbackCallBack }) {
             <Modal show={modal.show} onHide={() => hideModal()} centered>
                 <Card title="Сообщение отправителю" noMargin>
                     <div>
-                        <div className="mb-3">
-                            {!sendingData ? (
-                                <textarea
-                                    className="form-control mb-3"
-                                    rows={4}
-                                    placeholder="Сообщение"
-                                    value={message}
-                                    onChange={({ target }) =>
-                                        setMessage(target.value)
-                                    }
-                                />
-                            ) : (
-                                <Loading />
-                            )}
-                        </div>
-                        <div className="row justify-content-end">
-                            <div className="col-7">
-                                <div className="row">
-                                    <div className="col-6 mb-2 mb-xl-0">
-                                        <button
-                                            className={`btn btn-primary ${getModalActionClasses()}`}
-                                            onClick={() => hideModal()}
-                                        >
-                                            {getModalActionText()}
-                                        </button>
-                                    </div>
-                                    <div className="col-6">
-                                        <button
-                                            className={`btn ${
-                                                classes.actionButton
-                                            } ${getModalActionClasses(
-                                                modal.status
-                                            )}`}
-                                            onClick={() =>
-                                                updateFeedbackStatus(
+                        <form
+                            onSubmit={onResponseFormSubmit}
+                        >
+                            <div className="mb-3">
+                                {!sendingData ? (
+                                    <textarea
+                                        className="form-control mb-3"
+                                        rows={4}
+                                        placeholder="Сообщение"
+                                        required
+                                        value={message}
+                                        onChange={({ target }) =>
+                                            setMessage(target.value)
+                                        }
+                                    />
+                                ) : (
+                                    <Loading />
+                                )}
+                            </div>
+                            <div className="row justify-content-end">
+                                <div className="col-7">
+                                    <div className="row">
+                                        <div className="col-6 mb-2 mb-xl-0">
+                                            <button
+                                                type="button"
+                                                className={`btn btn-primary ${getModalActionClasses()}`}
+                                                onClick={() => hideModal()}
+                                            >
+                                                {getModalActionText()}
+                                            </button>
+                                        </div>
+                                        <div className="col-6">
+                                            <button
+                                                type="submit"
+                                                className={`btn ${
+                                                    classes.actionButton
+                                                } ${getModalActionClasses(
                                                     modal.status
-                                                )
-                                            }
-                                        >
-                                            {getModalActionText(modal.status)}
-                                        </button>
+                                                )}`}
+                                            >
+                                                {getModalActionText(
+                                                    modal.status
+                                                )}
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
                 </Card>
             </Modal>
