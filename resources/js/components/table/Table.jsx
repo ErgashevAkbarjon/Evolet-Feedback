@@ -30,13 +30,17 @@ function Table({ classes, items, onPrintRow, headers, onSortBy }) {
     const [headerToSort, setHeaderToSort] = useState(null);
 
     const printRow = (item, i) => {
-        if(onPrintRow){
+        if (onPrintRow) {
             return onPrintRow(item, i);
         }
 
+        const values = Array.isArray(item) ? item : Object.values(item);
+
         return (
             <tr>
-                
+                {values.map((value, i) => (
+                    <td key={i}>{value}</td>
+                ))}
             </tr>
         );
     };
