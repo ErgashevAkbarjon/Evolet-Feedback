@@ -4,8 +4,8 @@ import axios from "axios";
 
 import Table from "../../components/table/Table";
 import FeedbackRow from "../../components/table/FeedbackRow";
-import Loading from '../../components/Loading';
-import { ApiRoutes } from '../../routes';
+import Loading from "../../components/Loading";
+import { ApiRoutes } from "../../routes";
 
 const styles = {
     title: {
@@ -20,7 +20,7 @@ const styles = {
         paddingLeft: "15px"
     },
     menu: {
-        cursor: "pointer",
+        cursor: "pointer"
     },
     menuActive: {
         borderBottom: "2px solid",
@@ -29,17 +29,34 @@ const styles = {
     }
 };
 
-const printable = {
-    description: "Отрывок описания",
-    created_at: "Дата",
-    "customer.pc": "ПК",
-    "customer.user.full_name": "Отправитель",
-    "status.name": "Статус"
-};
+const printables = [
+    {
+        name: "description",
+        label: "Отрывок описания"
+    },
+    {
+        name: "created_at",
+        label: "Дата"
+    },
+    {
+        name: "customer.pc",
+        label: "ПК"
+    },
+    {
+        name: "customer.user.full_name",
+        label: "Отправитель"
+    },
+    {
+        name: "status.name",
+        label: "Статус"
+    }
+];
 
 function Feedbacks({ classes, match }) {
-    
-    const {feedbacks: feedbacksRoute, feedbackGroups: groupsRoute} = ApiRoutes;
+    const {
+        feedbacks: feedbacksRoute,
+        feedbackGroups: groupsRoute
+    } = ApiRoutes;
 
     const [feedbacks, setFeedbacks] = useState();
     const [title, setTitle] = useState("");
@@ -49,17 +66,33 @@ function Feedbacks({ classes, match }) {
 
     const filteredFeedbacksURL = `${feedbacksRoute}?group_id=${groupId}&type_id=${feedbacksType}`;
 
-    useEffect(() => {
+    const fetchFeedbacks = url => {
         setFeedbacks(null);
+
         axios
-            .get(filteredFeedbacksURL)
+            .get(url)
             .then(({ data }) => setFeedbacks(data))
             .catch(e => console.log(e));
+    };
+
+    useEffect(() => {
+        setFeedbacks(null);
+
+        fetchFeedbacks(filteredFeedbacksURL);
+
         axios
             .get(`${groupsRoute}/${groupId}?fields=name`)
             .then(({ data }) => setTitle(data.name))
             .catch(e => console.log(e));
     }, [filteredFeedbacksURL]);
+
+    const onSortFeedbacksBy = (columnLabel, isDesc) => {
+        const column = printables.find(f => f.label === columnLabel).name;
+
+        const sortQuery = isDesc ? "&sortByDesc=" : "&sortBy=";
+
+        fetchFeedbacks(filteredFeedbacksURL + sortQuery + column);
+    };
 
     return (
         <div className="row">
@@ -83,30 +116,18 @@ function Feedbacks({ classes, match }) {
                     </div>
                 </div>
                 <h2 className={classes.title}>{title}</h2>
-                {feedbacks ? (
-                    <Table>
-                        <thead>
-                            <tr>
-                                {Object.values(printable).map(
-                                    (fieldName, i) => (
-                                        <th key={i}>{fieldName}</th>
-                                    )
-                                )}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {feedbacks.map((feedback, i) => (
-                                <FeedbackRow
-                                    key={i}
-                                    feedback={feedback}
-                                    printableFields={Object.keys(printable)}
-                                />
-                            ))}
-                        </tbody>
-                    </Table>
-                ) : (
-                    <Loading />
-                )}
+                <Table
+                    headers={printables.map(f => f.label)}
+                    items={feedbacks}
+                    onSortBy={onSortFeedbacksBy}
+                    onPrintRow={(feedback, i) => (
+                        <FeedbackRow
+                            key={i}
+                            feedback={feedback}
+                            printableFields={printables.map(f => f.name)}
+                        />
+                    )}
+                />
             </div>
         </div>
     );
