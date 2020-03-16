@@ -56,3 +56,11 @@ p {
 .btn-success:focus {
     box-shadow: 0 0 0 0.2rem #30da2a4a;
 }
+
+.unselectable-text {
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
