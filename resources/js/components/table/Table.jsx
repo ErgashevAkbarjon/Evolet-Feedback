@@ -17,7 +17,8 @@ const styles = {
             borderBottom: "1px solid #cccccc !important",
             borderTop: "unset",
             background: "#F5F5F5",
-            fontWeight: "400"
+            fontWeight: "400",
+            cursor: "pointer"
         },
         "& td": {
             border: "none",
@@ -98,7 +99,7 @@ function Table({ classes, items, onPrintRow, headers, onSortBy }) {
                     </tr>
                 </thead>
                 <tbody>
-                    {items ? (
+                    {Array.isArray(items) ? (
                         items.map(printRow)
                     ) : (
                         <tr>
