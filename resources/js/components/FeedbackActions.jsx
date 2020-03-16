@@ -64,8 +64,10 @@ function FeedbackActions({ classes, feedback, reloadFeedbackCallBack }) {
     const { id: statusId } = feedback.status;
 
     const hideModal = () => {
+        setMessage("");
         setModal({ show: false, status: modal.status });
     };
+
     const getModalActionClasses = (modalStatus = null) => {
         let jssClass = classes.actionButton;
 
@@ -198,11 +200,9 @@ function FeedbackActions({ classes, feedback, reloadFeedbackCallBack }) {
                                                 modal.status
                                             )}`}
                                             onClick={() =>
-                                                message.length > 3
-                                                    ? updateFeedbackStatus(
-                                                          modal.status
-                                                      )
-                                                    : null
+                                                updateFeedbackStatus(
+                                                    modal.status
+                                                )
                                             }
                                         >
                                             {getModalActionText(modal.status)}
