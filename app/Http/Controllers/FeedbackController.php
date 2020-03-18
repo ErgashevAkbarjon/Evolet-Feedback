@@ -32,6 +32,11 @@ class FeedbackController extends Controller
             $customerID = Customer::where('user_id', $currentUser->id)->first()->id;
             $query->where('customer_id', $customerID);
         }
+        
+        if($currentUser->isEmployee()){
+            $employeeGroupsId = $currentUser->employee->groups->pluck('id');
+            $query->whereIn('group_id', $employeeGroupsId);
+        }
 
         return $this->processIndexRequestItems($request, $query->latest());
     }
