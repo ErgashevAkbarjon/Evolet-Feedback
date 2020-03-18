@@ -27,7 +27,7 @@ const styles = {
     }
 };
 
-function Table({ classes, items, onPrintRow, headers, onSortBy }) {
+function Table({ classes, items, onPrintRow, headers, onSort }) {
     const [headerToSort, setHeaderToSort] = useState(null);
 
     const printRow = (item, i) => {
@@ -47,9 +47,13 @@ function Table({ classes, items, onPrintRow, headers, onSortBy }) {
     };
 
     const onHeaderClick = header => {
-        if (!onSortBy) return;
+        if (!onSort) return;
+        
+        const unsortableHeader = header.hasOwnProperty('sortable') && !header.sortable;
 
-        const newHeaderToSort = headerToSort && headerToSort.header !== header;
+        if(unsortableHeader) return;
+
+        const newHeaderToSort = headerToSort && headerToSort.header.name !== header.name;
 
         if (!headerToSort || newHeaderToSort) {
             setHeaderToSort({
@@ -61,25 +65,42 @@ function Table({ classes, items, onPrintRow, headers, onSortBy }) {
         }
     };
 
+    const makeSortQuery = (header, isDesc) => {
+
+        let column = header.name;
+
+        if(header.hasOwnProperty('sortColumn')){
+            column = header.sortColumn;
+        }
+
+        let sortQuery = isDesc ? "&sortByDesc=" : "&sortBy=";
+
+        sortQuery += column;
+
+        return sortQuery;
+    };
+
     const onHeaderToSortChange = () => {
         if (!headerToSort) return;
 
         const { header, isDesc } = headerToSort;
 
-        onSortBy(header, isDesc);
+        const sortQuery = makeSortQuery(header, isDesc);
+
+        onSort(sortQuery);
     };
 
     useEffect(onHeaderToSortChange, [headerToSort]);
 
     const getHeaderString = header => {
         const sortingByCurrentHeader =
-            headerToSort && headerToSort.header === header;
+            headerToSort && headerToSort.header.name === header.name;
 
         if (sortingByCurrentHeader) {
-            return headerToSort.isDesc ? `${header} sd` : `${header} s`;
+            return headerToSort.isDesc ? `${header.label} sd` : `${header.label} s`;
         }
 
-        return header;
+        return header.label;
     };
 
     return (

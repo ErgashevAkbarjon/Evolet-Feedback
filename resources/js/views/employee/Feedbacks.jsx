@@ -76,25 +76,25 @@ function Feedbacks({ classes, match }) {
             .catch(e => console.log(e));
     };
 
-    useEffect(() => {
-        setFeedbacks(null);
-
-        fetchFeedbacks(filteredFeedbacksURL);
-
+    const fetchGroupTitle = () => {
         axios
             .get(`${groupsRoute}/${groupId}?fields=name`)
             .then(({ data }) => setTitle(data.name))
             .catch(e => console.log(e));
+    };
+
+    useEffect(fetchGroupTitle, []);
+
+    useEffect(() => {
+
+        setFeedbacks(null);
+        fetchFeedbacks(filteredFeedbacksURL);
+        fetchGroupTitle();
+        
     }, [filteredFeedbacksURL]);
 
-    const onSortFeedbacksBy = (columnLabel, isDesc) => {
-        const column = printables.find(f => f.label === columnLabel);
-
-        const columName = column.hasOwnProperty('sortColumn') ? column.sortColumn : column.name;
-
-        const sortQuery = isDesc ? "&sortByDesc=" : "&sortBy=";
-
-        fetchFeedbacks(filteredFeedbacksURL + sortQuery + columName);
+    const onSortFeedbacks = (sortQuery) => {
+        fetchFeedbacks(filteredFeedbacksURL + sortQuery);
     };
 
     return (
@@ -120,14 +120,14 @@ function Feedbacks({ classes, match }) {
                 </div>
                 <h2 className={classes.title}>{title}</h2>
                 <Table
-                    headers={printables.map(f => f.label)}
+                    headers={printables}
                     items={feedbacks}
-                    onSortBy={onSortFeedbacksBy}
+                    onSort={onSortFeedbacks}
                     onPrintRow={(feedback, i) => (
                         <FeedbackRow
                             key={i}
                             feedback={feedback}
-                            printableFields={printables.map(f => f.name)}
+                            printableFields={printables}
                         />
                     )}
                 />
