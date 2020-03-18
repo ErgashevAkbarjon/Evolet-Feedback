@@ -35,12 +35,10 @@ function Table({ classes, items, onPrintRow, headers, onSort }) {
             return onPrintRow(item, i);
         }
 
-        const values = Array.isArray(item) ? item : Object.values(item);
-
         return (
             <tr>
-                {values.map((value, i) => (
-                    <td key={i}>{value}</td>
+                {headers.map((header, i) => (
+                    <td key={i}>{item[header.name]}</td>
                 ))}
             </tr>
         );
