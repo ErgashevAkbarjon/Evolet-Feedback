@@ -19,7 +19,7 @@ class FeedbackController extends Controller
 
     public function index(Request $request)
     {
-        $result = Feedback::with([
+        $query = Feedback::with([
                 'status',
                 'customer.user:id,full_name',
                 'customer.pc',
@@ -30,7 +30,7 @@ class FeedbackController extends Controller
         
         if($currentUser->isCustomer()){
             $customerID = Customer::where('user_id', $currentUser->id)->first()->id;
-            $result->where('customer_id', $customerID);
+            $query->where('customer_id', $customerID);
         }
         
         if($currentUser->isEmployee()){
@@ -38,7 +38,7 @@ class FeedbackController extends Controller
             $query->whereIn('group_id', $employeeGroupsId);
         }
 
-        $result = $this->filterByRequest($request, $result)->latest()->get();
+        $result = $this->filterByRequest($request, $query)->latest()->get();
         
         return $result; 
     }
