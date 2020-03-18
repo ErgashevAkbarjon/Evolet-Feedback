@@ -26,7 +26,7 @@ class CustomerController extends Controller
     {
         $query = Customer::with(['user', 'pc']);
 
-        return $this->processIndexRequestItems($request, $query);
+        return $this->processIndexRequestItems($request, $query->latest());
     }
 
     public function store(Request $request)
