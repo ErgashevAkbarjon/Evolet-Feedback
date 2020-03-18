@@ -3,7 +3,6 @@ import axios from "axios";
 
 import { ApiRoutes } from "../../../routes";
 import Table from "../../../components/table/Table";
-import Loading from "../../../components/Loading";
 import CustomerRow from "../../../components/table/CustomerRow";
 import NewCustomerModal from "./NewCustomerModal";
 import CustomerModal from "./CustomerModal";
@@ -11,15 +10,29 @@ import CustomerEditModal from "./CustomerEditModal";
 import CustomerDeleteModal from "./CustomerDeleteModal";
 import TableTitle from "../../../components/table/Title";
 
-const printable = {
-    "user.full_name": "Имя",
-    "pc.logo": "ПК",
-    "user.email": "Почта",
-    bonus: "Баллы"
-};
+const printables = [
+    {
+        name: "user.full_name",
+        label: "Имя"
+    },
+    {
+        name: "pc.logo",
+        label: "ПК",
+        sortColumn: "pc.name"
+    },
+    {
+        name: "user.email",
+        label: "Почта"
+    },
+    {
+        name: "bonus",
+        label: "Баллы"
+    }
+];
 
 function Customers({ match }) {
     const [customers, setCustomers] = useState(null);
+    const [customersUrl, setCustomersUrl] = useState(ApiRoutes.customers);
 
     const [showNewCustomer, setShowNewCustomer] = useState(false);
 
@@ -45,21 +58,21 @@ function Customers({ match }) {
 
     const fetchCustomers = () => {
         axios
-            .get(ApiRoutes.customers)
+            .get(customersUrl)
             .then(({ data }) => setCustomers(data))
             .catch(e => console.log(e));
     };
 
     useEffect(() => {
-        fetchCustomers();
-    }, []);
+        updateCustomersList();
+    }, [customersUrl]);
 
     const onCustomerClick = customer => {
         setSelectedCustomer(customer);
     };
 
     const updateCustomersList = () => {
-        setCustomers([]);
+        setCustomers(null);
         fetchCustomers();
     };
 
@@ -90,7 +103,13 @@ function Customers({ match }) {
         updateCustomersList();
     };
 
-    return customers ? (
+    const onSortCustomers = sortQuery => {
+        if(!sortQuery) return;
+
+        setCustomersUrl(ApiRoutes.customers + "?" + sortQuery);
+    };
+
+    return (
         <div>
             <TableTitle title="Пользователи">
                 <div className="text-right">
@@ -102,27 +121,19 @@ function Customers({ match }) {
                     </button>
                 </div>
             </TableTitle>
-            <Table>
-                <thead>
-                    <tr>
-                        {Object.values(printable).map((fieldName, i) => (
-                            <th key={i}>{fieldName}</th>
-                        ))}
-                    </tr>
-                </thead>
-                <tbody>
-                    {Array.isArray(customers)
-                        ? customers.map((customer, i) => (
-                              <CustomerRow
-                                  customer={customer}
-                                  printable={printable}
-                                  onCustomerClick={onCustomerClick}
-                                  key={i}
-                              />
-                          ))
-                        : null}
-                </tbody>
-            </Table>
+            <Table
+                items={customers}
+                headers={printables}
+                onSort={onSortCustomers}
+                onPrintRow={(customer, i) => (
+                    <CustomerRow
+                        key={i}
+                        customer={customer}
+                        printableFields={printables}
+                        onCustomerClick={onCustomerClick}
+                    />
+                )}
+            />
             <NewCustomerModal
                 show={showNewCustomer}
                 onHide={() => setShowNewCustomer(false)}
@@ -148,8 +159,6 @@ function Customers({ match }) {
                 onCustomerDeleted={onCustomerDeleted}
             />
         </div>
-    ) : (
-        <Loading />
     );
 }
 

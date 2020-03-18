@@ -10,7 +10,7 @@ const styles = {
     }
 }
 
-function CustomerRow({ classes, customer, printable, onCustomerClick }) {
+function CustomerRow({ classes, customer, printableFields, onCustomerClick }) {
     const fields = {
         "user.full_name": customer.user.full_name,
         "pc.logo": <img style={{ width: "5.3rem" }} src={customer.pc.logo} />,
@@ -20,8 +20,8 @@ function CustomerRow({ classes, customer, printable, onCustomerClick }) {
 
     return (
         <tr className={classes.tableRow} onClick={() => onCustomerClick(customer)}>
-            {Object.keys(printable).map(
-                (fieldToPrint, i) => (<td key={i}>{fields[fieldToPrint]}</td> )
+            {printableFields.map(
+                (fieldToPrint, i) => (<td key={i}>{fields[fieldToPrint.name]}</td>)
             )}
         </tr>
     );

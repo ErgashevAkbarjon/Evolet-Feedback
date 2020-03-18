@@ -11,14 +11,25 @@ import NewEmployeeModal from "./NewEmployeeModal";
 import EmployeeDeleteModal from "./EmployeeDeleteModal";
 import TableTitle from "../../../components/table/Title";
 
-const printableFields = {
-    avatar: "Аватар",
-    "user.full_name": "Имя",
-    "user.email": "Почта"
-};
+const printableFields = [
+    {
+        name: "avatar",
+        label: "Аватар",
+        sortable: false
+    },
+    {
+        name: "user.full_name",
+        label: "Имя"
+    },
+    {
+        name: "user.email",
+        label: "Почта"
+    }
+];
 
 function Employees({ match }) {
     const [employees, setEmployees] = useState(null);
+    const [employeesUrl, setEmployeesUrl] = useState(ApiRoutes.employees);
 
     const [selectedEmployee, setSelectedEmployee] = useState(null);
 
@@ -43,17 +54,17 @@ function Employees({ match }) {
 
     const fetchEmployees = () => {
         axios
-            .get(ApiRoutes.employees)
+            .get(employeesUrl)
             .then(({ data }) => setEmployees(data))
             .catch(e => console.log(e));
     };
 
     useEffect(() => {
-        fetchEmployees();
-    }, []);
+        updateEmployeeList();
+    }, [employeesUrl]);
 
-    const resetEmployeeList = () => {
-        setEmployees([]);
+    const updateEmployeeList = () => {
+        setEmployees(null);
         fetchEmployees();
     };
 
@@ -64,7 +75,7 @@ function Employees({ match }) {
     const onNewEmployeeAdded = () => {
         setShowNewEmployee(false);
 
-        resetEmployeeList();
+        updateEmployeeList();
     };
 
     const onEmployeeEdit = employee => {
@@ -79,7 +90,7 @@ function Employees({ match }) {
 
     const onEmployeeUpdated = employee => {
         setEmployeeToEdit(null);
-        resetEmployeeList();
+        updateEmployeeList();
 
         setSelectedEmployee(employee);
     };
@@ -87,10 +98,16 @@ function Employees({ match }) {
     const onEmployeeDeleted = employee => {
         setEmployeeToDelete(null);
 
-        resetEmployeeList();
+        updateEmployeeList();
     };
 
-    return employees ? (
+    const onSortEmployees = sortQuery => {
+        if (!sortQuery) return;
+
+        setEmployeesUrl(ApiRoutes.employees + "?" + sortQuery);
+    };
+
+    return (
         <div>
             <TableTitle title="Сотрудники">
                 <div className="text-right">
@@ -102,27 +119,19 @@ function Employees({ match }) {
                     </button>
                 </div>
             </TableTitle>
-            <Table>
-                <thead>
-                    <tr>
-                        {Object.values(printableFields).map((field, i) => (
-                            <th key={i}>{field}</th>
-                        ))}
-                    </tr>
-                </thead>
-                <tbody>
-                    {Array.isArray(employees)
-                        ? employees.map((employee, i) => (
-                              <EmployeeRow
-                                  key={i}
-                                  employee={employee}
-                                  printables={printableFields}
-                                  onClick={employeeSelected}
-                              />
-                          ))
-                        : null}
-                </tbody>
-            </Table>
+            <Table
+                items={employees}
+                headers={printableFields}
+                onSort={onSortEmployees}
+                onPrintRow={(employee, i) => (
+                    <EmployeeRow
+                        key={i}
+                        employee={employee}
+                        printables={printableFields}
+                        onClick={employeeSelected}
+                    />
+                )}
+            />
             <NewEmployeeModal
                 show={showNewEmployee}
                 onHide={() => setShowNewEmployee(false)}
@@ -148,8 +157,6 @@ function Employees({ match }) {
                 onEmployeeDeleted={onEmployeeDeleted}
             />
         </div>
-    ) : (
-        <Loading />
     );
 }
 
