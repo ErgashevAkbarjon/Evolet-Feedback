@@ -62,39 +62,36 @@ function Feedbacks({ classes, match }) {
     const [feedbacks, setFeedbacks] = useState();
     const [title, setTitle] = useState("");
     const [feedbacksType, setType] = useState(1);
+    const [sortQuery, setSortQuery] = useState("");
 
     const groupId = match.params.id;
 
-    const filteredFeedbacksURL = `${feedbacksRoute}?group_id=${groupId}&type_id=${feedbacksType}`;
+    const filteredFeedbacksURL = `${feedbacksRoute}?group_id=${groupId}&type_id=${feedbacksType}${sortQuery}`;
 
-    const fetchFeedbacks = url => {
+    const fetchFeedbacks = () => {
         setFeedbacks(null);
 
         axios
-            .get(url)
+            .get(filteredFeedbacksURL)
             .then(({ data }) => setFeedbacks(data))
             .catch(e => console.log(e));
     };
 
     const fetchGroupTitle = () => {
+        setTitle("");
+
         axios
             .get(`${groupsRoute}/${groupId}?fields=name`)
             .then(({ data }) => setTitle(data.name))
             .catch(e => console.log(e));
     };
 
-    useEffect(fetchGroupTitle, []);
+    useEffect(fetchFeedbacks, [filteredFeedbacksURL]);
 
-    useEffect(() => {
+    useEffect(fetchGroupTitle, [groupId]);
 
-        setFeedbacks(null);
-        fetchFeedbacks(filteredFeedbacksURL);
-        fetchGroupTitle();
-        
-    }, [filteredFeedbacksURL]);
-
-    const onSortFeedbacks = (sortQuery) => {
-        fetchFeedbacks(filteredFeedbacksURL + sortQuery);
+    const onSortFeedbacks = sortQuery => {
+        setSortQuery(sortQuery);
     };
 
     return (
