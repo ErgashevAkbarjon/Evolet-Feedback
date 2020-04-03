@@ -70,7 +70,8 @@ export function AuthContextProvider(props) {
 
         response.pagination = {
             currentPage: data.currentPage,
-            totalPages: data.totalPages
+            totalPages: data.totalPages,
+            perPage: data.perPage,
         };
         response.data = data.data;
 
