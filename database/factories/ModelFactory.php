@@ -29,7 +29,7 @@ $factory->define(App\Feedback::class, function (Faker\Generator $faker) {
     return [
         'group_id' => randomIdFrom(App\Group::class),
         'status_id' => randomIdFrom(App\Status::class),
-        'type_id' => randomIdFrom(App\Group::class),
+        'type_id' => randomIdFrom(App\FeedbackType::class),
         'customer_id' => randomIdFrom(App\Customer::class),
         'description' => $faker->text,
     ];
