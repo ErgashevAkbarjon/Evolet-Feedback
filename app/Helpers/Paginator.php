@@ -8,7 +8,7 @@ use Illuminate\Support\Collection;
 class Paginator implements Arrayable {
 
     const DEFAULT_PAGE = 1;
-    const DEFAULT_ITEMS_PER_PAGE = 10;
+    const DEFAULT_ITEMS_PER_PAGE = 8;
 
     private $items;
 
@@ -31,6 +31,7 @@ class Paginator implements Arrayable {
         return [
             "currentPage" => $this->currentPage,
             "totalPages" => intval($this->items->count() / $this->perPage),
+            "perPage" => $this->perPage,
             "data" => $this->items->forPage($this->currentPage, $this->perPage)->values()
         ];
     }
