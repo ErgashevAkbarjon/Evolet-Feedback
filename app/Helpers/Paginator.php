@@ -30,7 +30,7 @@ class Paginator implements Arrayable {
     {
         return [
             "currentPage" => $this->currentPage,
-            "totalPages" => intval($this->items->count() / $this->perPage),
+            "totalPages" => $this->getTotalPages(),
             "perPage" => $this->perPage,
             "data" => $this->items->forPage($this->currentPage, $this->perPage)->values()
         ];
@@ -44,5 +44,18 @@ class Paginator implements Arrayable {
     public function setData($data)
     {
         $this->items = $data;
+    }
+
+    private function getTotalPages()
+    {
+        $floatOfTotalPages = $this->items->count() / $this->perPage;
+
+        $totalPages = intval($floatOfTotalPages);
+
+        if($floatOfTotalPages - $totalPages > 0){
+            $totalPages++;
+        }        
+
+        return $totalPages;
     }
 }
