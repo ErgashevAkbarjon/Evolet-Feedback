@@ -105,11 +105,11 @@ function Feedbacks({ classes, match, history }) {
         setPaginationQuery(`&page=${page}&perPage=${perPage}`);
     };
 
-    let feedbacksData = null;
+    let feedbacksList = null;
     let feedbacksPagination = null;
 
     if (feedbacks) {
-        feedbacksData = feedbacks.data;
+        feedbacksList = feedbacks.data;
         feedbacksPagination = feedbacks.pagination;
     }
 
@@ -137,7 +137,7 @@ function Feedbacks({ classes, match, history }) {
                 <h2 className={classes.title}>{title}</h2>
                 <Table
                     headers={printables}
-                    items={feedbacksData}
+                    items={feedbacksList}
                     paginationData={feedbacksPagination}
                     onPageChange={onFeedbacksPageChange}
                     onSort={onSortFeedbacks}
