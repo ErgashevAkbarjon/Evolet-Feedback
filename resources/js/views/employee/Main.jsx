@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, DropdownButton, Dropdown } from "react-bootstrap";
 import withStyles from "react-jss";
 import { Switch, Route } from "react-router-dom";
 import axios from "axios";
@@ -21,7 +21,7 @@ function Main({ classes }) {
     const getAuthName = () => {
         return authContext.getUser().full_name;
     };
-    
+
     const onSignOut = () => {
         authContext.resetAuth();
     };
@@ -30,7 +30,7 @@ function Main({ classes }) {
         axios
             .get(ApiRoutes.feedbackGroups)
             .then(({ data }) => setFeedbackGroups(data))
-            .catch(e => console.log(e));
+            .catch((e) => console.log(e));
     };
 
     useEffect(() => {
@@ -42,9 +42,9 @@ function Main({ classes }) {
 
         const groupLinkPrefix = "/feedbacks/group/";
 
-        links = feedbackGroups.map(g => ({
+        links = feedbackGroups.map((g) => ({
             to: groupLinkPrefix + g.id,
-            text: g.name
+            text: g.name,
         }));
 
         if (authContext.authIsAdmin()) {
@@ -52,8 +52,8 @@ function Main({ classes }) {
                 ...links,
                 {
                     to: "/settings",
-                    text: "Настройки"
-                }
+                    text: "Настройки",
+                },
             ];
         }
 
@@ -74,32 +74,16 @@ function Main({ classes }) {
                 <Col className="offset-2 pl-lg-4">
                     <div className="py-3 text-right">
                         <ManualLink />
-                        <div className="dropdown d-inline">
-                            <button
-                                className="btn dropdown-toggle"
-                                type="button"
-                                id="dropdownMenuButton"
-                                data-toggle="dropdown"
-                                aria-haspopup="true"
-                                aria-expanded="false"
-                            >
-                                <div className="d-inline-block">
-                                    <div>{getAuthName()}</div>
-                                </div>
-                            </button>
-                            <div
-                                className="dropdown-menu dropdown-menu-right"
-                                aria-labelledby="dropdownMenuButton"
-                            >
-                                <button
-                                    type="button"
-                                    className="btn dropdown-item"
-                                    onClick={onSignOut}
-                                >
-                                    Выйти
-                                </button>
-                            </div>
-                        </div>
+                        <DropdownButton
+                            title={getAuthName()}
+                            className="d-inline"
+                            variant="light"
+                            alignRight
+                        >
+                            <Dropdown.Item onClick={onSignOut}>
+                                Выйти
+                            </Dropdown.Item>
+                        </DropdownButton>
                     </div>
                     <Switch>
                         {EmployeeRoutes.map((routeProps, i) => (
