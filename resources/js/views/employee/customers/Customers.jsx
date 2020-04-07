@@ -13,26 +13,27 @@ import TableTitle from "../../../components/table/Title";
 const printables = [
     {
         name: "user.full_name",
-        label: "Имя"
+        label: "Имя",
     },
     {
         name: "pc.logo",
         label: "ПК",
-        sortColumn: "pc.name"
+        sortColumn: "pc.name",
     },
     {
         name: "user.email",
-        label: "Почта"
+        label: "Почта",
     },
     {
         name: "bonus",
-        label: "Баллы"
-    }
+        label: "Баллы",
+    },
 ];
 
 function Customers({ match }) {
     const [customers, setCustomers] = useState(null);
-    const [customersUrl, setCustomersUrl] = useState(ApiRoutes.customers);
+    const [sortQuery, setSortQuery] = useState("");
+    const [paginationQuery, setPaginationQuery] = useState("");
 
     const [showNewCustomer, setShowNewCustomer] = useState(false);
 
@@ -42,12 +43,12 @@ function Customers({ match }) {
 
     const [customerToDelete, setCustomerToDelete] = useState(null);
 
-    const fetchCustomer = id => {
+    const fetchCustomer = (id) => {
         const customerURL = ApiRoutes.customers + "/" + id;
         axios
             .get(customerURL)
             .then(({ data }) => setSelectedCustomer(data))
-            .catch(e => console.log(e));
+            .catch((e) => console.log(e));
     };
 
     useEffect(() => {
@@ -57,17 +58,20 @@ function Customers({ match }) {
     }, [match]);
 
     const fetchCustomers = () => {
+        const customersUrl =
+            ApiRoutes.customers + "?" + sortQuery + paginationQuery;
+
         axios
             .get(customersUrl)
-            .then(({ data }) => setCustomers(data))
-            .catch(e => console.log(e));
+            .then(({ data, pagination }) => setCustomers({ data, pagination }))
+            .catch((e) => console.log(e));
     };
 
     useEffect(() => {
         updateCustomersList();
-    }, [customersUrl]);
+    }, [sortQuery, paginationQuery]);
 
-    const onCustomerClick = customer => {
+    const onCustomerClick = (customer) => {
         setSelectedCustomer(customer);
     };
 
@@ -76,24 +80,24 @@ function Customers({ match }) {
         fetchCustomers();
     };
 
-    const onCustomerAdded = customer => {
+    const onCustomerAdded = (customer) => {
         setShowNewCustomer(false);
         updateCustomersList();
     };
 
-    const onCustomerEdit = customer => {
+    const onCustomerEdit = (customer) => {
         setSelectedCustomer(null);
         setCustomerToEdit(customer);
     };
 
-    const onCustomerUpdated = customer => {
+    const onCustomerUpdated = (customer) => {
         setCustomerToEdit(null);
         updateCustomersList();
 
         setSelectedCustomer(customer);
     };
 
-    const onCustomerDelete = customer => {
+    const onCustomerDelete = (customer) => {
         setSelectedCustomer(null);
         setCustomerToDelete(customer);
     };
@@ -103,11 +107,23 @@ function Customers({ match }) {
         updateCustomersList();
     };
 
-    const onSortCustomers = sortQuery => {
-        if(!sortQuery) return;
+    const onSortCustomers = (sortQuery) => {
+        if (!sortQuery) return;
 
-        setCustomersUrl(ApiRoutes.customers + "?" + sortQuery);
+        setSortQuery(sortQuery);
     };
+
+    const onCustomersPageChanged = (page, perPage) => {
+        setPaginationQuery(`&page=${page}&perPage=${perPage}`);
+    };
+
+    let customersList = null;
+    let customersPagination = null;
+
+    if (customers) {
+        customersList = customers.data;
+        customersPagination = customers.pagination;
+    }
 
     return (
         <div>
@@ -122,8 +138,10 @@ function Customers({ match }) {
                 </div>
             </TableTitle>
             <Table
-                items={customers}
+                items={customersList}
                 headers={printables}
+                paginationData={customersPagination}
+                onPageChange={onCustomersPageChanged}
                 onSort={onSortCustomers}
                 onPrintRow={(customer, i) => (
                     <CustomerRow
