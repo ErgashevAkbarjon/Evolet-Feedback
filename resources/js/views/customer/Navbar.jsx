@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { DropdownButton, Dropdown } from "react-bootstrap";
 
 import { ApiRoutes } from "../../routes";
 import axios from "axios";
@@ -9,7 +10,7 @@ import ManualLink from "../../components/ManualLink";
 
 const navbarLinks = [
     { name: "Новый фидбек", url: "/" },
-    { name: "История", url: "/customer/feedbacks" }
+    { name: "История", url: "/customer/feedbacks" },
 ];
 
 function Navbar() {
@@ -27,7 +28,7 @@ function Navbar() {
             .then(({ data }) => {
                 setCustomer(data[0]);
             })
-            .catch(e => console.log(e));
+            .catch((e) => console.log(e));
     };
 
     const onSignOut = () => {
@@ -84,32 +85,14 @@ function Navbar() {
                     <Loading />
                 )}
                 <ManualLink />
-                <div className="dropdown d-inline">
-                    <button
-                        className="btn dropdown-toggle"
-                        type="button"
-                        id="dropdownMenuButton"
-                        data-toggle="dropdown"
-                        aria-haspopup="true"
-                        aria-expanded="false"
-                    >
-                        <div className="d-inline-block">
-                            <div>{getAuthName()}</div>
-                        </div>
-                    </button>
-                    <div
-                        className="dropdown-menu dropdown-menu-right"
-                        aria-labelledby="dropdownMenuButton"
-                    >
-                        <button
-                            type="button"
-                            className="btn dropdown-item"
-                            onClick={onSignOut}
-                        >
-                            Выйти
-                        </button>
-                    </div>
-                </div>
+                <DropdownButton
+                    title={getAuthName()}
+                    className="d-inline"
+                    variant="light"
+                    alignRight
+                >
+                    <Dropdown.Item onClick={onSignOut}>Выйти</Dropdown.Item>
+                </DropdownButton>
             </div>
         </nav>
     );
