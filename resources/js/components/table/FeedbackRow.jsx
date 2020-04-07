@@ -35,7 +35,7 @@ const styles = {
 };
 
 function FeedbackRow({ classes, feedback, printableFields, history }) {
-    const shoudPrint = field => printableFields.includes(field);
+    const shoudPrint = field => printableFields.find(f => f.name === field);
 
     const onFeedbackClick = () => {
         history.push("/feedbacks/" + feedback.id);

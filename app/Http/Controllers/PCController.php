@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\File;
 use App\PC;
 use App\Role;
 use Illuminate\Http\Request;
@@ -19,11 +18,9 @@ class PCController extends Controller
 
     public function index(Request $request)
     {
-        $result = PC::query();
+        $query = PC::query();
 
-        $result = $this->filterByRequest($request, $result)->get();
-
-        return $result;
+        return $this->processIndexRequestItems($request, $query, false);
     }
 
     public function store(Request $request)

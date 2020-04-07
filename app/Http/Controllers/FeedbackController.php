@@ -40,7 +40,12 @@ class FeedbackController extends Controller
 
         $result = $this->filterByRequest($request, $query)->latest()->get();
         
-        return $result; 
+        if($currentUser->isEmployee()){
+            $employeeGroupsId = $currentUser->employee->groups->pluck('id');
+            $query->whereIn('group_id', $employeeGroupsId);
+        }
+
+        return $this->processIndexRequestItems($request, $query->latest());
     }
 
     public function show($id, Request $request)

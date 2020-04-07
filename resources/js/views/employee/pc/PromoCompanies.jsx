@@ -75,7 +75,7 @@ function PromoCompanies({ classes }) {
         resetPCList();
     };
 
-    return promoCompanies ? (
+    return (
         <div>
             <TableTitle title="Промо компании">
                 <div className="text-right">
@@ -89,36 +89,31 @@ function PromoCompanies({ classes }) {
             </TableTitle>
             <div className="row">
                 <div className="col-4">
-                    <Table>
-                        <thead>
-                            <tr>
-                                <th>Название</th>
-                                <th>Логотип</th>
+                    <Table
+                        items={promoCompanies}
+                        headers={[
+                            { name: "name", label: "Название" },
+                            { name: "logo", label: "Логотип" }
+                        ]}
+                        onPrintRow={(pc, i) => (
+                            <tr
+                                key={i}
+                                className={classes.tableRow}
+                                onClick={() => setSelectedPC(pc)}
+                            >
+                                <td>{pc.name}</td>
+                                <td>
+                                    <img
+                                        src={pc.logo}
+                                        className={classes.logo + " img-fluid"}
+                                    />
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            {promoCompanies.map((pc, i) => (
-                                <tr
-                                    key={i}
-                                    className={classes.tableRow}
-                                    onClick={() => setSelectedPC(pc)}
-                                >
-                                    <td>{pc.name}</td>
-                                    <td>
-                                        <img
-                                            src={pc.logo}
-                                            className={
-                                                classes.logo + " img-fluid"
-                                            }
-                                        />
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </Table>
+                        )}
+                    />
                 </div>
             </div>
-            <NewPromoCompanyModal 
+            <NewPromoCompanyModal
                 show={showNewPC}
                 onHide={() => setShowNewPC(null)}
                 onPCAdded={onPCAdded}
@@ -143,8 +138,6 @@ function PromoCompanies({ classes }) {
                 onPCDeleted={onPCDeleted}
             />
         </div>
-    ) : (
-        <Loading />
     );
 }
 export default withStyles(styles)(PromoCompanies);

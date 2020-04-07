@@ -22,9 +22,7 @@ class ResponseController extends Controller
     {
         $responsesQuery = Response::with('employee.user:id,full_name');
 
-        $response = $this->filterByRequest($request, $responsesQuery)->get();
-
-        return $response;
+        return $this->processIndexRequestItems($request, $responsesQuery, false);
     }
 
     public function store(Request $request)

@@ -29,8 +29,8 @@ function EmployeeRow({ classes, employee, printables, onClick }) {
 
     return (
         <tr className={classes.tableRow} onClick={() => onClick(employee)}>
-            {Object.keys(printables).map((field, i) => (
-                <td key={i}>{fields[field]}</td>
+            {printables.map((field, i) => (
+                <td key={i}>{fields[field.name]}</td>
             ))}
         </tr>
     );

@@ -11,8 +11,6 @@ class RoleController extends Controller
     {
         $query = Role::where('name', '<>', Role::CUSTOMER_ROLE_NAME);
 
-        $result = $this->filterByRequest($request, $query)->get();
-
-        return $result;
+        return $this->processIndexRequestItems($request, $query, false);
     }    
 }

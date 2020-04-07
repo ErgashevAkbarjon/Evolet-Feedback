@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Helpers\Paginator;
 use Closure;
 
 class FieldsLimiterMIddleware
@@ -17,25 +18,78 @@ class FieldsLimiterMIddleware
     {
         $response = $next($request);
 
-        if (!$request->has('fields')){
+        if (!$request->has('fields')) {
             return $response;
         }
 
-        $fieldsString = $request->fields;
-        $fields = explode(',', $fieldsString);
+        $fields = explode(',', $request->fields);
 
-        $newResponse = [];
-        
-        $newResponse = collect($response->original)->map(function ($item) use ($fields){
-            $temp = [];
+        $newResponse = $response->original;
 
-            foreach ($fields as $field) {
+        if ($newResponse instanceof Paginator) {
+
+            return $response->setContent(
+                $this->limitPaginatorData($newResponse, $fields)
+            );
+        }
+
+        if (is_iterable($newResponse)) {
+
+            return $response->setContent(
+                $this->limitEachToFields($newResponse, $fields)
+            );
+        }
+
+        return $response->setContent(
+            $this->limitToFields($newResponse, $fields)
+        );
+    }
+
+    /**
+     * Removes all fields (keys) from $item, except those that defined in $fields
+     *
+     */
+    private function limitToFields($item, $fields)
+    {
+        $temp = [];
+
+        foreach ($fields as $field) {
+
+            if (isset($item[$field])) {
                 $temp[$field] = $item[$field];
             }
+        }
 
-            return $temp;
+        return $temp;
+    }
+
+    /**
+     * Removes all fields (keys) that didn't defined in $fields from every item of $items
+     *
+     */
+    private function limitEachToFields($items, $fields)
+    {
+        if (!is_iterable($items)) {
+            return $items;
+        }
+
+        return collect($items)->map(function ($item) use ($fields) {
+            return $this->limitToFields($item, $fields);
         });
+    }
 
-        return $response->setContent($newResponse);
+    /**
+     * Removes all fields from Paginator data item, except those that defined in $fields
+     *
+     */
+    private function limitPaginatorData(Paginator $paginator, $fields)
+    {
+        $paginatorData = $paginator->getData();
+
+        $limitedFieldsData = $this->limitEachToFields($paginatorData, $fields);
+
+        $paginator->setData($limitedFieldsData);
+
+        return $paginator;
     }
 }

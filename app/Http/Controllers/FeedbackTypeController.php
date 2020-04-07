@@ -6,22 +6,10 @@ use Illuminate\Http\Request;
 
 class FeedbackTypeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
-
     public function index(Request $request)
     {
-        $response = FeedbackType::query();
+        $query = FeedbackType::query();
 
-        $response = $this->filterByRequest($request, $response)->get();
-
-        return $response; 
+        return $this->processIndexRequestItems($request, $query, false);
     }
 }

@@ -79,7 +79,7 @@ function FeedbackGroups({ classes }) {
         resetGroupList();
     };
 
-    return feedbackGroups ? (
+    return (
         <div>
             <TableTitle title="Группы">
                 <div className="text-right">
@@ -93,24 +93,19 @@ function FeedbackGroups({ classes }) {
             </TableTitle>
             <div className="row">
                 <div className="col-4">
-                    <Table>
-                        <thead>
-                            <tr>
-                                <th>Название</th>
+                    <Table
+                        items={feedbackGroups}
+                        headers={[{name: 'name', label: 'Название'}]}
+                        onPrintRow={(group, i) => (
+                            <tr
+                                className={classes.tableRow}
+                                key={i}
+                                onClick={() => setSelectedGroup(group)}
+                            >
+                                <td>{group.name}</td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            {feedbackGroups.map((group, i) => (
-                                <tr
-                                    className={classes.tableRow}
-                                    key={i}
-                                    onClick={() => setSelectedGroup(group)}
-                                >
-                                    <td>{group.name}</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </Table>
+                        )}
+                    />
                 </div>
             </div>
             <NewGroupModal
@@ -138,8 +133,6 @@ function FeedbackGroups({ classes }) {
                 onGroupDeleted={onGroupDeleted}
             />
         </div>
-    ) : (
-        <Loading />
     );
 }
 export default withStyles(styles)(FeedbackGroups);

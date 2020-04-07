@@ -65,8 +65,37 @@ export function AuthContextProvider(props) {
         return getUserRoles().includes(CUSTOMER_ROLE);
     };
 
+    const movePaginatorToResponseBody = response => {
+        const {data} = response;
+
+        response.pagination = {
+            currentPage: data.currentPage,
+            totalPages: data.totalPages,
+            perPage: data.perPage,
+        };
+        response.data = data.data;
+
+        return response;
+    };
+
+    const processPaginatedResponse = response => {
+
+        const {data} = response;
+
+        const responseHasPaginator = 
+            data.hasOwnProperty('currentPage') &&
+            data.hasOwnProperty('totalPages') &&
+            data.hasOwnProperty('data');
+
+        if(responseHasPaginator){
+            response = movePaginatorToResponseBody(response);
+        }
+        
+        return response;
+    };
+
     window.axios.interceptors.response.use(
-        response => response,
+        response => processPaginatedResponse(response),
         error => {
             const unAutorized = error.response.status === UNAUTORIZE_CODE;
             const forbidden = error.response.status === FORBIDDEN_CODE;
