@@ -58,7 +58,7 @@ function Footer({ colsCount, paginationData, onPageChange }) {
     };
 
     const rowsPerPageChanged = ({ target }) => {
-        onPageChange(currentPage, target.value);
+        onPageChange(FIRST_PAGE, target.value);
     };
 
     let pageButtonClasses =
