@@ -67,7 +67,7 @@ function Footer({ colsCount, paginationData, onPageChange }) {
     return (
         <tfoot>
             <tr>
-                <td colSpan={colsCount}>
+                <td colSpan={colsCount} className="px-3 py-2">
                     <div className="form-inline justify-content-end">
                         <label
                             className="my-1 mr-2 unselectable-text"
@@ -100,7 +100,7 @@ function Footer({ colsCount, paginationData, onPageChange }) {
                         <span className="unselectable-text form-inline">
                             <span>
                                 <input
-                                    className="form-control h-auto p-0"
+                                    className="form-control h-auto p-0 text-center"
                                     type="number"
                                     value={pageToGo}
                                     onChange={onCurrentPageChange}
