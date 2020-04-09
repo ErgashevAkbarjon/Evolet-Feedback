@@ -174,7 +174,6 @@ function NewFeedback({ classes }) {
                                 id="attachment"
                                 multiple
                                 onChange={onFilesAdded}
-                                accept="image/*"
                             />
                         </div>
                         <div className="text-right">

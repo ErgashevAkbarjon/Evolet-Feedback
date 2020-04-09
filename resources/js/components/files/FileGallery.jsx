@@ -20,7 +20,7 @@ function FileGallery({ files, size }) {
             {localFiles.map((file, i) => (
                 <File
                     file={file}
-                    onClick={file => setSelectedFile(file)}
+                    onExpand={file => setSelectedFile(file)}
                     size={size}
                     key={i}
                 />

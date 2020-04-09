@@ -1,15 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import withStyles from "react-jss";
 
 const styles = {
     file: {
         width: "100%",
-        borderRadius: "5px",
-        cursor: "zoom-in"
+        borderRadius: "5px"
     }
 };
 
-function File({ classes, file, size, onClick }) {
+const fileDefaultImage = "/feedback-files/file.png";
+
+function File({ classes, file, size, onExpand }) {
+    const [fileIsImage, setFileIsImage] = useState(true);
+
     let thumbnailCols = "col-4";
 
     switch (size) {
@@ -24,15 +27,27 @@ function File({ classes, file, size, onClick }) {
             break;
     }
 
+    const onFileClick = () => {
+        if (!fileIsImage) {
+            window.downloadFile(file.url);
+        } else {
+            onExpand(file);
+        }
+    };
+
+    const cursorStyle = { cursor: fileIsImage ? "zoom-in" : "pointer" };
+
     return (
         <div className="col-8 col-md-6 col-lg-6 col-xl-4">
             <div className="row align-items-center">
                 <div className={thumbnailCols + " mb-3"}>
                     <img
-                        src={file.url}
+                        src={fileIsImage ? file.url : fileDefaultImage}
                         alt={file.name}
                         className={classes.file}
-                        onClick={() => onClick(file)}
+                        onError={() => setFileIsImage(false)}
+                        style={cursorStyle}
+                        onClick={onFileClick}
                     />
                 </div>
                 <div className="col pl-0">
