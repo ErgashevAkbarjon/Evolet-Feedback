@@ -26,3 +26,22 @@ window.parseJwt = function (token) {
         return false;
     }
 }
+
+window.downloadFile = function (url, name = "") {
+
+    if(!name) {
+        name = url.substring(url.lastIndexOf('/') + 1);
+    }
+
+    axios({
+        url,
+        method: "GET",
+        responseType: "blob"
+    }).then(response => {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", name);
+        link.click();
+    });
+}
