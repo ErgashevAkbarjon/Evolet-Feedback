@@ -81,8 +81,8 @@ function Feedbacks({ classes, match, history }) {
         setTitle("");
 
         axios
-            .get(`${groupsRoute}/${groupId}?fields=name`)
-            .then(({ data }) => setTitle(data.name))
+            .get(`${groupsRoute}?id=${groupId}?fields=name`)
+            .then(({ data }) => setTitle(data[0].name))
             .catch((e) => console.log(e));
     };
 
