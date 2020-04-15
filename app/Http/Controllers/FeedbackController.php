@@ -7,6 +7,7 @@ use App\Feedback;
 use App\File;
 use App\Role;
 use App\Status;
+use App\User;
 use Illuminate\Http\Request;
 
 class FeedbackController extends Controller

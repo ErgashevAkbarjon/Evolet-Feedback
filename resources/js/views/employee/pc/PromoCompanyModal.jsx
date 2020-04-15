@@ -18,8 +18,6 @@ function PromoCompanyModal({
     const fetchPCData = () => {
         if (!promoCompany) return;
 
-        console.log(promoCompany);
-
         const pcUrl = ApiRoutes.pc + "/" + promoCompany.id;
         axios
             .get(pcUrl)
