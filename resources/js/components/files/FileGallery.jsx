@@ -1,24 +1,28 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import FileViewer from "./FileViewer";
-import File from "./File";
+import FileComponent from "./File";
 
 function FileGallery({ files, size }) {
     const [selectedFile, setSelectedFile] = useState();
 
     let localFiles = files;
 
-    if(files instanceof FileList){
-        localFiles = Array.from(files).map(f => ({
-            url: URL.createObjectURL(f),
-            name: f.name
-        }));
-    }
+    if (!files) return null;
 
-    return localFiles ? (
+    localFiles = Array.from(files).map(f => {
+
+        if (f instanceof File) {
+            return { url: URL.createObjectURL(f), name: f.name };
+        }
+
+        return f;
+    });
+
+    return (
         <div className="row">
             {localFiles.map((file, i) => (
-                <File
+                <FileComponent
                     file={file}
                     onExpand={file => setSelectedFile(file)}
                     size={size}
@@ -32,13 +36,13 @@ function FileGallery({ files, size }) {
                 />
             ) : null}
         </div>
-    ) : null;
+    );
 }
 
 FileGallery.propTypes = {
     files: PropTypes.oneOfType([
         PropTypes.array,
-        PropTypes.instanceOf(FileList),
+        PropTypes.instanceOf(FileList)
     ]),
     size: PropTypes.oneOf(["small", "medium", "large"])
 };
