@@ -4,25 +4,33 @@ import axios from "axios";
 import { ApiRoutes } from "../../routes";
 import Loading from "../Loading";
 import MultipleSelect from "./MultipleSelect";
+import FileInput from "./FileInput";
 
-function EmployeeForm({ employee, onSubmit, onCancel, validationErrors: validationErrorsProp }) {
+function EmployeeForm({
+    employee,
+    onSubmit,
+    onCancel,
+    validationErrors: validationErrorsProp
+}) {
     const [groupsList, setGroupsList] = useState();
     const [rolesList, setRolesList] = useState([]);
-    
+
     const [fullName, setFullName] = useState("");
     const [email, setEmail] = useState("");
     const [role, setRole] = useState();
     const [avatar, setAvatar] = useState(null);
     const [groups, setGroups] = useState([]);
-    
+
     const [validationErrors, setValidationErrors] = useState();
 
     let mounted;
-    
+
     const fetchFeedbackGroups = () => {
         axios
             .get(ApiRoutes.feedbackGroups)
-            .then(({ data }) => {if(mounted) setGroupsList(data)})
+            .then(({ data }) => {
+                if (mounted) setGroupsList(data);
+            })
             .catch(e => console.log(e));
     };
 
@@ -30,7 +38,7 @@ function EmployeeForm({ employee, onSubmit, onCancel, validationErrors: validati
         axios
             .get(ApiRoutes.roles)
             .then(({ data }) => {
-                if(!mounted) return;
+                if (!mounted) return;
 
                 setRolesList(data);
                 if (!employee) {
@@ -45,7 +53,7 @@ function EmployeeForm({ employee, onSubmit, onCancel, validationErrors: validati
         fetchFeedbackGroups();
         fetchUserRoles();
 
-        return () => mounted = false
+        return () => (mounted = false);
     }, []);
 
     useEffect(() => {
@@ -86,10 +94,11 @@ function EmployeeForm({ employee, onSubmit, onCancel, validationErrors: validati
             case "role":
                 setRole(value);
                 break;
-            case "avatar":
-                setAvatar(target.files[0]);
-                break;
         }
+    };
+
+    const onAvatarChange = image => {
+        setAvatar(image);
     };
 
     const onFormSubmit = e => {
@@ -137,7 +146,9 @@ function EmployeeForm({ employee, onSubmit, onCancel, validationErrors: validati
                 />
                 {emailErrors
                     ? emailErrors.map((error, i) => (
-                          <div className="invalid-feedback" key={i}>{error}</div>
+                          <div className="invalid-feedback" key={i}>
+                              {error}
+                          </div>
                       ))
                     : null}
             </div>
@@ -166,17 +177,11 @@ function EmployeeForm({ employee, onSubmit, onCancel, validationErrors: validati
                     ))}
                 </select>
             </div>
-            <div className="form-group">
-                <label htmlFor="avatar">Аватар</label>
-                <input
-                    type="file"
-                    className="form-control-file"
-                    id="avatar"
-                    name="avatar"
-                    onChange={handleInputChange}
-                    accept="image/*"
-                />
-            </div>
+            <FileInput
+                label="Аватар"
+                onFilesAdded={onAvatarChange}
+                accept="image/*"
+            />
             <div className="text-right">
                 <button
                     type="submit"

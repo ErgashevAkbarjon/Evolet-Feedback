@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import FileInput from "./FileInput";
 
 function PromoCompanyForm({ promoCompany, onSubmit, onCancel }) {
     const [name, setName] = useState("");
@@ -24,8 +25,8 @@ function PromoCompanyForm({ promoCompany, onSubmit, onCancel }) {
         setName(target.value);
     };
 
-    const onLogoChange = ({ target }) => {
-        setLogo(target.files[0]);
+    const onLogoChange = image => {
+        setLogo(image);
     };
 
     return (
@@ -42,17 +43,12 @@ function PromoCompanyForm({ promoCompany, onSubmit, onCancel }) {
                         required
                     />
                 </div>
-                <div className="form-group">
-                    <label htmlFor="logo">Лого</label>
-                    <input
-                        type="file"
-                        className="form-control-file"
-                        id="logo"
-                        onChange={onLogoChange}
-                        accept="image/*"
-                        required={promoCompany ? false: true}
-                    />
-                </div>
+                <FileInput
+                    label="Лого"
+                    onFilesAdded={onLogoChange}
+                    accept="image/*"
+                    required={promoCompany ? false: true}
+                />
                 <div className="text-right">
                     <button
                         type="button"

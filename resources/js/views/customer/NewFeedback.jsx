@@ -7,6 +7,7 @@ import Loading from "../../components/Loading";
 import Card from "../../components/Card";
 import CardModal from "../../components/CardModal";
 import FileGallery from "../../components/files/FileGallery";
+import FileInput from "../../components/forms/FileInput";
 
 const btnColor = {
     background: "#B8CF41 !important",
@@ -59,7 +60,7 @@ function NewFeedback({ classes }) {
     const onTypeChecked = ({ target }) => setType(target.value);
     const onGroupSelected = ({ target }) => setGroup(target.value);
     const onDescriptionChange = ({ target }) => setDescription(target.value);
-    const onFilesAdded = ({ target }) => setFiles(target.files);
+    const onFilesAdded = files => setFiles(files);
 
     const onFormSubmit = e => {
         e.preventDefault();
@@ -164,18 +165,11 @@ function NewFeedback({ classes }) {
                                 onChange={onDescriptionChange}
                             ></textarea>
                         </div>
-                        <div className="form-group">
-                            <label htmlFor="attachment">
-                                Прикрепить изображения
-                            </label>
-                            <input
-                                type="file"
-                                className="form-control-file"
-                                id="attachment"
-                                multiple
-                                onChange={onFilesAdded}
-                            />
-                        </div>
+                        <FileInput
+                            label="Прикрепить файлы"
+                            multiple
+                            onFilesAdded={onFilesAdded}
+                        />
                         <div className="text-right">
                             <button type="submit" className="btn btn-primary">
                                 Отправить
