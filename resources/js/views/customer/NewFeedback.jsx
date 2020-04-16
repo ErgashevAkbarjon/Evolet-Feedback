@@ -211,7 +211,7 @@ function NewFeedback({ classes }) {
                         <b>{description}</b>
                     </p>
 
-                    <p>Прикрепленные изображения:</p>
+                    <p>Прикрепленные файлы:</p>
 
                     <div className="mb-4">
                         <FileGallery files={files} size="large" />
