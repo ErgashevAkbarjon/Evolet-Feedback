@@ -57,9 +57,9 @@ $app->singleton(
 |
 */
 
-// $app->middleware([
-//     App\Http\Middleware\ExampleMiddleware::class
-// ]);
+$app->middleware([
+    App\Http\Middleware\RedirectToSecureMiddleware::class
+]);
 
 $app->routeMiddleware([
     'jwt.auth' => App\Http\Middleware\JWTMiddleware::class,
